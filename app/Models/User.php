@@ -2,48 +2,56 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Task;
+use App\Models\Habit;
+
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    // campos que se pueden asignar masivamente
     protected $fillable = [
         'name',
         'email',
         'password',
+        'interests',
+        'points',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
+    // campos ocultos en serialización (ej: cuando devolvemos JSON)
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    // conversión automática de tipos
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'  => 'hashed',
+            'interests' => 'array', // Laravel convierte el JSON a array de PHP automáticamente
         ];
+    }
+
+    // un usuario tiene muchas tareas
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
+
+    // un usuario tiene muchos hábitos
+    public function habits()
+    {
+        return $this->hasMany(Habit::class);
+    }
+
+    // un usuario tiene muchas insignias desbloqueadas
+    public function userBadges()
+    {
+        return $this->hasMany(UserBadge::class);
     }
 }
