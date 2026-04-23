@@ -1,0 +1,264 @@
+/* =========================================
+   LANDING.CSS — Estilos de la landing page
+   ========================================= */
+
+/* ── Layout ── */
+.landing-body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.landing-main {
+    flex: 1;
+}
+
+/* ── Header ── */
+.landing-header {
+    background-color: var(--fondo-secundario);
+    border-bottom: var(--borde-grosor) solid var(--borde);
+    padding: 10px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.landing-logo {
+    font-size: 1.2rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--acento);
+    text-decoration: none;
+}
+
+.landing-nav {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* ── Footer ── */
+.landing-footer {
+    background-color: var(--fondo-secundario);
+    border-top: var(--borde-grosor) solid var(--borde);
+    padding: 10px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.landing-footer-texto {
+    font-size: 0.78rem;
+    color: var(--texto-muy-suave);
+    letter-spacing: 1px;
+}
+
+/* ── Hero ── */
+.hero {
+    padding: 48px 40px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-bottom: var(--borde-grosor) solid var(--borde);
+    background-color: var(--fondo-secundario);
+}
+
+.hero-tag {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--acento-titulo);
+    margin-bottom: 14px;
+}
+
+.hero-titulo {
+    font-size: 2.8rem;
+    font-weight: 900;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--texto-principal);
+    line-height: 1.1;
+    margin-bottom: 14px;
+}
+
+.hero-titulo span {
+    color: var(--acento);
+}
+
+.hero-subtitulo {
+    font-size: 0.95rem;
+    color: var(--texto-suave);
+    max-width: 480px;
+    line-height: 1.7;
+    margin-bottom: 28px;
+}
+
+.hero-acciones {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 32px;
+}
+
+.hero-avatares {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.hero-avatar {
+    width: 40px;
+    height: 40px;
+    border: var(--borde-grosor) solid var(--borde);
+    background-color: var(--fondo-terciario);
+    overflow: hidden;
+    border-radius: var(--radio);
+}
+
+.hero-avatar img {
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+}
+
+.hero-avatar-texto {
+    font-size: 0.72rem;
+    color: var(--texto-muy-suave);
+    letter-spacing: 1px;
+}
+
+/* ── Secciones comunes ── */
+.landing-seccion {
+    padding: 36px 40px;
+    border-bottom: var(--borde-grosor) solid var(--borde);
+}
+
+.seccion-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--acento-titulo);
+    margin-bottom: 4px;
+}
+
+.seccion-titulo {
+    font-size: 1.2rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--texto-principal);
+    margin-bottom: 24px;
+}
+
+/* ── Features ── */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.feature-card {
+    background-color: var(--fondo-secundario);
+    border: var(--borde-grosor) solid var(--borde);
+    padding: 18px 16px;
+    border-radius: var(--radio);
+}
+
+.feature-icono {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.feature-titulo {
+    font-size: 0.8rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--texto-principal);
+    margin-bottom: 6px;
+}
+
+.feature-desc {
+    font-size: 0.82rem;
+    color: var(--texto-suave);
+    line-height: 1.6;
+}
+
+/* ── Pasos ── */
+.pasos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.paso-card {
+    background-color: var(--fondo-secundario);
+    border: var(--borde-grosor) solid var(--borde);
+    padding: 20px 18px;
+    border-radius: var(--radio);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.paso-numero {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--acento);
+    line-height: 1;
+    letter-spacing: 2px;
+}
+
+.paso-titulo {
+    font-size: 0.8rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--texto-principal);
+}
+
+.paso-desc {
+    font-size: 0.82rem;
+    color: var(--texto-suave);
+    line-height: 1.6;
+}
+
+/* ── CTA final ── */
+.cta-final {
+    padding: 48px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: var(--fondo-secundario);
+}
+
+.cta-titulo {
+    font-size: 1.6rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--texto-principal);
+    margin-bottom: 10px;
+}
+
+.cta-titulo span {
+    color: var(--acento);
+}
+
+.cta-subtitulo {
+    font-size: 0.9rem;
+    color: var(--texto-suave);
+    margin-bottom: 24px;
+    max-width: 400px;
+    line-height: 1.7;
+}
+
+.cta-acciones {
+    display: flex;
+    gap: 10px;
+}

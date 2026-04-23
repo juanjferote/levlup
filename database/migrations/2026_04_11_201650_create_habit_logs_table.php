@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('habit_id')->constrained()->cascadeOnDelete(); // clave foránea hacia habits
             $table->date('logged_date'); // fecha en la que se cumplió el hábito
             $table->timestamps();
+            // evita que un hábito se pueda marcar dos veces el mismo día
+            $table->unique(['habit_id', 'logged_date']);
         });
     }
 

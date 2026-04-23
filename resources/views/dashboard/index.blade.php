@@ -8,39 +8,56 @@
         <h2>📋 Panel de control</h2>
     </div>
 
+    {{-- Stats fila --}}
     <div class="stats-fila">
 
         <div class="stat-card">
-            <span class="stat-valor amarillo">{{ $puntos ?? 0 }}</span>
+            <span class="stat-valor amarillo">{{ $puntos }}</span>
             <span class="stat-label">⭐ Puntos</span>
         </div>
 
         <div class="stat-card">
-            <span class="stat-valor naranja">{{ $racha ?? 0 }}</span>
+            <span class="stat-valor amarillo">{{ $nivel }}</span>
+            <span class="stat-label">🎮 Nivel</span>
+        </div>
+
+        <div class="stat-card">
+            <span class="stat-valor naranja">{{ $racha }}</span>
             <span class="stat-label">🔥 Días de racha</span>
         </div>
 
         <div class="stat-card">
-            <span class="stat-valor amarillo">{{ $tareasHoy ?? 0 }}</span>
+            <span class="stat-valor amarillo">{{ $tareasHoy }}</span>
             <span class="stat-label">✅ Tareas hoy</span>
-        </div>
-
-        <div class="stat-card">
-            <span class="stat-valor rojo">{{ $retosActivos ?? 0 }}</span>
-            <span class="stat-label">⚔ Retos activos</span>
         </div>
 
     </div>
 
+    {{-- Fila principal --}}
     <div class="dashboard-fila">
 
-        <div class="bloque bloque-grande">
+        <div class="bloque">
             <h3 class="bloque-titulo">// Misiones de hoy</h3>
             <p class="texto-suave">No hay misiones por ahora. ¡Crea tu primera tarea!</p>
         </div>
 
-        <div class="bloque bloque-pequeño">
-            <h3 class="bloque-titulo">// Insignias</h3>
+        <div class="bloque">
+            <h3 class="bloque-titulo">// Hábitos de hoy</h3>
+            <p class="texto-suave">No hay hábitos activos. ¡Empieza creando uno!</p>
+        </div>
+
+    </div>
+
+    {{-- Fila secundaria --}}
+    <div class="dashboard-fila mt-3">
+
+        <div class="bloque">
+            <h3 class="bloque-titulo">// Mensaje del día</h3>
+            <p class="texto-suave">¡Bienvenido a LevlUp! Empieza añadiendo tus primeras tareas y hábitos.</p>
+        </div>
+
+        <div class="bloque">
+            <h3 class="bloque-titulo">// Insignias recientes</h3>
             <p class="texto-suave">Aún no has conseguido ninguna insignia.</p>
         </div>
 

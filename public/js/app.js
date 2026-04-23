@@ -1,3 +1,6 @@
+/* Importar bootstrap*/
+/*import 'bootstrap/dist/js/bootstrap.bundle.min.js';*/
+
 // --- Modo noche ---
 // Añade o quita la clase 'modo-noche' del body y guarda la preferencia en localStorage
 

@@ -18,14 +18,17 @@ class Habit extends Model
         'target_per_week',
         'custom_days',
         'active',
+        'suggested_by_system',
+        'difficulty_level',
     ];
 
     // conversión automática de tipos
     protected function casts(): array
     {
         return [
-            'custom_days' => 'array',  // Laravel convierte el JSON a array de PHP automáticamente
-            'active'      => 'boolean',
+            'custom_days'         => 'array',
+            'active'              => 'boolean',
+            'suggested_by_system' => 'boolean',
         ];
     }
 

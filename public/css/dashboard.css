@@ -1,0 +1,97 @@
+/* =========================================
+   DASHBOARD.CSS — Estilos específicos del panel de control
+   ========================================= */
+
+/* ── Título de página ── */
+.pagina-titulo {
+    margin-bottom: 20px;
+}
+
+.pagina-titulo h2 {
+    font-size: 1.1rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--texto-principal);
+}
+
+/* ── Stat cards ── */
+.stats-fila {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.stat-card {
+    background-color: var(--fondo-secundario);
+    border: var(--borde-grosor) solid var(--borde);
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-radius: var(--radio);
+}
+
+.stat-valor {
+    font-size: 1.8rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: var(--acento);
+}
+
+.stat-valor.naranja { color: var(--naranja); }
+.stat-valor.rojo    { color: var(--rojo); }
+.stat-valor.verde   { color: var(--verde); }
+
+.stat-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--texto-muy-suave);
+}
+
+/* ── Barra de nivel ── */
+.bloque-nivel {
+    margin-bottom: 12px;
+}
+
+.nivel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.nivel-info {
+    font-size: 0.75rem;
+    color: var(--texto-muy-suave);
+    letter-spacing: 1px;
+}
+
+.xp-barra-grande {
+    height: 10px;
+    width: 100%;
+    background-color: var(--fondo-terciario);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+}
+
+body.modo-noche .xp-barra-grande {
+    border-color: var(--fondo-terciario);
+}
+
+.xp-barra-grande .xp-barra-relleno {
+    height: 100%;
+    background-color: var(--acento-sidebar);
+    transition: width 0.5s ease;
+    border-radius: var(--radio);
+}
+
+/* ── Fila del dashboard ── */
+.dashboard-fila {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->datetime('scheduled_at')->nullable(); // fecha y hora programada de la tarea
             $table->boolean('completed')->default(false); // si la tarea está completada o no
             $table->timestamps();
+            // índice para acelerar consultas por fecha (vista de calendario, filtros)
+            $table->index('scheduled_at');
         });
     }
 

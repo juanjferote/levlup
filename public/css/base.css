@@ -1,0 +1,80 @@
+/* =========================================
+   BASE.CSS — Variables, reset y tipografía
+   ========================================= */
+
+/* ── Modo día (Bold Retro) ── */
+:root {
+    --fondo-base:       #F5EDD6;
+    --fondo-secundario: #EDE0BE;
+    --fondo-terciario:  #DDD0A8;
+
+    --texto-principal:  #1C1410;
+    --texto-suave:      #7A6545;
+    --texto-muy-suave:  #A89070;
+
+    --acento:           #F5C400;
+    --acento-oscuro:    #D4A800;
+    --acento-sidebar:   #F5C400;
+    --acento-titulo:    #D46B2A;
+
+    --rojo:             #E8312A;
+    --naranja:          #D46B2A;
+    --verde:            #2E7D32;
+
+    --borde:            #1C1410;
+    --borde-grosor:     2px;
+    --borde-suave:      1px solid #DDD0A8;
+
+    --radio:            0px;
+    --radio-pill:       0px;
+}
+
+/* ── Modo noche (Dark RPG) ── */
+body.modo-noche {
+    --fondo-base:       #0e0e12;
+    --fondo-secundario: #16161e;
+    --fondo-terciario:  #2a2a3a;
+
+    --texto-principal:  #e2e8f0;
+    --texto-suave:      #9ca3af;
+    --texto-muy-suave:  #6b7280;
+
+    --acento:           #fbbf24;
+    --acento-oscuro:    #f59e0b;
+    --acento-sidebar:   #a78bfa;
+    --acento-titulo:    #f97316;
+
+    --rojo:             #f87171;
+    --naranja:          #f97316;
+    --verde:            #4ade80;
+
+    --borde:            #2a2a3a;
+    --borde-grosor:     1px;
+    --borde-suave:      1px solid #2a2a3a;
+
+    --radio:            8px;
+    --radio-pill:       99px;
+}
+
+/* ── Reset ── */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--fondo-base);
+    color: var(--texto-principal);
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+    min-height: 100vh;
+}
+
+/* ── Utilidades de espaciado ── */
+.mt-2 { margin-top: 8px; }
+.mt-3 { margin-top: 12px; }
+.mt-4 { margin-top: 20px; }
+.mb-2 { margin-bottom: 8px; }
+.mb-3 { margin-bottom: 12px; }
+.mb-4 { margin-bottom: 20px; }
