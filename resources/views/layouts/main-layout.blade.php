@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
+@stack('scripts')
+
 <body>
 
     @include('layouts.header')
@@ -22,8 +24,7 @@
                 <div class="jugador-avatar">
                     <img class="contenedor-avatar"
                         src="{{ auth()->user()->avatarUrl() }}"
-                        alt="avatar de {{ auth()->user()->name }}"
-                        >
+                        alt="avatar de {{ auth()->user()->name }}">
                 </div>
                 <div class="jugador-info">
                     <span class="jugador-nombre">{{ auth()->user()->name ?? 'Jugador' }}</span>
@@ -47,8 +48,8 @@
 
             {{-- Navegación --}}
             <nav class="sidebar-nav">
-                <a href="{{ route('dashboard') }}"
-                    class="nav-item {{ request()->routeIs('dashboard') ? 'activo' : '' }}">
+                <a href="{{ route('tareas.index') }}"
+                    class="nav-item {{ request()->routeIs('tareas.*') ? 'activo' : '' }}">
                     📋 Misiones
                 </a>
                 <a href="#"
@@ -81,6 +82,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/tareas.js') }}"></script>
 
 </body>
 

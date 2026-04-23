@@ -13,7 +13,7 @@
 
         <div class="stat-card">
             <span class="stat-valor amarillo">{{ $puntos }}</span>
-            <span class="stat-label">⭐ Puntos</span>
+            <span class="stat-label">⭐ Puntos de experiencia</span>
         </div>
 
         <div class="stat-card">

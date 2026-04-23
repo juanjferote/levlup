@@ -69,6 +69,7 @@
     color: var(--texto-suave);
     margin-bottom: 4px;
     display: block;
+    text-align: center;
 }
 
 .form-input-levlup {

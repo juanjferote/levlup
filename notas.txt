@@ -1,0 +1,4 @@
+Autenticación con Breeze.
+Problemas del desarrollo: Orden incorrecto, diseñé la base de datos sin tener del todo claro la filosofía de la aplicación
+y tuve que editar la base de datos varias veces lo que realentizó el desarrollo de la app (sugerencia de hábitos, decisión de
+niveles por módulo o insignias, etc)
