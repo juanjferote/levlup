@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\HabitController;
 
 // redirigir la raíz al landing page
 Route::get('/', function () {
@@ -16,8 +17,11 @@ Route::middleware('auth')->group(function () {
 
     // tareas (misiones)
     Route::resource('tareas', TaskController::class)->except(['show']);
-    Route::patch('tareas/{task}/completar', [TaskController::class, 'completar'])->name('tareas.completar');
+    Route::patch('tareas/{tarea}/completar', [TaskController::class, 'completar'])->name('tareas.completar');
 
+    // hábitos
+    Route::resource('habitos', HabitController::class)->except(['show']);
+    Route::patch('habitos/{habito}/registrar', [HabitController::class, 'registrar'])->name('habitos.registrar');
 });
 
 require __DIR__ . '/auth.php';

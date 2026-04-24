@@ -1,0 +1,155 @@
+/* =========================================
+   HABITOS.CSS — Estilos del módulo de hábitos
+   ========================================= */
+
+/* ── Card de hábito individual ── */
+.habito-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px;
+    border: var(--borde-grosor) solid var(--borde);
+    background-color: var(--fondo-terciario);
+    border-radius: var(--radio);
+    margin-bottom: 8px;
+}
+
+/* ── Info del hábito ── */
+.habito-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.habito-titulo {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--texto-principal);
+}
+
+.habito-descripcion {
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+}
+
+.habito-meta {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 2px;
+}
+
+.habito-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--texto-muy-suave);
+    background-color: var(--fondo-base);
+    border: var(--borde-grosor) solid var(--borde);
+    padding: 2px 8px;
+    border-radius: var(--radio);
+}
+
+/* ── Acciones del hábito ── */
+.habito-acciones {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+/* ── Selector de tipo de hábito ── */
+.tipo-opciones {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.tipo-opcion {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    padding: 12px;
+    border: var(--borde-grosor) solid var(--borde);
+    background-color: var(--fondo-terciario);
+    border-radius: var(--radio);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tipo-opcion input[type="radio"] {
+    display: none;
+}
+
+.tipo-opcion:hover {
+    background-color: var(--fondo-secundario);
+    border-color: var(--acento);
+}
+
+.tipo-opcion.activo {
+    border-color: var(--acento);
+    background-color: var(--fondo-secundario);
+}
+
+.tipo-icono {
+    font-size: 1.4rem;
+}
+
+.tipo-texto {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.tipo-texto strong {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--texto-principal);
+}
+
+.tipo-texto small {
+    font-size: 0.75rem;
+    color: var(--texto-muy-suave);
+}
+
+/* ── Selector de frecuencia semanal ── */
+.frecuencia-selector {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+    justify-content: center;
+}
+
+.frecuencia-opcion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: var(--borde-grosor) solid var(--borde);
+    background-color: var(--fondo-terciario);
+    border-radius: var(--radio);
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.frecuencia-opcion input[type="radio"] {
+    display: none;
+}
+
+.frecuencia-opcion:hover {
+    border-color: var(--acento);
+    background-color: var(--fondo-secundario);
+}
+
+.frecuencia-opcion.activo {
+    background-color: var(--acento);
+    border-color: var(--acento);
+    color: var(--fondo-base);
+}

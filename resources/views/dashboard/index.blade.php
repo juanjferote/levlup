@@ -36,14 +36,40 @@
     {{-- Fila principal --}}
     <div class="dashboard-fila">
 
+        {{-- misiones de hoy --}}
         <div class="bloque">
             <h3 class="bloque-titulo">// Misiones de hoy</h3>
-            <p class="texto-suave">No hay misiones por ahora. ¡Crea tu primera tarea!</p>
+
+            @forelse($tareasHoyLista as $tarea)
+                @include('tareas._tarea', ['tarea' => $tarea])
+            @empty
+                <p class="texto-suave">No tienes misiones para hoy.</p>
+            @endforelse
+
+            <a href="{{ route('tareas.index') }}" class="btn-secundario btn-pequeño mt-3">
+                Ver todas las misiones →
+            </a>
         </div>
 
+        {{-- hábitos de hoy --}}
         <div class="bloque">
             <h3 class="bloque-titulo">// Hábitos de hoy</h3>
-            <p class="texto-suave">No hay hábitos activos. ¡Empieza creando uno!</p>
+
+            @if($habitosHacer->isEmpty() && $habitosDejar->isEmpty())
+                <p class="texto-suave">No hay hábitos activos. ¡Empieza creando uno!</p>
+            @else
+                @foreach($habitosHacer as $habito)
+                    @include('habitos._habito', ['habito' => $habito])
+                @endforeach
+
+                @foreach($habitosDejar as $habito)
+                    @include('habitos._habito', ['habito' => $habito])
+                @endforeach
+            @endif
+
+            <a href="{{ route('habitos.index') }}" class="btn-secundario btn-pequeño mt-3">
+                Ver todos los hábitos →
+            </a>
         </div>
 
     </div>

@@ -14,7 +14,9 @@ class Habit extends Model
     protected $fillable = [
         'user_id',
         'title',
+        'type',
         'description',
+        'category',
         'target_per_week',
         'custom_days',
         'active',

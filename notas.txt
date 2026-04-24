@@ -2,3 +2,27 @@ Autenticación con Breeze.
 Problemas del desarrollo: Orden incorrecto, diseñé la base de datos sin tener del todo claro la filosofía de la aplicación
 y tuve que editar la base de datos varias veces lo que realentizó el desarrollo de la app (sugerencia de hábitos, decisión de
 niveles por módulo o insignias, etc)
+REVISAR:
+General:
+-Inconsistencias en el idioma (o todo en español o todo en inglés)
+-Comentar todo el código
+-Revisar js o css inline
+-Cambiar lo del modo noche (sale una luna independientemente de que esté en modo noche o en modo día)
+-Volcar los datos en el dashboard
+-Añadir funcionalidad editar y personalizar perfil
+
+Módulo de tareas:
+-Validación para que no permita completar tareas que no sean del día (que no me deje completar una tarea que tengo para dentro de un mes)
+-Botón eliminar más grande que los otros
+-Me sigue dando forbidden para eliminar y editar
+-Dar el mismo formato y tamaño a todos los formularios
+Módulo de hábitos:
+
+Módulo de hábitos:
+-
+-
+-
+
+Panel de control:
+-No mostrar las tareas terminadas
+-Mostrar los hábitos solo si no se ha cumplido su frecuencia (si tiene frecuencia 3 y ya completó los 3 no mostrarselo esa semana)

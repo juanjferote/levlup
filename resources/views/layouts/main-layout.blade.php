@@ -52,7 +52,7 @@
                     class="nav-item {{ request()->routeIs('tareas.*') ? 'activo' : '' }}">
                     📋 Misiones
                 </a>
-                <a href="#"
+                <a href="{{ route('habitos.index') }}"
                     class="nav-item {{ request()->routeIs('habitos.*') ? 'activo' : '' }}">
                     🔄 Hábitos
                 </a>

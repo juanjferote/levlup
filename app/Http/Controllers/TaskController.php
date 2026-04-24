@@ -54,20 +54,18 @@ class TaskController extends Controller
     /**
      * Formulario para editar una tarea existente.
      */
-    public function edit(Task $task)
+    public function edit(Task $tarea)
     {
-        dd($task->user_id, auth()->id(), $task->user_id == auth()->id());
-        abort_if($task->user_id != auth()->id(), 403);
-
-        return view('tareas.edit', compact('task'));
+        abort_if($tarea->user_id != auth()->id(), 403);
+        return view('tareas.edit', ['task' => $tarea]);
     }
 
     /**
      * Valida y actualiza una tarea existente.
      */
-    public function update(Request $request, Task $task)
+    public function update(Request $request, Task $tarea)
     {
-        abort_if($task->user_id != auth()->id(), 403);
+        abort_if($tarea->user_id != auth()->id(), 403);
 
         $datos = $request->validate([
             'title'        => ['required', 'string', 'max:255'],
@@ -80,7 +78,7 @@ class TaskController extends Controller
             'scheduled_at.date'     => 'La fecha no tiene un formato válido.',
         ]);
 
-        $this->taskService->actualizar($task, $datos);
+        $this->taskService->actualizar($tarea, $datos);
 
         return redirect()->route('tareas.index')
             ->with('exito', 'Misión actualizada correctamente. ✏️');
@@ -89,16 +87,16 @@ class TaskController extends Controller
     /**
      * Marca una tarea como completada y otorga XP.
      */
-    public function completar(Task $task)
+    public function completar(Task $tarea)
     {
-        abort_if($task->user_id != auth()->id(), 403);
+        abort_if($tarea->user_id != auth()->id(), 403);
 
-        if ($task->completed) {
+        if ($tarea->completed) {
             return redirect()->route('tareas.index')
                 ->with('info', 'Esta misión ya estaba completada.');
         }
 
-        $subioNivel = $this->taskService->completar($task, auth()->user());
+        $subioNivel = $this->taskService->completar($tarea, auth()->user());
 
         $mensaje = $subioNivel
             ? '¡LEVEL UP! Has subido de nivel. 🎉 +' . TaskService::XP_TAREA . ' XP'
@@ -110,11 +108,11 @@ class TaskController extends Controller
     /**
      * Elimina una tarea.
      */
-    public function destroy(Task $task)
+    public function destroy(Task $tarea)
     {
-        abort_if($task->user_id != auth()->id(), 403);
+        abort_if($tarea->user_id != auth()->id(), 403);
 
-        $this->taskService->eliminar($task);
+        $this->taskService->eliminar($tarea);
 
         return redirect()->route('tareas.index')
             ->with('exito', 'Misión eliminada.');
