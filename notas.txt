@@ -3,6 +3,7 @@ Problemas del desarrollo: Orden incorrecto, diseñé la base de datos sin tener 
 y tuve que editar la base de datos varias veces lo que realentizó el desarrollo de la app (sugerencia de hábitos, decisión de
 niveles por módulo o insignias, etc)
 REVISAR:
+
 General:
 -Inconsistencias en el idioma (o todo en español o todo en inglés)
 -Comentar todo el código
