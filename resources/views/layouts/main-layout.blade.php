@@ -64,7 +64,7 @@
                     class="nav-item {{ request()->routeIs('estadisticas.*') ? 'activo' : '' }}">
                     📊 Estadísticas
                 </a>
-                <a href="#"
+                <a href="{{ route('insignias.index') }}"
                     class="nav-item {{ request()->routeIs('insignias.*') ? 'activo' : '' }}">
                     🏆 Insignias
                 </a>
@@ -87,6 +87,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/tareas.js') }}"></script>
+    <script src="{{ asset('js/insignias.js') }}"></script>
 
 </body>
 

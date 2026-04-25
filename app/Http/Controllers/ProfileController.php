@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Services\ProfileService;
 use Illuminate\Http\Request;
+use App\Services\BadgeService;
 
 class ProfileController extends Controller
 {
-    public function __construct(private ProfileService $perfilService) {}
+    public function __construct(
+        private ProfileService $perfilService,
+        private BadgeService   $badgeService,
+    ) {}
 
     // muestra la página de perfil del usuario autenticado
     public function index()
@@ -30,7 +34,16 @@ class ProfileController extends Controller
 
             $this->perfilService->actualizarIntereses($usuario, $request->all());
 
-            return back()->with('exito', 'Intereses actualizados correctamente.');
+            // comprobamos insignias de intereses personalizados
+            $insigniasNuevas = $this->badgeService->comprobarInsignias($usuario);
+
+            $mensaje = 'Intereses actualizados correctamente.';
+
+            if ($insigniasNuevas->isNotEmpty()) {
+                $mensaje .= ' · 🏆 ¡Nueva insignia desbloqueada: ' . $insigniasNuevas->first()->name . '!';
+            }
+
+            return back()->with('exito', $mensaje);
         }
 
         $request->validateWithBag('datosBasicos', [
@@ -43,7 +56,6 @@ class ProfileController extends Controller
 
         return back()->with('exito', 'Perfil actualizado correctamente.');
     }
-
     // actualiza la contraseña del usuario autenticado
     public function updatePassword(Request $request)
     {

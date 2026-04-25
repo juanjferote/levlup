@@ -1,0 +1,125 @@
+/* =========================================
+   INSIGNIAS.CSS — Estilos del módulo de insignias
+   ========================================= */
+
+/* ── Grid de insignias ── */
+.insignias-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* ── Card de insignia ── */
+.insignia-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 4px;
+    padding: 10px 8px;
+    width: 90px;
+    border: var(--borde-grosor) solid var(--borde);
+    background-color: var(--fondo-terciario);
+    border-radius: var(--radio);
+    position: relative;
+    cursor: default;
+    transition: opacity 0.2s, transform 0.15s;
+}
+
+.insignia-card:hover {
+    transform: translateY(-2px);
+}
+
+.insignia-card.bloqueada {
+    opacity: 0.35;
+    filter: grayscale(90%);
+}
+
+/* ── Bordes por rareza en desbloqueadas ── */
+.insignia-card.desbloqueada.rareza-comun {
+    border-color: #9ca3af;
+}
+
+.insignia-card.desbloqueada.rareza-rara {
+    border-color: #3b82f6;
+}
+
+.insignia-card.desbloqueada.rareza-epica {
+    border-color: #a855f7;
+}
+
+.insignia-card.desbloqueada.rareza-legendaria {
+    border-color: var(--acento);
+}
+
+/* ── Icono ── */
+.insignia-icono {
+    font-size: 1.8rem;
+    line-height: 1;
+}
+
+/* ── Nombre ── */
+.insignia-nombre {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-align: center;
+    color: var(--texto-principal);
+    text-transform: uppercase;
+    line-height: 1.2;
+}
+
+/* ── Candado ── */
+.insignia-candado {
+    position: absolute;
+    top: 4px;
+    right: 5px;
+    font-size: 0.6rem;
+    opacity: 0.7;
+}
+
+/* ── Tooltip ── */
+.insignia-tooltip {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background-color: var(--fondo-secundario);
+    border: var(--borde-grosor) solid var(--borde);
+    border-radius: var(--radio);
+    padding: 10px 14px;
+    max-width: 220px;
+    z-index: 999;
+    pointer-events: none;
+}
+
+.tooltip-nombre {
+    font-size: 0.82rem;
+    font-weight: 900;
+    color: var(--texto-principal);
+    letter-spacing: 0.5px;
+}
+
+.tooltip-descripcion {
+    font-size: 0.76rem;
+    color: var(--texto-suave);
+    line-height: 1.4;
+}
+
+.tooltip-rareza {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--texto-muy-suave);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+}
+
+/* ── Fila de dos bloques ── */
+.insignias-fila {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+}

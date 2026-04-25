@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Services\TaskService;
 use Illuminate\Http\Request;
+use App\Services\BadgeService;
 
 class TaskController extends Controller
 {
-    public function __construct(private TaskService $taskService) {}
+    public function __construct(
+        private TaskService  $taskService,
+        private BadgeService $badgeService,
+    ) {}
 
     /**
      * Lista de tareas agrupadas por fecha.
@@ -40,12 +44,15 @@ class TaskController extends Controller
         ], [
             'title.required'              => 'El título es obligatorio.',
             'title.max'                   => 'El título no puede superar los 255 caracteres.',
-            'scheduled_at.required'       => 'La fecha es obligatoria.',
+            'scheduled_at.required'       => 'Debes indicar la fecha y la hora de la misión.',
             'scheduled_at.date'           => 'La fecha no tiene un formato válido.',
             'scheduled_at.after_or_equal' => 'No puedes crear tareas en el pasado.',
         ]);
 
         $this->taskService->crear(auth()->user(), $datos);
+
+        // comprobamos insignias al crear la primera tarea
+        $this->badgeService->comprobarInsignias(auth()->user());
 
         return redirect()->route('tareas.index')
             ->with('exito', '¡Misión creada! Complétala para ganar XP. ⭐');
@@ -96,11 +103,16 @@ class TaskController extends Controller
                 ->with('info', 'Esta misión ya estaba completada.');
         }
 
-        $subioNivel = $this->taskService->completar($tarea, auth()->user());
+        $subioNivel      = $this->taskService->completar($tarea, auth()->user());
+        $insigniasNuevas = $this->badgeService->comprobarInsignias(auth()->user());
 
         $mensaje = $subioNivel
             ? '¡LEVEL UP! Has subido de nivel. 🎉 +' . TaskService::XP_TAREA . ' XP'
             : '¡Misión completada! +' . TaskService::XP_TAREA . ' XP ⭐';
+
+        if ($insigniasNuevas->isNotEmpty()) {
+            $mensaje .= ' · 🏆 ¡Nueva insignia desbloqueada: ' . $insigniasNuevas->first()->name . '!';
+        }
 
         return redirect()->route('tareas.index')->with('exito', $mensaje);
     }

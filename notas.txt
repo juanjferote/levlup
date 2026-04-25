@@ -20,6 +20,8 @@ General:
 -Ya que las tareas son misiones, pensar en un nombre acorde para los hábitos (camino o algo así)
 -Quitar todos los errores (lo de id y eso que sale en rojo y se queja el vs)
 -Valorar la distribución de archivos css y js (igual agrupar o algo)
+-Poner los mensajes automáticos en castellano
+-Cambiar sueno por sueño
 
 Módulo de tareas:
 -Validación para que no permita completar tareas que no sean del día (que no me deje completar una tarea que tengo para dentro de un mes)
@@ -36,3 +38,6 @@ cada categoría con hábitos personalizados.
 Panel de control:
 -No mostrar las tareas terminadas
 -Mostrar los hábitos solo si no se ha cumplido su frecuencia (si tiene frecuencia 3 y ya completó los 3 no mostrarselo esa semana)
+
+Perfil:
+-Pensar si la vista es adecuada (disposición de los elementos)

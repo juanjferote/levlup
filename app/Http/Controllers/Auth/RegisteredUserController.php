@@ -11,9 +11,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Services\BadgeService;
 
 class RegisteredUserController extends Controller
 {
+    public function __construct(private BadgeService $badgeService) {}
     /**
      * Muestra el formulario de registro (paso 1).
      */
@@ -75,6 +77,9 @@ class RegisteredUserController extends Controller
         auth()->user()->update([
             'interests' => $request->input('interests', []),
         ]);
+
+        // comprobamos insignias de intereses personalizados al terminar el registro
+        $this->badgeService->comprobarInsignias(auth()->user());
 
         return redirect()->route('dashboard')
             ->with('exito', '¡Bienvenido a LevlUp! Ya tienes todo listo. 🎮');

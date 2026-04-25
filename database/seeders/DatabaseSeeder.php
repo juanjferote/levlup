@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             SuggestedHabitsSeeder::class,
+            BadgesSeeder::class,
         ]);
         
         // User::factory(10)->create();

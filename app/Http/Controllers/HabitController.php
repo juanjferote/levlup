@@ -6,10 +6,14 @@ use App\Models\Habit;
 use App\Models\SuggestedHabit;
 use App\Services\HabitService;
 use Illuminate\Http\Request;
+use App\Services\BadgeService;
 
 class HabitController extends Controller
 {
-    public function __construct(private HabitService $habitService) {}
+    public function __construct(
+        private HabitService $habitService,
+        private BadgeService $badgeService,
+    ) {}
 
     /**
      * Lista de hábitos activos del usuario.
@@ -126,11 +130,16 @@ class HabitController extends Controller
                 ->with('info', 'Ya has registrado este hábito hoy.');
         }
 
-        $subioNivel = $this->habitService->otorgarXp(auth()->user(), $habito);
+        $subioNivel      = $this->habitService->otorgarXp(auth()->user(), $habito);
+        $insigniasNuevas = $this->badgeService->comprobarInsignias(auth()->user());
 
         $mensaje = $subioNivel
             ? '¡LEVEL UP! Has subido de nivel. 🎉 +' . HabitService::XP_HABITO . ' XP'
             : '¡Hábito registrado! +' . HabitService::XP_HABITO . ' XP ⭐';
+
+        if ($insigniasNuevas->isNotEmpty()) {
+            $mensaje .= ' · 🏆 ¡Nueva insignia desbloqueada: ' . $insigniasNuevas->first()->name . '!';
+        }
 
         return redirect()->route('habitos.index')->with('exito', $mensaje);
     }

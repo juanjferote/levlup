@@ -6,6 +6,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\HabitController;
 use App\Http\Controllers\SuggestionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BadgeController;
 
 // redirigir la raíz al landing page
 Route::get('/', function () {
@@ -32,10 +33,13 @@ Route::middleware('auth')->group(function () {
     Route::post('perfil/intereses', [ProfileController::class, 'update'])->name('perfil.intereses');
     Route::patch('perfil/password', [ProfileController::class, 'updatePassword'])->name('perfil.password');
 
-    // sugerencias
+    // sugerencias de hábitos
     Route::get('sugerencias', [SuggestionController::class, 'index'])->name('sugerencias.index');
     Route::get('sugerencias/{sugerencia}', [SuggestionController::class, 'show'])->name('sugerencias.show');
     Route::post('sugerencias/{sugerencia}/añadir', [SuggestionController::class, 'añadir'])->name('sugerencias.añadir');
+
+    // insignias
+    Route::get('insignias', [BadgeController::class, 'index'])->name('insignias.index');
 });
 
 require __DIR__ . '/auth.php';
