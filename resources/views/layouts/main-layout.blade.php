@@ -56,7 +56,7 @@
                     class="nav-item {{ request()->routeIs('habitos.*') ? 'activo' : '' }}">
                     🔄 Hábitos
                 </a>
-                <a href="#"
+                <a href="{{ route('sugerencias.index') }}"
                     class="nav-item {{ request()->routeIs('habitos.sugerencias') ? 'activo' : '' }}">
                     💡 Sugerencias
                 </a>
@@ -67,6 +67,10 @@
                 <a href="#"
                     class="nav-item {{ request()->routeIs('insignias.*') ? 'activo' : '' }}">
                     🏆 Insignias
+                </a>
+                <a href="{{ route('perfil.index') }}"
+                    class="nav-item {{ request()->routeIs('perfil.*') ? 'activo' : '' }}">
+                    👤 Perfil
                 </a>
             </nav>
 

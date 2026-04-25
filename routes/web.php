@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\HabitController;
+use App\Http\Controllers\SuggestionController;
+use App\Http\Controllers\ProfileController;
 
 // redirigir la raíz al landing page
 Route::get('/', function () {
@@ -13,6 +15,7 @@ Route::get('/', function () {
 // rutas protegidas por autenticación
 Route::middleware('auth')->group(function () {
 
+    // panel de control
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // tareas (misiones)
@@ -22,6 +25,17 @@ Route::middleware('auth')->group(function () {
     // hábitos
     Route::resource('habitos', HabitController::class)->except(['show']);
     Route::patch('habitos/{habito}/registrar', [HabitController::class, 'registrar'])->name('habitos.registrar');
+
+    // perfil
+    Route::get('perfil', [ProfileController::class, 'index'])->name('perfil.index');
+    Route::patch('perfil', [ProfileController::class, 'update'])->name('perfil.update');
+    Route::post('perfil/intereses', [ProfileController::class, 'update'])->name('perfil.intereses');
+    Route::patch('perfil/password', [ProfileController::class, 'updatePassword'])->name('perfil.password');
+
+    // sugerencias
+    Route::get('sugerencias', [SuggestionController::class, 'index'])->name('sugerencias.index');
+    Route::get('sugerencias/{sugerencia}', [SuggestionController::class, 'show'])->name('sugerencias.show');
+    Route::post('sugerencias/{sugerencia}/añadir', [SuggestionController::class, 'añadir'])->name('sugerencias.añadir');
 });
 
 require __DIR__ . '/auth.php';

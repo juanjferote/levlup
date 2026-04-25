@@ -3,9 +3,10 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     // ── Referencias a elementos del DOM ──
-    const opcionesTipo      = document.querySelectorAll('input[name="type"]');
-    const campoFrecuencia   = document.getElementById('campo-frecuencia');
+    const opcionesTipo = document.querySelectorAll('input[name="type"]');
+    const campoFrecuencia = document.getElementById('campo-frecuencia');
     const opcionesTipoLabel = document.querySelectorAll('.tipo-opcion');
+    const campoDuracion = document.getElementById('campo-duracion');
 
     // si no estamos en el formulario de hábitos, no hacemos nada
     if (!opcionesTipo.length) return;
@@ -18,8 +19,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (tipoSeleccionado && tipoSeleccionado.value === 'hacer') {
             campoFrecuencia.style.display = 'block';
+            if (campoDuracion) campoDuracion.style.display = 'block';
         } else {
             campoFrecuencia.style.display = 'none';
+            if (campoDuracion) campoDuracion.style.display = 'none';
         }
     }
 

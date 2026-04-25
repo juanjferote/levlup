@@ -1,0 +1,21 @@
+/* =========================================
+   PERFIL.CSS — Estilos del módulo de perfil
+   ========================================= */
+
+/* ── Contenedor principal del perfil ── */
+.perfil-contenido {
+    max-width: 720px;
+}
+
+/* ── Sección del perfil ── */
+.perfil-seccion form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Avatar seleccionado (fallback para navegadores sin :has()) ── */
+.avatar-opcion.activo {
+    border-color: var(--acento);
+    background-color: var(--fondo-secundario);
+    box-shadow: 0 0 0 2px var(--acento);
+}

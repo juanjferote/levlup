@@ -160,4 +160,93 @@ class HabitService
 
         return $user->addPoints($xp);
     }
+    /**
+     * Calcula las semanas consecutivas que el usuario ha cumplido
+     * su objetivo semanal en hábitos de una categoría concreta.
+     * Se usa para determinar la dificultad de las sugerencias.
+     */
+    public function semanasConsecutivasEnCategoria(User $user, string $category): int
+    {
+        // obtenemos los hábitos activos del usuario en esa categoría
+        $habitos = $user->habits()
+            ->where('category', $category)
+            ->where('type', 'hacer')
+            ->where('active', true)
+            ->get();
+
+        if ($habitos->isEmpty()) {
+            return 0;
+        }
+
+        $semanas      = 0;
+        $semanaOffset = 0;
+
+        while (true) {
+            $inicioSemana = now()->subWeeks($semanaOffset)->startOfWeek();
+            $finSemana    = now()->subWeeks($semanaOffset)->endOfWeek();
+
+            // comprobamos si TODOS los hábitos de la categoría cumplieron su objetivo esa semana
+            $todoCumplido = $habitos->every(function ($habito) use ($inicioSemana, $finSemana) {
+                $logs = $habito->logs()
+                    ->whereBetween('logged_date', [$inicioSemana, $finSemana])
+                    ->count();
+
+                return $logs >= $habito->target_per_week;
+            });
+
+            if (!$todoCumplido) {
+                break;
+            }
+
+            $semanas++;
+            $semanaOffset++;
+        }
+
+        return $semanas;
+    }
+
+    /**
+     * Determina la dificultad de sugerencias para el usuario en una categoría.
+     * Basado en semanas consecutivas cumpliendo el objetivo en esa categoría.
+     */
+    public function dificultadSugerida(User $user, string $category): int
+    {
+        $semanas = $this->semanasConsecutivasEnCategoria($user, $category);
+
+        if ($semanas >= 17) return 5;
+        if ($semanas >= 13) return 4;
+        if ($semanas >= 9)  return 3;
+        if ($semanas >= 5)  return 2;
+
+        return 1;
+    }
+
+    /**
+     * Devuelve las sugerencias de hábitos para el usuario
+     * filtradas por sus intereses y ajustadas a su nivel en cada categoría.
+     */
+    public function sugerenciasParaUsuario(User $user): array
+    {
+        $intereses   = $user->interests ?? [];
+        $sugerencias = [];
+
+        foreach ($intereses as $categoria) {
+            $dificultad = $this->dificultadSugerida($user, $categoria);
+
+            // obtenemos hábitos sugeridos de esa categoría y dificultad
+            // excluimos los que el usuario ya tiene activos
+            $habitosUsuario = $user->habits()
+                ->where('category', $categoria)
+                ->where('suggested_by_system', true)
+                ->pluck('title')
+                ->toArray();
+
+            $sugerencias[$categoria] = SuggestedHabit::where('category', $categoria)
+                ->where('difficulty_level', $dificultad)
+                ->whereNotIn('title', $habitosUsuario)
+                ->get();
+        }
+
+        return $sugerencias;
+    }
 }

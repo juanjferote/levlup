@@ -32,4 +32,8 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
+
+    // paso 2 del registro — configuración de intereses
+    Route::get('registro/intereses', [RegisteredUserController::class, 'intereses'])->name('registro.intereses');
+    Route::post('registro/intereses', [RegisteredUserController::class, 'storeIntereses'])->name('registro.intereses.store');
 });

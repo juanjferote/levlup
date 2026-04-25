@@ -1,0 +1,53 @@
+/* =========================================
+   INTERESES.CSS — Estilos del selector de intereses
+   ========================================= */
+
+/* ── Grid de intereses ── */
+.intereses-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+/* ── Opción de interés ── */
+.interes-opcion {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border: var(--borde-grosor) solid var(--borde);
+    background-color: var(--fondo-terciario);
+    border-radius: var(--radio);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.interes-opcion input[type="checkbox"] {
+    display: none;
+}
+
+.interes-opcion:hover {
+    border-color: var(--acento);
+    background-color: var(--fondo-secundario);
+}
+
+.interes-opcion.activo {
+    background-color: var(--acento);
+    border-color: var(--acento);
+    color: var(--fondo-base);
+}
+
+/* ── Fila de interés personalizado ── */
+.interes-personalizado-fila {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.interes-personalizado-fila .form-input-levlup {
+    flex: 1;
+}

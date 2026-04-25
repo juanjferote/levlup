@@ -19,6 +19,7 @@ class Habit extends Model
         'category',
         'target_per_week',
         'custom_days',
+        'duration_minutes',
         'active',
         'suggested_by_system',
         'difficulty_level',

@@ -1,0 +1,116 @@
+/* =========================================
+   SUGERENCIAS.CSS — Estilos del módulo de sugerencias
+   ========================================= */
+
+/* ── Card de sugerencia ── */
+.sugerencia-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px;
+    border: var(--borde-grosor) solid var(--borde);
+    background-color: var(--fondo-terciario);
+    border-radius: var(--radio);
+    margin-bottom: 8px;
+}
+
+.sugerencia-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.sugerencia-titulo {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--texto-principal);
+}
+
+.sugerencia-descripcion {
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+}
+
+.sugerencia-meta {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 2px;
+}
+
+/* ── Modal ── */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-caja {
+    background-color: var(--fondo-secundario);
+    border: var(--borde-grosor) solid var(--borde);
+    border-radius: var(--radio);
+    width: 100%;
+    max-width: 480px;
+    padding: 0;
+}
+
+.modal-cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: var(--borde-grosor) solid var(--borde);
+}
+
+.modal-titulo {
+    font-size: 0.95rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--texto-principal);
+}
+
+.modal-cerrar {
+    background: none;
+    border: none;
+    color: var(--texto-suave);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-cerrar:hover {
+    color: var(--texto-principal);
+}
+
+.modal-cuerpo {
+    padding: 20px;
+}
+
+.modal-pie {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 16px 20px;
+    border-top: var(--borde-grosor) solid var(--borde);
+}
+
+/* ── Confirmación de sugerencia ── */
+.sugerencia-confirmacion {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: var(--borde-grosor) solid var(--borde);
+}
+
+.sugerencia-confirmacion-acciones {
+    display: flex;
+    gap: 8px;
+}

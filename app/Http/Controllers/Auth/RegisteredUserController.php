@@ -10,13 +10,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
-use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
     /**
-     * Display the registration view.
+     * Muestra el formulario de registro (paso 1).
      */
     public function create(): View
     {
@@ -24,32 +23,60 @@ class RegisteredUserController extends Controller
     }
 
     /**
-     * Handle an incoming registration request.
-     *
-     * @throws ValidationException
+     * Crea el usuario con los datos básicos y redirige al paso 2.
      */
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name'     => ['required', 'string', 'max:255'],
-            'email'    => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'name'        => ['required', 'string', 'max:255'],
+            'email'       => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'password'    => ['required', 'confirmed', Rules\Password::defaults()],
             'avatar_seed' => ['required', 'string', 'max:50'],
         ]);
 
         $user = User::create([
-            'name'      => $request->name,
-            'email'     => $request->email,
-            'password'  => Hash::make($request->password),
+            'name'        => $request->name,
+            'email'       => $request->email,
+            'password'    => Hash::make($request->password),
             'avatar_seed' => $request->avatar_seed,
-            'interests' => $request->input('interests', []), // array de intereses, vacío si no selecciona ninguno
-            'points'    => 0,
+            'interests'   => [],
+            'points'      => 0,
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // redirigimos al paso 2 para que el usuario configure sus intereses
+        return redirect()->route('registro.intereses');
+    }
+
+    /**
+     * Muestra el formulario de intereses (paso 2).
+     */
+    public function intereses(): View
+    {
+        return view('auth.intereses', [
+            'accion' => route('registro.intereses.store'),
+            'redireccion' => route('dashboard'),
+        ]);
+    }
+
+    /**
+     * Guarda los intereses del usuario recién registrado.
+     */
+    public function storeIntereses(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'interests'   => ['nullable', 'array'],
+            'interests.*' => ['string', 'max:100'],
+        ]);
+
+        auth()->user()->update([
+            'interests' => $request->input('interests', []),
+        ]);
+
+        return redirect()->route('dashboard')
+            ->with('exito', '¡Bienvenido a LevlUp! Ya tienes todo listo. 🎮');
     }
 }
