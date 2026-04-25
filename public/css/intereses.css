@@ -51,3 +51,20 @@
 .interes-personalizado-fila .form-input-levlup {
     flex: 1;
 }
+
+/* ── Mobile (≤640px) ── */
+@media (max-width: 640px) {
+    .interes-opcion {
+        min-height: 44px;
+        padding: 8px 14px;
+    }
+
+    .interes-personalizado-fila {
+        flex-wrap: wrap;
+    }
+
+    .interes-personalizado-fila .btn-primario {
+        width: 100%;
+        text-align: center;
+    }
+}

@@ -205,3 +205,49 @@ textarea.form-input-levlup {
     gap: 8px;
     margin-top: 6px;
 }
+
+/* ── Mobile (≤640px) ── */
+@media (max-width: 640px) {
+    .pagina-titulo {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .tarea-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .tarea-acciones {
+        flex-wrap: wrap;
+        width: 100%;
+        flex-shrink: unset;
+    }
+
+    .tarea-acciones .btn-primario,
+    .tarea-acciones .btn-secundario,
+    .tarea-acciones .btn-peligro {
+        min-height: 44px;
+        padding: 10px 14px;
+        flex: 1;
+        text-align: center;
+    }
+
+    .btn-peligro {
+        min-height: 44px;
+    }
+
+    .fecha-opciones {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+
+    .btn-fecha-rapida {
+        min-height: 44px;
+    }
+
+    .bloque-formulario {
+        max-width: 100%;
+    }
+}

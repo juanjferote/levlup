@@ -19,3 +19,10 @@
     background-color: var(--fondo-secundario);
     box-shadow: 0 0 0 2px var(--acento);
 }
+
+/* ── Mobile (≤640px) ── */
+@media (max-width: 640px) {
+    .perfil-contenido {
+        max-width: 100%;
+    }
+}

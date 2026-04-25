@@ -153,3 +153,46 @@
     border-color: var(--acento);
     color: var(--fondo-base);
 }
+
+/* ── Mobile (≤640px) ── */
+@media (max-width: 640px) {
+    .habito-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .habito-acciones {
+        flex-wrap: wrap;
+        width: 100%;
+        flex-shrink: unset;
+    }
+
+    .habito-acciones .btn-primario,
+    .habito-acciones .btn-secundario,
+    .habito-acciones .btn-peligro {
+        min-height: 44px;
+        padding: 10px 14px;
+        flex: 1;
+        text-align: center;
+    }
+
+    .tipo-opciones {
+        flex-direction: column;
+    }
+
+    .tipo-opcion {
+        min-height: 44px;
+    }
+
+    .frecuencia-selector {
+        flex-wrap: wrap;
+    }
+
+    .frecuencia-opcion {
+        min-width: 44px;
+        min-height: 44px;
+        width: 44px;
+        height: 44px;
+    }
+}

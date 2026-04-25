@@ -22,6 +22,7 @@ General:
 -Valorar la distribución de archivos css y js (igual agrupar o algo)
 -Poner los mensajes automáticos en castellano
 -Cambiar sueno por sueño
+-Revisar todas las interfaces bien, el diseño es muy importante
 
 Módulo de tareas:
 -Validación para que no permita completar tareas que no sean del día (que no me deje completar una tarea que tengo para dentro de un mes)

@@ -15,7 +15,7 @@
 @if(empty($sugerencias) || collect($sugerencias)->flatten()->isEmpty())
 <div class="bloque">
     <p class="texto-suave">No hay sugerencias disponibles. Asegúrate de tener intereses configurados en tu perfil.</p>
-    <a href="{{ route('profile.edit') }}" class="btn-primario mt-3">⚙️ Configurar intereses</a>
+    <a href="{{ route('perfil.index') }}" class="btn-primario mt-3">⚙️ Configurar intereses</a>
 </div>
 @else
 @foreach($sugerencias as $categoria => $habitos)

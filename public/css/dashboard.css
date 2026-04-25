@@ -95,3 +95,29 @@ body.modo-noche .xp-barra-grande {
     grid-template-columns: 1fr 1fr;
     gap: 10px;
 }
+
+/* ── Tablet (≤1024px) ── */
+@media (max-width: 1024px) {
+    .stats-fila {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ── Mobile (≤640px) ── */
+@media (max-width: 640px) {
+    .stats-fila {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stat-card {
+        padding: 12px;
+    }
+
+    .dashboard-fila {
+        grid-template-columns: 1fr;
+    }
+
+    .pagina-titulo h2 {
+        font-size: 0.95rem;
+    }
+}

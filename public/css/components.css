@@ -214,3 +214,30 @@
     font-size: 0.85rem;
     color: var(--texto-muy-suave);
 }
+
+/* ── Mobile (≤640px) ── */
+@media (max-width: 640px) {
+    .avatar-selector-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .btn-primario,
+    .btn-secundario {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .tipo-opciones {
+        flex-wrap: wrap;
+    }
+
+    .fecha-opciones {
+        flex-wrap: wrap;
+    }
+
+    .bloque {
+        padding: 14px;
+    }
+}

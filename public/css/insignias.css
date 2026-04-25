@@ -123,3 +123,27 @@
     gap: 12px;
     margin-top: 12px;
 }
+
+/* ── Tablet (≤1024px) ── */
+@media (max-width: 1024px) {
+    .insignias-fila {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Mobile (≤640px) ── */
+@media (max-width: 640px) {
+    .insignias-fila {
+        grid-template-columns: 1fr;
+    }
+
+    .insignia-card {
+        width: auto;
+        flex: 1;
+        min-width: 70px;
+    }
+
+    .insignias-grid {
+        gap: 6px;
+    }
+}

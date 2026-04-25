@@ -192,3 +192,113 @@ body.modo-noche .xp-barra-fondo {
     color: var(--texto-muy-suave);
     letter-spacing: 1px;
 }
+
+/* ── Tablet (≤1024px): sidebar estrecho, solo iconos ── */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 64px;
+        min-width: 64px;
+    }
+
+    .jugador-info,
+    .sidebar-xp {
+        display: none;
+    }
+
+    .sidebar-jugador {
+        justify-content: center;
+        padding: 0 0 12px 0;
+    }
+
+    .nav-item {
+        display: block;
+        text-align: center;
+        padding: 12px 0;
+        font-size: 0;
+        letter-spacing: 0;
+        border-left: 3px solid transparent;
+        border-radius: 0;
+    }
+
+    .nav-item::first-letter {
+        font-size: 1.3rem;
+    }
+
+    .nav-item.activo {
+        border-left-color: var(--acento-sidebar);
+    }
+}
+
+/* ── Mobile (≤640px): sidebar se convierte en barra de nav inferior fija ── */
+@media (max-width: 640px) {
+    .levlup-header {
+        padding: 8px 12px;
+    }
+
+    .header-usuario {
+        display: none;
+    }
+
+    .layout-principal {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        min-width: 100%;
+        height: 60px;
+        flex-direction: row;
+        padding: 0;
+        border-right: none;
+        border-top: var(--borde-grosor) solid var(--borde);
+        z-index: 100;
+    }
+
+    .sidebar-jugador,
+    .sidebar-xp {
+        display: none;
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        width: 100%;
+        align-items: stretch;
+    }
+
+    .nav-item {
+        flex: 1;
+        display: block;
+        text-align: center;
+        padding: 0;
+        height: 60px;
+        line-height: 60px;
+        font-size: 0;
+        letter-spacing: 0;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+    }
+
+    .nav-item::first-letter {
+        font-size: 1.5rem;
+    }
+
+    .nav-item.activo {
+        border-left-color: transparent;
+        border-bottom-color: var(--acento-sidebar);
+        background-color: var(--fondo-terciario);
+    }
+
+    .contenido-principal {
+        width: 100%;
+        padding: 16px;
+        padding-bottom: 76px;
+    }
+
+    .levlup-footer {
+        display: none;
+    }
+}

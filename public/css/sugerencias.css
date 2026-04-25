@@ -114,3 +114,40 @@
     display: flex;
     gap: 8px;
 }
+
+/* ── Mobile (≤640px) ── */
+@media (max-width: 640px) {
+    .sugerencia-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .modal-caja {
+        margin: 12px;
+        max-width: calc(100% - 24px);
+    }
+
+    .modal-pie {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .modal-pie .btn-primario,
+    .modal-pie .btn-secundario {
+        min-height: 44px;
+        flex: 1;
+        text-align: center;
+    }
+
+    .sugerencia-confirmacion-acciones {
+        flex-wrap: wrap;
+    }
+
+    .sugerencia-confirmacion-acciones .btn-primario,
+    .sugerencia-confirmacion-acciones .btn-secundario {
+        min-height: 44px;
+        flex: 1;
+        text-align: center;
+    }
+}
