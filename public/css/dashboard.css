@@ -40,9 +40,17 @@
     color: var(--acento);
 }
 
-.stat-valor.naranja { color: var(--naranja); }
-.stat-valor.rojo    { color: var(--rojo); }
-.stat-valor.verde   { color: var(--verde); }
+.stat-valor.naranja {
+    color: var(--naranja);
+}
+
+.stat-valor.rojo {
+    color: var(--rojo);
+}
+
+.stat-valor.verde {
+    color: var(--verde);
+}
 
 .stat-label {
     font-size: 0.72rem;
@@ -94,6 +102,22 @@ body.modo-noche .xp-barra-grande {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
+}
+
+.frase-dia {
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--texto-principal);
+    margin-bottom: 10px;
+}
+
+.frase-autor {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--texto-muy-suave);
 }
 
 /* ── Tablet (≤1024px) ── */

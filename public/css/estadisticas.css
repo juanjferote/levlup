@@ -1,0 +1,118 @@
+/* =========================================
+   ESTADISTICAS.CSS — Estilos del módulo de estadísticas
+   ========================================= */
+
+/* ── Fila de secciones ── */
+.stats-seccion-fila {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* ── Grupo de stats ── */
+.stat-grupo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+/* ── Stat grande ── */
+.stat-grande {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 80px;
+}
+
+.stat-numero {
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.stat-numero.amarillo { color: var(--acento); }
+.stat-numero.naranja  { color: var(--naranja); }
+
+.stat-etiqueta {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--texto-muy-suave);
+}
+
+/* ── Barras de progreso ── */
+.stat-barra-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.stat-barra-cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-barra-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--texto-suave);
+}
+
+.stat-barra-fondo {
+    width: 100%;
+    height: 8px;
+    background-color: var(--fondo-terciario);
+    border: var(--borde-grosor) solid var(--borde);
+    border-radius: var(--radio);
+    overflow: hidden;
+}
+
+.stat-barra-relleno {
+    height: 100%;
+    background-color: var(--acento);
+    border-radius: var(--radio);
+    transition: width 0.3s ease;
+}
+
+.stat-barra-relleno.barra-verde  { background-color: var(--verde); }
+.stat-barra-relleno.barra-naranja { background-color: var(--naranja); }
+.stat-barra-relleno.barra-roja   { background-color: var(--rojo); }
+
+/* ── Insignias recientes ── */
+.stat-insignias-recientes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.stat-insignia-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background-color: var(--fondo-terciario);
+    border: var(--borde-grosor) solid var(--borde);
+    border-radius: var(--radio);
+}
+
+.stat-insignia-icono {
+    font-size: 1.2rem;
+}
+
+.stat-insignia-nombre {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--texto-principal);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .stats-seccion-fila {
+        grid-template-columns: 1fr;
+    }
+}

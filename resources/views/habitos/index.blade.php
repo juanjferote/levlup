@@ -9,7 +9,6 @@
         <a href="{{ route('habitos.create') }}" class="btn-primario">+ Nuevo hábito</a>
     </div>
 
-    {{-- mensajes de feedback --}}
     @if(session('exito'))
         <div class="alerta alerta-exito">{{ session('exito') }}</div>
     @endif
@@ -18,24 +17,35 @@
         <div class="alerta alerta-info">{{ session('info') }}</div>
     @endif
 
-    {{-- hábitos de hacer --}}
+    {{-- hábitos de hacer pendientes --}}
     <div class="bloque">
         <h3 class="bloque-titulo">// Hábitos activos</h3>
 
         @forelse($habitosHacer as $habito)
-            @include('habitos._habito', ['habito' => $habito])
+            @include('habitos._habito', ['habito' => $habito, 'completado' => false])
         @empty
-            <p class="texto-suave">No tienes hábitos activos. ¡Crea uno!</p>
+            <p class="texto-suave">No tienes hábitos pendientes. ¡Buen trabajo!</p>
         @endforelse
     </div>
 
-    {{-- hábitos de dejar --}}
+    {{-- hábitos de dejar pendientes --}}
     @if($habitosDejar->isNotEmpty())
         <div class="bloque mt-3">
             <h3 class="bloque-titulo">// Dejando atrás</h3>
 
             @foreach($habitosDejar as $habito)
-                @include('habitos._habito', ['habito' => $habito])
+                @include('habitos._habito', ['habito' => $habito, 'completado' => false])
+            @endforeach
+        </div>
+    @endif
+
+    {{-- hábitos completados hoy --}}
+    @if($habitosCompletados->isNotEmpty())
+        <div class="bloque mt-3">
+            <h3 class="bloque-titulo">// Completados hoy</h3>
+
+            @foreach($habitosCompletados as $habito)
+                @include('habitos._habito', ['habito' => $habito, 'completado' => true])
             @endforeach
         </div>
     @endif

@@ -22,10 +22,20 @@ class HabitService
     public function habitosActivos(User $user): array
     {
         $habitos = $user->habits()->where('active', true)->get();
+        $hoy     = now()->toDateString();
+
+        $completadosHoy = $habitos->filter(function ($habito) use ($hoy) {
+            return $habito->logs()->whereDate('logged_date', $hoy)->exists();
+        });
+
+        $sinCompletar = $habitos->filter(function ($habito) use ($hoy) {
+            return !$habito->logs()->whereDate('logged_date', $hoy)->exists();
+        });
 
         return [
-            'habitosHacer' => $habitos->where('type', 'hacer'),
-            'habitosDejar' => $habitos->where('type', 'dejar'),
+            'habitosHacer'      => $sinCompletar->where('type', 'hacer'),
+            'habitosDejar'      => $sinCompletar->where('type', 'dejar'),
+            'habitosCompletados' => $completadosHoy,
         ];
     }
 
@@ -248,5 +258,32 @@ class HabitService
         }
 
         return $sugerencias;
+    }
+
+    /**
+     * Devuelve los logs de un hábito en la semana actual.
+     */
+    public function logsEstaSemana(Habit $habit): int
+    {
+        return $habit->logs()
+            ->whereBetween('logged_date', [now()->startOfWeek(), now()->endOfWeek()])
+            ->count();
+    }
+
+    /**
+     * Añade el progreso semanal a una colección de hábitos de hacer.
+     * Evita hacer consultas en la vista.
+     */
+    public function conProgresoSemanal($habitos): \Illuminate\Support\Collection
+    {
+        $inicioSemana = now()->startOfWeek();
+        $finSemana    = now()->endOfWeek();
+
+        return collect($habitos)->map(function ($habito) use ($inicioSemana, $finSemana) {
+            $habito->logs_esta_semana = $habito->type === 'hacer'
+                ? $habito->logs()->whereBetween('logged_date', [$inicioSemana, $finSemana])->count()
+                : null;
+            return $habito;
+        });
     }
 }

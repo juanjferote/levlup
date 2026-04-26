@@ -60,7 +60,7 @@
                     class="nav-item {{ request()->routeIs('habitos.sugerencias') ? 'activo' : '' }}">
                     💡 Sugerencias
                 </a>
-                <a href="#"
+                <a href="{{ route('estadisticas.index') }}"
                     class="nav-item {{ request()->routeIs('estadisticas.*') ? 'activo' : '' }}">
                     📊 Estadísticas
                 </a>

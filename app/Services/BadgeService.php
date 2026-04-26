@@ -277,4 +277,16 @@ class BadgeService
             default            => '',
         };
     }
+
+    /**
+     * Devuelve las últimas 3 insignias desbloqueadas por el usuario.
+     */
+    public function insigniasRecientes(User $user): \Illuminate\Support\Collection
+    {
+        return $user->userBadges()
+            ->with('badge')
+            ->latest('unlocked_at')
+            ->take(3)
+            ->get();
+    }   
 }

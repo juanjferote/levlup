@@ -22,7 +22,11 @@ class HabitController extends Controller
     {
         $grupos = $this->habitService->habitosActivos(auth()->user());
 
-        return view('habitos.index', $grupos);
+        return view('habitos.index', [
+            'habitosHacer'       => $this->habitService->conProgresoSemanal($grupos['habitosHacer']),
+            'habitosDejar'       => $grupos['habitosDejar'],
+            'habitosCompletados' => $this->habitService->conProgresoSemanal($grupos['habitosCompletados']),
+        ]);
     }
 
     /**

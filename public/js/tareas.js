@@ -3,14 +3,14 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     // ── Referencias a elementos del DOM ──
-    const btnHoy       = document.querySelector('[data-opcion="hoy"]');
+    const btnHoy = document.querySelector('[data-opcion="hoy"]');
     const btnProgramar = document.querySelector('[data-opcion="programar"]');
-    const campoFecha   = document.getElementById('campo-fecha');
-    const campoHora    = document.getElementById('campo-hora');
-    const inputFecha   = document.getElementById('fecha');
-    const inputHora    = document.getElementById('hora');
-    const inputHidden  = document.getElementById('scheduled_at');
-    const btnSubmit    = document.getElementById('btn-submit');
+    const campoFecha = document.getElementById('campo-fecha');
+    const campoHora = document.getElementById('campo-hora');
+    const inputFecha = document.getElementById('fecha');
+    const inputHora = document.getElementById('hora');
+    const inputHidden = document.getElementById('scheduled_at');
+    const btnSubmit = document.getElementById('btn-submit');
 
     // si no estamos en el formulario de tareas, no hacemos nada
     if (!btnHoy || !btnProgramar) return;
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // construye el valor de scheduled_at combinando fecha y hora
     function actualizarHidden() {
         const fecha = inputFecha.value || hoy;
-        const hora  = inputHora.value;
+        const hora = inputHora.value;
 
         if (hora) {
             inputHidden.value = fecha + ' ' + hora + ':00';
@@ -33,6 +33,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // activa el botón de envío si el hidden tiene valor
     function actualizarSubmit() {
+        if (!btnSubmit) return;
+
         if (inputHidden.value !== '') {
             btnSubmit.removeAttribute('disabled');
         } else {

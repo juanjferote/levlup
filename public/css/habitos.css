@@ -154,6 +154,26 @@
     color: var(--fondo-base);
 }
 
+/* ── Barra de progreso semanal ── */
+.habito-progreso-barra {
+    width: 80px;
+    height: 5px;
+    background-color: var(--fondo-base);
+    border: var(--borde-grosor) solid var(--borde);
+    border-radius: var(--radio);
+    overflow: hidden;
+}
+
+.habito-progreso-relleno {
+    height: 100%;
+    background-color: var(--naranja);
+    transition: width 0.3s ease;
+}
+
+.habito-progreso-relleno.completo {
+    background-color: var(--verde);
+}
+
 /* ── Mobile (≤640px) ── */
 @media (max-width: 640px) {
     .habito-card {

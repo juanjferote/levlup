@@ -88,6 +88,40 @@
             @error('target_per_week')
             <span class="form-error">{{ $message }}</span>
             @enderror
+
+            {{-- duración --}}
+            <div class="campo-grupo mt-3" id="campo-duracion">
+                <label for="duration_minutes" class="form-label-levlup">Duración <span class="texto-suave">(minutos, opcional)</span></label>
+                <input
+                    type="number"
+                    id="duration_minutes"
+                    name="duration_minutes"
+                    class="form-input-levlup {{ $errors->has('duration_minutes') ? 'input-error' : '' }}"
+                    value="{{ old('duration_minutes', $sugerencia?->suggested_duration_minutes) }}"
+                    min="1"
+                    max="480"
+                    placeholder="Ej: 30">
+                @error('duration_minutes')
+                <span class="form-error">{{ $message }}</span>
+                @enderror
+            </div>
+
+            {{-- categoría --}}
+            <div class="campo-grupo mt-3">
+                <label for="category" class="form-label-levlup">Categoría <span class="texto-suave">(opcional)</span></label>
+                <select id="category" name="category" class="form-input-levlup">
+                    <option value="">Sin categoría</option>
+                    @foreach(['deporte', 'lectura', 'meditacion', 'nutricion', 'productividad', 'aprendizaje', 'creatividad', 'sueno', 'social', 'finanzas', 'hogar', 'naturaleza'] as $cat)
+                    <option value="{{ $cat }}" {{ old('category', $sugerencia?->category) === $cat ? 'selected' : '' }}>
+                        {{ ucfirst($cat) }}
+                    </option>
+                    @endforeach
+                </select>
+                @error('category')
+                <span class="form-error">{{ $message }}</span>
+                @enderror
+            </div>
+
         </div>
 
         {{-- duración (solo para tipo "hacer") --}}

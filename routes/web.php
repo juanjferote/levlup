@@ -7,6 +7,7 @@ use App\Http\Controllers\HabitController;
 use App\Http\Controllers\SuggestionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BadgeController;
+use App\Http\Controllers\StatisticsController;
 
 // redirigir la raíz al landing page
 Route::get('/', function () {
@@ -40,6 +41,9 @@ Route::middleware('auth')->group(function () {
 
     // insignias
     Route::get('insignias', [BadgeController::class, 'index'])->name('insignias.index');
+
+    // estadísticas
+    Route::get('estadisticas', [StatisticsController::class, 'index'])->name('estadisticas.index');
 });
 
 require __DIR__ . '/auth.php';
