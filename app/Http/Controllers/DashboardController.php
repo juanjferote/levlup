@@ -6,6 +6,7 @@ use App\Services\NivelService;
 use App\Services\TaskService;
 use App\Services\HabitService;
 use App\Services\BadgeService;
+use App\Models\SuggestedHabit;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -34,6 +35,7 @@ class DashboardController extends Controller
             'habitosDejar'       => $habitos['habitosDejar'],
             'insigniasRecientes' => $this->badgeService->insigniasRecientes($user),
             'fraseDelDia'        => $this->fraseDelDia(),
+            'sugerenciaDelDia'   => SuggestedHabit::inRandomOrder()->first(),
         ]);
     }
     private function fraseDelDia(): array

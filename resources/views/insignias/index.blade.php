@@ -5,7 +5,7 @@
 @section('contenido')
 
 <div class="pagina-titulo">
-    <h2>🏆 Insignias</h2>
+    <h2>Insignias</h2>
 </div>
 
 {{-- fila 1: misiones + constancia --}}

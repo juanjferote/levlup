@@ -5,7 +5,7 @@
 @section('contenido')
 
     <div class="pagina-titulo">
-        <h2>⚙️ Mi perfil</h2>
+        <h2>Mi perfil</h2>
     </div>
 
     @if (session('exito'))

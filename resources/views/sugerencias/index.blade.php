@@ -5,7 +5,7 @@
 @section('contenido')
 
 <div class="pagina-titulo">
-    <h2>💡 Sugerencias</h2>
+    <h2>Sugerencias</h2>
 </div>
 
 @if(empty($sugerencias) || collect($sugerencias)->flatten()->isEmpty())

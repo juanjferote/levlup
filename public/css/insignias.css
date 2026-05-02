@@ -18,8 +18,8 @@
     text-align: center;
     gap: 4px;
     padding: 10px 8px;
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     border: var(--borde-grosor) solid var(--borde);
     background-color: var(--fondo-terciario);
     border-radius: 50%;
@@ -56,7 +56,7 @@
 
 /* ── Icono ── */
 .insignia-icono {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     line-height: 1;
 }
 

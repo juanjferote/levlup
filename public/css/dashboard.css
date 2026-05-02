@@ -8,8 +8,8 @@
 }
 
 .pagina-titulo h2 {
-    font-size: 1.1rem;
-    font-weight: 900;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.85rem;
     letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--texto-principal);
@@ -19,25 +19,32 @@
 .stats-fila {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 12px;
+    gap: 20px;
+    margin-bottom: 16px;
 }
 
 .stat-card {
     background-color: var(--fondo-secundario);
     border: var(--borde-grosor) solid var(--borde);
-    padding: 14px 16px;
+    padding: 20px 24px;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 8px;
     border-radius: var(--radio);
 }
 
+.stat-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 3px 3px 0 var(--borde);
+}
+
 .stat-valor {
-    font-size: 1.8rem;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1.6rem;
     font-weight: 900;
     letter-spacing: 1px;
     color: var(--acento);
+    line-height: 1.2;
 }
 
 .stat-valor.naranja {
@@ -101,7 +108,8 @@ body.modo-noche .xp-barra-grande {
 .dashboard-fila {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 20px;
+    align-items: stretch;
 }
 
 .frase-dia {
@@ -112,12 +120,52 @@ body.modo-noche .xp-barra-grande {
     margin-bottom: 10px;
 }
 
+.frase-separador {
+    text-align: center;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--texto-muy-suave);
+    margin: 20px 0 8px 0;
+}
+
 .frase-autor {
     font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
     color: var(--texto-muy-suave);
+}
+
+.dashboard-fila--insignias {
+    grid-template-columns: 1fr 2fr;
+}
+
+.dashboard-fila .item-card {
+    background-color: transparent;
+    border: none;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--borde-suave);
+    border-radius: 0;
+    margin-bottom: 0;
+    display: flex;
+    border-left: 3px solid transparent;
+    transition: border-color 0.15s;
+    align-items: center;
+}
+
+.dashboard-fila .item-card:last-of-type {
+    border-bottom: none;
+}
+
+.dashboard-fila .item-acciones {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--borde-suave);
+}
+
+.dashboard-fila .item-card:hover {
+    border-left-color: var(--acento);
+    padding-left: 8px;
 }
 
 /* ── Tablet (≤1024px) ── */
@@ -142,6 +190,6 @@ body.modo-noche .xp-barra-grande {
     }
 
     .pagina-titulo h2 {
-        font-size: 0.95rem;
+        font-size: 0.60rem;
     }
 }

@@ -3,7 +3,7 @@
    ========================================= */
 
 /* ── Modo día (Bold Retro) ── */
-:root {
+:root{
     --fondo-base: #F5EDD6;
     --fondo-secundario: #EDE0BE;
     --fondo-terciario: #DDD0A8;
@@ -71,7 +71,7 @@ body.modo-noche {
 body {
     background-color: var(--fondo-base);
     color: var(--texto-principal);
-    font-family: 'Segoe UI', Tahoma, sans-serif;
+    font-family: 'IBM Plex Mono', monospace;
     transition: background-color 0.3s, color 0.3s;
     min-height: 100vh;
 }

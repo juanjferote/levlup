@@ -13,10 +13,9 @@
 }
 
 .header-logo a {
-    font-size: 1.2rem;
-    font-weight: 900;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1rem;
     letter-spacing: 3px;
-    text-transform: uppercase;
     color: var(--acento);
     text-decoration: none;
 }

@@ -5,7 +5,7 @@
 @section('contenido')
 
     <div class="pagina-titulo">
-        <h2>📋 Mis Misiones</h2>
+        <h2>Mis Misiones</h2>
         <a href="{{ route('tareas.create') }}" class="btn-primario">+ Nueva misión</a>
     </div>
 

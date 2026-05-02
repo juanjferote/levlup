@@ -5,7 +5,7 @@
 @section('contenido')
 
 <div class="pagina-titulo">
-    <h2>📋 Panel de control</h2>
+    <h2>Panel de control</h2>
 </div>
 
 {{-- Stats fila --}}
@@ -41,7 +41,7 @@
         <h3 class="bloque-titulo">// Misiones de hoy</h3>
 
         @forelse($tareasHoyLista as $tarea)
-        @include('tareas._tarea', ['tarea' => $tarea])
+        @include('tareas._tarea', ['tarea' => $tarea, 'modoResumen' => true])
         @empty
         <p class="texto-suave">No tienes misiones para hoy.</p>
         @endforelse
@@ -49,7 +49,7 @@
         @if($tareasProximas->isNotEmpty())
         <h3 class="bloque-titulo mt-3">// Próximas misiones</h3>
         @foreach($tareasProximas as $tarea)
-        @include('tareas._tarea', ['tarea' => $tarea])
+        @include('tareas._tarea', ['tarea' => $tarea, 'modoResumen' => true])
         @endforeach
         @endif
 
@@ -66,11 +66,11 @@
         <p class="texto-suave">No hay hábitos activos. ¡Empieza creando uno!</p>
         @else
         @foreach($habitosHacer as $habito)
-        @include('habitos._habito', ['habito' => $habito, 'completado' => false])
+        @include('habitos._habito', ['habito' => $habito, 'completado' => false, 'modoResumen' => true])
         @endforeach
 
         @foreach($habitosDejar as $habito)
-        @include('habitos._habito', ['habito' => $habito, 'completado' => false])
+        @include('habitos._habito', ['habito' => $habito, 'completado' => false, 'modoResumen' => true])
         @endforeach
         @endif
 
@@ -82,13 +82,24 @@
 </div>
 
 <div class="dashboard-fila mt-3">
-
-    {{-- Frase del día --}}
+    {{-- Sugerencia del día --}}
     <div class="bloque">
-        <h3 class="bloque-titulo">// Mensaje del día</h3>
-        <p class="texto-suave frase-dia">❝ {{ $fraseDelDia['texto'] }} ❞</p>
-        <span class="frase-autor">— {{ $fraseDelDia['autor'] }}</span>
+        <h3 class="bloque-titulo">// Sugerencia del día</h3>
+        @if($sugerenciaDelDia)
+        <p class="item-titulo">{{ $sugerenciaDelDia->title }}</p>
+        <p class="texto-suave">{{ $sugerenciaDelDia->description }}</p>
+        <form method="POST" action="{{ route('sugerencias.añadir', $sugerenciaDelDia) }}">
+            @csrf
+            <button type="submit" class="btn-secundario btn-pequeño mt-3">
+                + Añadir hábito
+            </button>
+        </form>
+        @else
+        <p class="texto-suave">No hay sugerencias disponibles.</p>
+        @endif
     </div>
+
+    {{-- Insignias recientes --}}
     <div class="bloque">
         <h3 class="bloque-titulo">// Insignias recientes</h3>
 
@@ -105,6 +116,10 @@
             Ver todas las insignias →
         </a>
     </div>
+</div>
+
+{{-- Frase del día --}}
+<p class="frase-separador">❝ {{ $fraseDelDia['texto'] }} ❞ <span class="frase-autor">— {{ $fraseDelDia['autor'] }}</span></p>
 
 </div>
 

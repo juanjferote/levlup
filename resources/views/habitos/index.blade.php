@@ -5,7 +5,7 @@
 @section('contenido')
 
     <div class="pagina-titulo">
-        <h2>🔄 Mis Hábitos</h2>
+        <h2>Mis Hábitos</h2>
         <a href="{{ route('habitos.create') }}" class="btn-primario">+ Nuevo hábito</a>
     </div>
 

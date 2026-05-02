@@ -1,7 +1,7 @@
 <header class="levlup-header">
 
     <div class="header-logo">
-        <a href="{{ route('dashboard') }}">⚔ LEVLUP</a>
+        <a href="{{ route('dashboard') }}">LEVLUP</a>
     </div>
 
     <div class="header-acciones">

@@ -16,30 +16,27 @@
     </div>
 
     <div class="item-acciones">
-
         @if(!$tarea->completed)
+            @if(!$tarea->scheduled_at->isFuture() || $tarea->scheduled_at->isToday())
+            <form action="{{ route('tareas.completar', $tarea) }}" method="POST">
+                @csrf
+                @method('PATCH')
+                <button type="submit" class="btn-primario btn-pequeño">✔ Completar</button>
+            </form>
+            @endif
 
-        @if(!$tarea->scheduled_at->isFuture() || $tarea->scheduled_at->isToday())
-        <form action="{{ route('tareas.completar', $tarea) }}" method="POST">
-            @csrf
-            @method('PATCH')
-            <button type="submit" class="btn-primario btn-pequeño">✔ Completar</button>
-        </form>
-        @endif
-
-        <a href="{{ route('tareas.edit', $tarea) }}" class="btn-secundario btn-pequeño">✏ Editar</a>
-
-        <form action="{{ route('tareas.destroy', $tarea) }}" method="POST"
-            onsubmit="return confirm('¿Seguro que quieres eliminar esta misión?')">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn-peligro btn-pequeño">🗑 Eliminar</button>
-        </form>
-
+            @if(empty($modoResumen))
+            <a href="{{ route('tareas.edit', $tarea) }}" class="btn-secundario btn-pequeño">Editar</a>
+            <form action="{{ route('tareas.destroy', $tarea) }}" method="POST"
+                onsubmit="return confirm('¿Seguro que quieres eliminar esta misión?')">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn-peligro btn-pequeño">Eliminar</button>
+            </form>
+            @endif
         @else
-        <span class="badge-completada">✔ Completada</span>
+            <span class="badge-completada">✔ Completada</span>
         @endif
-
     </div>
 
 </div>
