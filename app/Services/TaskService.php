@@ -48,8 +48,12 @@ class TaskService
      */
     public function completar(Task $task, User $user): bool
     {
-        $task->update(['completed' => true]);
+        // no se pueden completar tareas futuras
+        if ($task->scheduled_at->isFuture() && !$task->scheduled_at->isToday()) {
+            return false;
+        }
 
+        $task->update(['completed' => true]);
         return $user->addPoints(self::XP_TAREA);
     }
 
@@ -59,5 +63,17 @@ class TaskService
     public function eliminar(Task $task): void
     {
         $task->delete();
+    }
+
+    /**
+     * Devuelve las tareas futuras de los próximos 7 días sin completar.
+     */
+    public function tareasProximas(User $user): \Illuminate\Support\Collection
+    {
+        return $user->tasks()
+            ->where('completed', false)
+            ->whereBetween('scheduled_at', [now()->addDay()->startOfDay(), now()->addDays(7)->endOfDay()])
+            ->orderBy('scheduled_at')
+            ->get();
     }
 }

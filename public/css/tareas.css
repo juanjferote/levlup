@@ -18,64 +18,17 @@
 }
 
 /* ── Card de tarea individual ── */
-.tarea-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 12px;
-    border: var(--borde-grosor) solid var(--borde);
-    background-color: var(--fondo-terciario);
-    border-radius: var(--radio);
-    margin-bottom: 8px;
-    transition: opacity 0.2s;
-}
-
 .tarea-card.completada {
     opacity: 0.5;
 }
 
-/* ── Info de la tarea ── */
-.tarea-info {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    flex: 1;
-}
-
-.tarea-titulo {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--texto-principal);
-}
-
-.tarea-card.completada .tarea-titulo {
+.tarea-card.completada .item-titulo {
     text-decoration: line-through;
-}
-
-.tarea-descripcion {
-    font-size: 0.8rem;
-    color: var(--texto-suave);
 }
 
 .tarea-fecha {
     font-size: 0.75rem;
     color: var(--texto-muy-suave);
-    letter-spacing: 0.5px;
-}
-
-/* ── Acciones de la tarea ── */
-.tarea-acciones {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-shrink: 0;
-}
-
-/* ── Botones pequeños ── */
-.btn-pequeño {
-    font-size: 0.75rem;
-    padding: 4px 10px;
     letter-spacing: 0.5px;
 }
 
@@ -108,29 +61,6 @@
     color: var(--verde);
 }
 
-/* ── Alertas de feedback ── */
-.alerta {
-    padding: 10px 14px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    border-radius: var(--radio);
-    margin-bottom: 16px;
-    border: var(--borde-grosor) solid;
-}
-
-.alerta-exito {
-    background-color: var(--fondo-secundario);
-    border-color: var(--verde);
-    color: var(--verde);
-}
-
-.alerta-info {
-    background-color: var(--fondo-secundario);
-    border-color: var(--naranja);
-    color: var(--naranja);
-}
-
 /* ── Grupo de campo de formulario ── */
 .campo-grupo {
     display: flex;
@@ -141,13 +71,6 @@
 /* ── Título de bloque en rojo (vencidas) ── */
 .bloque-titulo.rojo {
     color: var(--rojo);
-}
-
-/* ── Selector rápido de fecha ── */
-.fecha-opciones {
-    display: flex;
-    gap: 8px;
-    margin-top: 6px;
 }
 
 .btn-fecha-rapida {
@@ -219,15 +142,15 @@ textarea.form-input-levlup {
         gap: 10px;
     }
 
-    .tarea-acciones {
+    .item-acciones {
         flex-wrap: wrap;
         width: 100%;
         flex-shrink: unset;
     }
 
-    .tarea-acciones .btn-primario,
-    .tarea-acciones .btn-secundario,
-    .tarea-acciones .btn-peligro {
+    .item-acciones .btn-primario,
+    .item-acciones .btn-secundario,
+    .item-acciones .btn-peligro {
         min-height: 44px;
         padding: 10px 14px;
         flex: 1;

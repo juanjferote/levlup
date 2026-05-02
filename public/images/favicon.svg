@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Espada izquierda (inclinada /) -->
+  <g transform="rotate(-45, 32, 32)">
+    <!-- Hoja -->
+    <rect x="30.5" y="8" width="3" height="36" rx="0.5" fill="#F5C400"/>
+    <!-- Punta -->
+    <polygon points="30.5,8 33.5,8 32,4" fill="#F5C400"/>
+    <!-- Guardia -->
+    <rect x="24" y="42" width="16" height="3" rx="0.5" fill="#F5C400"/>
+    <!-- Empuñadura -->
+    <rect x="30.5" y="45" width="3" height="10" rx="1" fill="#F5C400"/>
+    <!-- Pomo -->
+    <circle cx="32" cy="56.5" r="2.5" fill="#F5C400"/>
+  </g>
+  <!-- Espada derecha (inclinada \) -->
+  <g transform="rotate(45, 32, 32)">
+    <!-- Hoja -->
+    <rect x="30.5" y="8" width="3" height="36" rx="0.5" fill="#F5C400"/>
+    <!-- Punta -->
+    <polygon points="30.5,8 33.5,8 32,4" fill="#F5C400"/>
+    <!-- Guardia -->
+    <rect x="24" y="42" width="16" height="3" rx="0.5" fill="#F5C400"/>
+    <!-- Empuñadura -->
+    <rect x="30.5" y="45" width="3" height="10" rx="1" fill="#F5C400"/>
+    <!-- Pomo -->
+    <circle cx="32" cy="56.5" r="2.5" fill="#F5C400"/>
+  </g>
+</svg>

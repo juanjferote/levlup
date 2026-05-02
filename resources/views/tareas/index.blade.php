@@ -9,15 +9,6 @@
         <a href="{{ route('tareas.create') }}" class="btn-primario">+ Nueva misión</a>
     </div>
 
-    {{-- mensajes de feedback --}}
-    @if(session('exito'))
-        <div class="alerta alerta-exito">{{ session('exito') }}</div>
-    @endif
-
-    @if(session('info'))
-        <div class="alerta alerta-info">{{ session('info') }}</div>
-    @endif
-
     {{-- tareas de hoy --}}
     <div class="bloque">
         <h3 class="bloque-titulo">// Misiones de hoy</h3>

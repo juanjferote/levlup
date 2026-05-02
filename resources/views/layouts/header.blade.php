@@ -13,11 +13,11 @@
 
         <span class="header-usuario">{{ auth()->user()->name ?? 'Jugador' }}</span>
 
-        <button onclick="toggleModoNoche()" class="btn-icono" title="Modo noche">🌙</button>
+        <button id="btn-modo" onclick="toggleModoNoche()" class="btn-icono" title="">🌙</button>
 
         <form action="{{ route('logout') }}" method="POST">
             @csrf
-            <button type="submit" class="btn-icono" title="Salir">🚪</button>
+            <button type="submit" class="btn-icono" title="Salir">↩</button>
         </form>
 
     </div>

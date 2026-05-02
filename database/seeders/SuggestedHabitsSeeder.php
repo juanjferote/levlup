@@ -62,12 +62,12 @@ class SuggestedHabitsSeeder extends Seeder
             ['title' => 'Proyecto creativo 45 min',     'description' => 'Avanza en un proyecto personal durante 45 minutos.',             'category' => 'creatividad', 'difficulty_level' => 4, 'suggested_target_per_week' => 4, 'suggested_duration_minutes' => 45],
             ['title' => 'Crear algo cada día',          'description' => 'Produce algo creativo todos los días, aunque sea pequeño.',      'category' => 'creatividad', 'difficulty_level' => 5, 'suggested_target_per_week' => 7, 'suggested_duration_minutes' => 30],
 
-            // ============ SUEÑO ============
-            ['title' => 'Acostarse antes de las 00:00', 'description' => 'Estar en la cama antes de medianoche.',                          'category' => 'sueno', 'difficulty_level' => 1, 'suggested_target_per_week' => 3, 'suggested_duration_minutes' => null],
-            ['title' => 'Sin pantallas 30 min antes',   'description' => 'Nada de pantallas 30 minutos antes de dormir.',                  'category' => 'sueno', 'difficulty_level' => 2, 'suggested_target_per_week' => 4, 'suggested_duration_minutes' => null],
-            ['title' => 'Rutina de desconexión',        'description' => 'Haz una rutina relajante antes de dormir (lectura, música).',    'category' => 'sueno', 'difficulty_level' => 3, 'suggested_target_per_week' => 5, 'suggested_duration_minutes' => 20],
-            ['title' => 'Dormir 7+ horas',              'description' => 'Duerme un mínimo de 7 horas cada noche.',                        'category' => 'sueno', 'difficulty_level' => 4, 'suggested_target_per_week' => 6, 'suggested_duration_minutes' => null],
-            ['title' => 'Horario estricto de sueño',    'description' => 'Acuéstate y levántate siempre a la misma hora.',                 'category' => 'sueno', 'difficulty_level' => 5, 'suggested_target_per_week' => 7, 'suggested_duration_minutes' => null],
+            // ============ Descanso ============
+            ['title' => 'Acostarse antes de las 00:00', 'description' => 'Estar en la cama antes de medianoche.',                          'category' => 'descanso', 'difficulty_level' => 1, 'suggested_target_per_week' => 3, 'suggested_duration_minutes' => null],
+            ['title' => 'Sin pantallas 30 min antes',   'description' => 'Nada de pantallas 30 minutos antes de dormir.',                  'category' => 'descanso', 'difficulty_level' => 2, 'suggested_target_per_week' => 4, 'suggested_duration_minutes' => null],
+            ['title' => 'Rutina de desconexión',        'description' => 'Haz una rutina relajante antes de dormir (lectura, música).',    'category' => 'descanso', 'difficulty_level' => 3, 'suggested_target_per_week' => 5, 'suggested_duration_minutes' => 20],
+            ['title' => 'Dormir 7+ horas',              'description' => 'Duerme un mínimo de 7 horas cada noche.',                        'category' => 'descanso', 'difficulty_level' => 4, 'suggested_target_per_week' => 6, 'suggested_duration_minutes' => null],
+            ['title' => 'Horario estricto de sueño',    'description' => 'Acuéstate y levántate siempre a la misma hora.',                 'category' => 'descanso', 'difficulty_level' => 5, 'suggested_target_per_week' => 7, 'suggested_duration_minutes' => null],
 
             // ============ SOCIAL ============
             ['title' => 'Mensaje a un ser querido',     'description' => 'Manda un mensaje a alguien importante para ti.',                 'category' => 'social', 'difficulty_level' => 1, 'suggested_target_per_week' => 2, 'suggested_duration_minutes' => 5],

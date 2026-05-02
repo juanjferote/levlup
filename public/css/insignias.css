@@ -18,10 +18,11 @@
     text-align: center;
     gap: 4px;
     padding: 10px 8px;
-    width: 90px;
+    width: 100px;
+    height: 100px;
     border: var(--borde-grosor) solid var(--borde);
     background-color: var(--fondo-terciario);
-    border-radius: var(--radio);
+    border-radius: 50%;
     position: relative;
     cursor: default;
     transition: opacity 0.2s, transform 0.15s;
@@ -38,19 +39,19 @@
 
 /* ── Bordes por rareza en desbloqueadas ── */
 .insignia-card.desbloqueada.rareza-comun {
-    border-color: #9ca3af;
+    border-color: var(--rareza-comun);
 }
 
 .insignia-card.desbloqueada.rareza-rara {
-    border-color: #3b82f6;
+    border-color: var(--rareza-rara);
 }
 
 .insignia-card.desbloqueada.rareza-epica {
-    border-color: #a855f7;
+    border-color: var(--rareza-epica);
 }
 
 .insignia-card.desbloqueada.rareza-legendaria {
-    border-color: var(--acento);
+    border-color: var(--rareza-legendaria);
 }
 
 /* ── Icono ── */

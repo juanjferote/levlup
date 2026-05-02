@@ -141,10 +141,15 @@ class HabitController extends Controller
             ? '¡LEVEL UP! Has subido de nivel. 🎉 +' . HabitService::XP_HABITO . ' XP'
             : '¡Hábito registrado! +' . HabitService::XP_HABITO . ' XP ⭐';
 
+        $redirect = redirect()->route('tareas.index')->with('exito', $mensaje);
+
         if ($insigniasNuevas->isNotEmpty()) {
-            $mensaje .= ' · 🏆 ¡Nueva insignia desbloqueada: ' . $insigniasNuevas->first()->name . '!';
+            $redirect = $redirect->with('insignia_desbloqueada', [
+                'nombre' => $insigniasNuevas->first()->name,
+                'icono'  => $insigniasNuevas->first()->icon,
+            ]);
         }
 
-        return redirect()->route('habitos.index')->with('exito', $mensaje);
+        return $redirect;
     }
 }

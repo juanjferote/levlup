@@ -12,7 +12,7 @@
     <div class="campo-grupo">
         <label class="form-label-levlup">Elige tus intereses</label>
         <div class="intereses-grid">
-            @foreach (['deporte', 'lectura', 'meditacion', 'nutricion', 'productividad', 'aprendizaje', 'creatividad', 'sueno', 'social', 'finanzas', 'hogar', 'naturaleza'] as $interes)
+            @foreach (['deporte', 'lectura', 'meditacion', 'nutricion', 'productividad', 'aprendizaje', 'creatividad', 'descanso', 'social', 'finanzas', 'hogar', 'naturaleza'] as $interes)
                 <label class="interes-opcion {{ in_array($interes, $interesesActivos) ? 'activo' : '' }}">
                     <input
                         type="checkbox"

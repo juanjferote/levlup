@@ -39,11 +39,16 @@ class ProfileController extends Controller
 
             $mensaje = 'Intereses actualizados correctamente.';
 
+            $redirect = redirect()->route('tareas.index')->with('exito', $mensaje);
+
             if ($insigniasNuevas->isNotEmpty()) {
-                $mensaje .= ' · 🏆 ¡Nueva insignia desbloqueada: ' . $insigniasNuevas->first()->name . '!';
+                $redirect = $redirect->with('insignia_desbloqueada', [
+                    'nombre' => $insigniasNuevas->first()->name,
+                    'icono'  => $insigniasNuevas->first()->icon,
+                ]);
             }
 
-            return back()->with('exito', $mensaje);
+            return $redirect;
         }
 
         $request->validateWithBag('datosBasicos', [

@@ -176,7 +176,7 @@ class BadgeService
             'productividad',
             'aprendizaje',
             'creatividad',
-            'sueno',
+            'descanso',
             'social',
             'finanzas',
             'hogar',

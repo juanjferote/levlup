@@ -46,6 +46,13 @@
         <p class="texto-suave">No tienes misiones para hoy.</p>
         @endforelse
 
+        @if($tareasProximas->isNotEmpty())
+        <h3 class="bloque-titulo mt-3">// Próximas misiones</h3>
+        @foreach($tareasProximas as $tarea)
+        @include('tareas._tarea', ['tarea' => $tarea])
+        @endforeach
+        @endif
+
         <a href="{{ route('tareas.index') }}" class="btn-secundario btn-pequeño mt-3">
             Ver todas las misiones →
         </a>
@@ -59,11 +66,11 @@
         <p class="texto-suave">No hay hábitos activos. ¡Empieza creando uno!</p>
         @else
         @foreach($habitosHacer as $habito)
-            @include('habitos._habito', ['habito' => $habito, 'completado' => false])
+        @include('habitos._habito', ['habito' => $habito, 'completado' => false])
         @endforeach
 
         @foreach($habitosDejar as $habito)
-            @include('habitos._habito', ['habito' => $habito, 'completado' => false])
+        @include('habitos._habito', ['habito' => $habito, 'completado' => false])
         @endforeach
         @endif
 

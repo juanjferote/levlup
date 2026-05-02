@@ -60,6 +60,23 @@
     background-color: var(--fondo-terciario);
 }
 
+
+
+.btn-pequeño {
+    font-size: 0.75rem;
+    padding: 5px 12px;
+    letter-spacing: 0.5px;
+    min-width: 90px;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item-acciones form {
+    display: contents;
+}
+
 /* ── Formularios ── */
 .form-label-levlup {
     font-size: 0.78rem;
@@ -197,7 +214,7 @@
 .bloque {
     background-color: var(--fondo-secundario);
     border: var(--borde-grosor) solid var(--borde);
-    padding: 18px;
+    padding: 12px;
     border-radius: var(--radio);
 }
 
@@ -208,6 +225,44 @@
     text-transform: uppercase;
     color: var(--acento-titulo);
     margin-bottom: 14px;
+}
+
+/* ── Reusable base card ── */
+.item-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px;
+    border: var(--borde-grosor) solid var(--borde);
+    background-color: var(--fondo-terciario);
+    border-radius: var(--radio);
+    margin-bottom: 8px;
+}
+
+.item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.item-titulo {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--texto-principal);
+}
+
+.item-descripcion {
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+}
+
+.item-acciones {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
 }
 
 .texto-suave {
@@ -238,6 +293,6 @@
     }
 
     .bloque {
-        padding: 14px;
+        padding: 10px;
     }
 }

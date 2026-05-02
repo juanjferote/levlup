@@ -8,10 +8,6 @@
     <h2>🏆 Insignias</h2>
 </div>
 
-@if(session('exito'))
-<div class="alerta alerta-exito">{{ session('exito') }}</div>
-@endif
-
 {{-- fila 1: misiones + constancia --}}
 <div class="insignias-fila">
 

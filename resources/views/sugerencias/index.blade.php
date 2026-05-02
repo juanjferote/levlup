@@ -8,10 +8,6 @@
     <h2>💡 Sugerencias</h2>
 </div>
 
-@if(session('exito'))
-<div class="alerta alerta-exito">{{ session('exito') }}</div>
-@endif
-
 @if(empty($sugerencias) || collect($sugerencias)->flatten()->isEmpty())
 <div class="bloque">
     <p class="texto-suave">No hay sugerencias disponibles. Asegúrate de tener intereses configurados en tu perfil.</p>
@@ -24,13 +20,13 @@
     <h3 class="bloque-titulo">// {{ ucfirst($categoria) }}</h3>
 
     @foreach($habitos as $habito)
-    <div class="sugerencia-card">
+    <div class="item-card">
 
-        <div class="sugerencia-info">
-            <span class="sugerencia-titulo">{{ $habito->title }}</span>
+        <div class="item-info">
+            <span class="item-titulo">{{ $habito->title }}</span>
 
             @if($habito->description)
-            <span class="sugerencia-descripcion">{{ $habito->description }}</span>
+            <span class="item-descripcion">{{ $habito->description }}</span>
             @endif
 
             <div class="sugerencia-meta">

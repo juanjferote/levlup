@@ -1,10 +1,10 @@
-<div class="tarea-card {{ $tarea->completed ? 'completada' : '' }}">
+<div class="item-card tarea-card {{ $tarea->completed ? 'completada' : '' }}">
 
-    <div class="tarea-info">
-        <span class="tarea-titulo">{{ $tarea->title }}</span>
+    <div class="item-info">
+        <span class="item-titulo">{{ $tarea->title }}</span>
 
         @if($tarea->description)
-        <span class="tarea-descripcion">{{ $tarea->description }}</span>
+        <span class="item-descripcion">{{ $tarea->description }}</span>
         @endif
 
         <span class="tarea-fecha">
@@ -15,14 +15,17 @@
         </span>
     </div>
 
-    <div class="tarea-acciones">
+    <div class="item-acciones">
 
         @if(!$tarea->completed)
+
+        @if(!$tarea->scheduled_at->isFuture() || $tarea->scheduled_at->isToday())
         <form action="{{ route('tareas.completar', $tarea) }}" method="POST">
             @csrf
             @method('PATCH')
             <button type="submit" class="btn-primario btn-pequeño">✔ Completar</button>
         </form>
+        @endif
 
         <a href="{{ route('tareas.edit', $tarea) }}" class="btn-secundario btn-pequeño">✏ Editar</a>
 
@@ -32,6 +35,7 @@
             @method('DELETE')
             <button type="submit" class="btn-peligro btn-pequeño">🗑 Eliminar</button>
         </form>
+
         @else
         <span class="badge-completada">✔ Completada</span>
         @endif

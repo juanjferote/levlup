@@ -1,10 +1,10 @@
-<div class="habito-card {{ $completado ? 'completada' : '' }}">
+<div class="item-card {{ $completado ? 'completada' : '' }}">
 
-    <div class="habito-info">
-        <span class="habito-titulo">{{ $habito->title }}</span>
+    <div class="item-info">
+        <span class="item-titulo">{{ $habito->title }}</span>
 
         @if($habito->description)
-            <span class="habito-descripcion">{{ $habito->description }}</span>
+            <span class="item-descripcion">{{ $habito->description }}</span>
         @endif
 
         <div class="habito-meta">
@@ -14,10 +14,6 @@
                     $porcentaje     = min(100, round(($logsEstaSemana / $habito->target_per_week) * 100));
                 @endphp
                 <span class="habito-badge">🎯 {{ $logsEstaSemana }}/{{ $habito->target_per_week }}</span>
-                <div class="habito-progreso-barra">
-                    <div class="habito-progreso-relleno {{ $porcentaje >= 100 ? 'completo' : '' }}"
-                         style="width: {{ $porcentaje }}%"></div>
-                </div>
             @else
                 <span class="habito-badge">🚫 Dejando</span>
             @endif
@@ -28,7 +24,7 @@
         </div>
     </div>
 
-    <div class="habito-acciones">
+    <div class="item-acciones">
 
         @if($completado)
             <span class="badge-completada">✔ Hecho hoy</span>

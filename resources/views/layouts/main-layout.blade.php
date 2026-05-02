@@ -7,6 +7,8 @@
     <title>Levlup — @yield('titulo', 'Dashboard')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon.svg') }}">
 </head>
 
 @stack('scripts')
@@ -77,6 +79,28 @@
         </aside>
 
         <main class="contenido-principal">
+            {{-- Alertas globales --}}
+            @if(session('exito'))
+            <div class="alerta alerta-exito">{{ session('exito') }}</div>
+            @endif
+
+            @if(session('info'))
+            <div class="alerta alerta-info">{{ session('info') }}</div>
+            @endif
+
+            @if(session('error'))
+            <div class="alerta alerta-error">{{ session('error') }}</div>
+            @endif
+
+            @if(session('insignia_desbloqueada'))
+            <div class="alerta-insignia">
+                <span class="insignia-desbloqueada-icono">{{ session('insignia_desbloqueada')['icono'] }}</span>
+                <span class="insignia-desbloqueada-titulo">¡Insignia desbloqueada!</span>
+                <span class="insignia-desbloqueada-nombre">{{ session('insignia_desbloqueada')['nombre'] }}</span>
+                <a href="{{ route('insignias.index') }}" class="insignia-desbloqueada-enlace">Ver todas las insignias</a>
+            </div>
+            @endif
+
             @yield('contenido')
         </main>
 

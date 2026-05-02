@@ -40,13 +40,13 @@ class TaskController extends Controller
         $datos = $request->validate([
             'title'        => ['required', 'string', 'max:255'],
             'description'  => ['nullable', 'string', 'max:1000'],
-            'scheduled_at' => ['required', 'date', 'after_or_equal:today'],
+            'scheduled_at' => ['required', 'date', 'after:now'],
         ], [
             'title.required'              => 'El título es obligatorio.',
             'title.max'                   => 'El título no puede superar los 255 caracteres.',
             'scheduled_at.required'       => 'Debes indicar la fecha y la hora de la misión.',
             'scheduled_at.date'           => 'La fecha no tiene un formato válido.',
-            'scheduled_at.after_or_equal' => 'No puedes crear tareas en el pasado.',
+            'scheduled_at.after' => 'No puedes crear tareas en el pasado.',
         ]);
 
         $this->taskService->crear(auth()->user(), $datos);
@@ -103,18 +103,30 @@ class TaskController extends Controller
                 ->with('info', 'Esta misión ya estaba completada.');
         }
 
-        $subioNivel      = $this->taskService->completar($tarea, auth()->user());
+        $subioNivel = $this->taskService->completar($tarea, auth()->user());
+
+        // la tarea es futura y no se puede completar
+        if (!$tarea->fresh()->completed) {
+            return redirect()->route('tareas.index')
+                ->with('info', 'No puedes completar una misión que aún no ha llegado.');
+        }
+
         $insigniasNuevas = $this->badgeService->comprobarInsignias(auth()->user());
 
         $mensaje = $subioNivel
             ? '¡LEVEL UP! Has subido de nivel. 🎉 +' . TaskService::XP_TAREA . ' XP'
             : '¡Misión completada! +' . TaskService::XP_TAREA . ' XP ⭐';
 
+        $redirect = redirect()->route('tareas.index')->with('exito', $mensaje);
+
         if ($insigniasNuevas->isNotEmpty()) {
-            $mensaje .= ' · 🏆 ¡Nueva insignia desbloqueada: ' . $insigniasNuevas->first()->name . '!';
+            $redirect = $redirect->with('insignia_desbloqueada', [
+                'nombre' => $insigniasNuevas->first()->name,
+                'icono'  => $insigniasNuevas->first()->icon,
+            ]);
         }
 
-        return redirect()->route('tareas.index')->with('exito', $mensaje);
+        return $redirect;
     }
 
     /**

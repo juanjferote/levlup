@@ -111,7 +111,7 @@
                 <label for="category" class="form-label-levlup">Categoría <span class="texto-suave">(opcional)</span></label>
                 <select id="category" name="category" class="form-input-levlup">
                     <option value="">Sin categoría</option>
-                    @foreach(['deporte', 'lectura', 'meditacion', 'nutricion', 'productividad', 'aprendizaje', 'creatividad', 'sueno', 'social', 'finanzas', 'hogar', 'naturaleza'] as $cat)
+                    @foreach(['deporte', 'lectura', 'meditacion', 'nutricion', 'productividad', 'aprendizaje', 'creatividad', 'descanso', 'social', 'finanzas', 'hogar', 'naturaleza'] as $cat)
                     <option value="{{ $cat }}" {{ old('category', $sugerencia?->category) === $cat ? 'selected' : '' }}>
                         {{ ucfirst($cat) }}
                     </option>

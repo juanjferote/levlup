@@ -9,14 +9,6 @@
         <a href="{{ route('habitos.create') }}" class="btn-primario">+ Nuevo hábito</a>
     </div>
 
-    @if(session('exito'))
-        <div class="alerta alerta-exito">{{ session('exito') }}</div>
-    @endif
-
-    @if(session('info'))
-        <div class="alerta alerta-info">{{ session('info') }}</div>
-    @endif
-
     {{-- hábitos de hacer pendientes --}}
     <div class="bloque">
         <h3 class="bloque-titulo">// Hábitos activos</h3>

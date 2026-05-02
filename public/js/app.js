@@ -1,19 +1,23 @@
-/* Importar bootstrap*/
-/*import 'bootstrap/dist/js/bootstrap.bundle.min.js';*/
-
-// --- Modo noche ---
 // Añade o quita la clase 'modo-noche' del body y guarda la preferencia en localStorage
 
 function toggleModoNoche() {
     document.body.classList.toggle('modo-noche');
-    // Guardar si está activado
     let activado = document.body.classList.contains('modo-noche');
     localStorage.setItem('modoNoche', activado);
+    // Actualizar icono según el modo actual
+    actualizarIconoModo(activado);
 }
 
-// Comprobar si el modo noche está activado cuando se carga la página
-document.addEventListener('DOMContentLoaded', ()=> {
-    if (localStorage.getItem('modoNoche') === 'true') {
+function actualizarIconoModo(modoNocheActivo) {
+    const btn = document.getElementById('btn-modo');
+    btn.textContent = modoNocheActivo ? '☀️' : '🌙';
+    btn.title = modoNocheActivo ? 'Modo día' : 'Modo noche';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    let activado = localStorage.getItem('modoNoche') === 'true';
+    if (activado) {
         document.body.classList.add('modo-noche');
     }
+    actualizarIconoModo(activado);
 });

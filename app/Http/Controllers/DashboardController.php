@@ -29,6 +29,7 @@ class DashboardController extends Controller
             'tareasHoy'          => $grupos['tareasHoy']->count(),
             'habitosHoy'         => $habitos['habitosHacer']->count() + $habitos['habitosDejar']->count(),
             'tareasHoyLista'     => $grupos['tareasHoy'],
+            'tareasProximas'     => $this->taskService->tareasProximas($user),
             'habitosHacer'       => $this->habitService->conProgresoSemanal($habitos['habitosHacer']),
             'habitosDejar'       => $habitos['habitosDejar'],
             'insigniasRecientes' => $this->badgeService->insigniasRecientes($user),

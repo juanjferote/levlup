@@ -82,7 +82,7 @@
     height: 10px;
     width: 100%;
     background-color: var(--fondo-terciario);
-    border: 1px solid var(--borde);
+    border: var(--borde-grosor) solid var(--borde);
     border-radius: var(--radio);
 }
 
