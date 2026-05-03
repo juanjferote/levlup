@@ -5,7 +5,7 @@
 @section('contenido')
 
 <div class="pagina-titulo">
-    <h2>✏️ Editar Misión</h2>
+    <h2>Editar Misión</h2>
     <a href="{{ route('tareas.index') }}" class="btn-primario btn-secundario">← Volver</a>
 </div>
 

@@ -24,6 +24,8 @@
 }
 
 .landing-logo {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1rem;
     font-size: 1.2rem;
     font-weight: 900;
     letter-spacing: 3px;
@@ -75,13 +77,13 @@
 }
 
 .hero-titulo {
-    font-size: 2.8rem;
-    font-weight: 900;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 2rem;
     letter-spacing: 4px;
     text-transform: uppercase;
     color: var(--texto-principal);
-    line-height: 1.1;
-    margin-bottom: 14px;
+    line-height: 1.6;
+    margin-bottom: 20px;
 }
 
 .hero-titulo span {
@@ -109,8 +111,8 @@
 }
 
 .hero-avatar {
-    width: 40px;
-    height: 40px;
+    width: 52px;
+    height: 52px;
     border: var(--borde-grosor) solid var(--borde);
     background-color: var(--fondo-terciario);
     overflow: hidden;
@@ -145,25 +147,26 @@
 }
 
 .seccion-titulo {
-    font-size: 1.2rem;
-    font-weight: 900;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.9rem;
     letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--texto-principal);
     margin-bottom: 24px;
+    line-height: 1.6;
 }
 
 /* ── Features ── */
 .features-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    gap: 16px;
 }
 
 .feature-card {
     background-color: var(--fondo-secundario);
     border: var(--borde-grosor) solid var(--borde);
-    padding: 18px 16px;
+    padding: 24px 20px;
     border-radius: var(--radio);
 }
 
@@ -192,7 +195,7 @@
 .pasos-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 16px;
 }
 
 .paso-card {
@@ -206,10 +209,10 @@
 }
 
 .paso-numero {
-    font-size: 2rem;
-    font-weight: 900;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1.8rem;
     color: var(--acento);
-    line-height: 1;
+    line-height: 1.2;
     letter-spacing: 2px;
 }
 
@@ -238,12 +241,13 @@
 }
 
 .cta-titulo {
-    font-size: 1.6rem;
-    font-weight: 900;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1.2rem;
     letter-spacing: 3px;
     text-transform: uppercase;
     color: var(--texto-principal);
-    margin-bottom: 10px;
+    margin-bottom: 16px;
+    line-height: 1.6;
 }
 
 .cta-titulo span {
@@ -266,113 +270,126 @@
 /* =========================================
    RESPONSIVE
    ========================================= */
-
-/* ── Tablet (≤1024px) ── */
 @media (max-width: 1024px) {
-
     .landing-header,
     .landing-footer {
         padding: 10px 24px;
     }
-
     .hero {
         padding: 36px 24px 32px;
     }
-
     .hero-titulo {
-        font-size: 2.2rem;
+        font-size: 1.4rem;
     }
-
     .landing-seccion {
         padding: 28px 24px;
     }
-
     .features-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-
     .pasos-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-
     .cta-final {
         padding: 36px 24px;
     }
 }
 
-/* ── Móvil (≤640px) ── */
 @media (max-width: 640px) {
-
     .landing-header {
-        padding: 10px 16px;
-        flex-direction: column;
-        gap: 10px;
-        text-align: center;
+        padding: 12px 16px;
     }
-
-    .landing-footer {
-        padding: 10px 16px;
-        flex-direction: column;
-        gap: 6px;
-        text-align: center;
+    .landing-logo {
+        font-size: 0.75rem;
     }
-
+    .landing-nav {
+        gap: 8px;
+    }
+    .landing-nav .btn-primario,
+    .landing-nav .btn-secundario {
+        font-size: 0.65rem;
+        padding: 0 10px;
+        height: 32px;
+    }
     .hero {
-        padding: 28px 16px 24px;
+        padding: 32px 16px 28px;
     }
-
-    .hero-titulo {
-        font-size: 1.6rem;
+    .hero-tag {
+        font-size: 0.6rem;
         letter-spacing: 2px;
     }
-
-    .hero-subtitulo {
-        font-size: 0.88rem;
+    .hero-titulo {
+        font-size: 1rem;
+        letter-spacing: 2px;
+        line-height: 1.8;
     }
-
+    .hero-subtitulo {
+        font-size: 0.8rem;
+    }
     .hero-acciones {
         flex-direction: column;
         width: 100%;
+        gap: 8px;
     }
-
     .hero-acciones .btn-primario,
     .hero-acciones .btn-secundario {
         width: 100%;
         text-align: center;
     }
-
+    .hero-avatares {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 4px;
+    }
+    .hero-avatar {
+        width: 40px;
+        height: 40px;
+    }
     .landing-seccion {
         padding: 24px 16px;
     }
-
-    .seccion-titulo {
-        font-size: 1rem;
+    .seccion-tag {
+        font-size: 0.6rem;
     }
-
+    .seccion-titulo {
+        font-size: 0.7rem;
+        line-height: 1.8;
+    }
     .features-grid {
         grid-template-columns: 1fr;
+        gap: 12px;
     }
-
+    .feature-card {
+        padding: 16px;
+    }
     .pasos-grid {
         grid-template-columns: 1fr;
+        gap: 12px;
     }
-
+    .paso-numero {
+        font-size: 1.2rem;
+    }
     .cta-final {
         padding: 28px 16px;
     }
-
     .cta-titulo {
-        font-size: 1.2rem;
+        font-size: 0.8rem;
+        line-height: 1.8;
     }
-
     .cta-acciones {
         flex-direction: column;
         width: 100%;
+        gap: 8px;
     }
-
     .cta-acciones .btn-primario,
     .cta-acciones .btn-secundario {
         width: 100%;
+        text-align: center;
+    }
+    .landing-footer {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 6px;
         text-align: center;
     }
 }

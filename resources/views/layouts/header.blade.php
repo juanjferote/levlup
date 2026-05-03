@@ -8,7 +8,7 @@
 
         {{-- nivel + puntos --}}
         <span class="header-xp">
-            NV.{{ auth()->user()->level }} &nbsp;·&nbsp; ⭐ {{ auth()->user()->points }} XP
+            NV.{{ auth()->user()->level }} &nbsp;·&nbsp; ★ {{ auth()->user()->points }} XP
         </span>
 
         <span class="header-usuario">{{ auth()->user()->name ?? 'Jugador' }}</span>

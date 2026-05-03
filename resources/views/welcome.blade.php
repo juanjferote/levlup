@@ -4,10 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LevlUp — Sube de nivel cada día</title>
+    <title>LevlUp — Sube de nivel cada dia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Press+Start+2P&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/base.css') }}">
     <link rel="stylesheet" href="{{ asset('css/components.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/layout.css') }}">
     <link rel="stylesheet" href="{{ asset('css/landing.css') }}">
     <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
     <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon.svg') }}">
@@ -17,7 +21,7 @@
 
     {{-- Header --}}
     <header class="landing-header">
-        <span class="landing-logo">⚔ LevlUp</span>
+        <span class="landing-logo">LevlUp</span>
         <nav class="landing-nav">
             @auth
             <a href="{{ route('dashboard') }}" class="btn-primario">Ir al dashboard</a>
@@ -142,10 +146,7 @@
     </main>
 
     {{-- Footer --}}
-    <footer class="landing-footer">
-        <span class="landing-footer-texto">⚔ LEVLUP — Juan José Fernández Otero</span>
-        <span class="landing-footer-texto">v1.0</span>
-    </footer>
+    @include('layouts.footer')
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/app.js') }}"></script>

@@ -12,17 +12,28 @@
 <div class="stats-seccion-fila">
 
     {{-- misiones --}}
-    <div class="bloque">
+    <div class="bloque bloque--centrado">
         <h3 class="bloque-titulo">// Misiones</h3>
-
-        <div class="stat-grupo">
+        <div class="stat-grupo stat-grupo--misiones">
+            <div class="stat-grande">
+                <span class="stat-numero amarillo">{{ $misionesTotalCreadas }}</span>
+                <span class="stat-etiqueta">Total creadas</span>
+            </div>
             <div class="stat-grande">
                 <span class="stat-numero amarillo">{{ $misionesTotalCompletadas }}</span>
-                <span class="stat-etiqueta">Misiones completadas</span>
+                <span class="stat-etiqueta">Completadas</span>
             </div>
             <div class="stat-grande">
                 <span class="stat-numero amarillo">{{ $misionesEstaSemana }}</span>
-                <span class="stat-etiqueta">Completadas esta semana</span>
+                <span class="stat-etiqueta">Esta semana</span>
+            </div>
+            <div class="stat-grande">
+                <span class="stat-numero naranja">{{ $misionesPendientesHoy }}</span>
+                <span class="stat-etiqueta">Pendientes hoy</span>
+            </div>
+            <div class="stat-grande">
+                <span class="stat-numero rojo">{{ $misionesVencidas }}</span>
+                <span class="stat-etiqueta">Vencidas</span>
             </div>
         </div>
     </div>
@@ -64,7 +75,7 @@
 {{-- fila 2: hábitos --}}
 <div class="stats-seccion-fila mt-3">
 
-    <div class="bloque">
+    <div class="bloque bloque--centrado">
         <h3 class="bloque-titulo">// Hábitos</h3>
 
         <div class="stat-grupo">
@@ -81,7 +92,7 @@
                 <span class="stat-etiqueta">Mejor racha histórica</span>
             </div>
             <div class="stat-grande">
-                <span class="stat-numero amarillo">{{ $habitosCategoriaStar ?? '—' }}</span>
+                <span class="stat-numero stat-numero--texto amarillo">{{ $habitosCategoriaStar ?? '—' }}</span>
                 <span class="stat-etiqueta">Categoría más trabajada</span>
             </div>
         </div>

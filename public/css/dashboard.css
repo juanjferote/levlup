@@ -5,6 +5,9 @@
 /* ── Título de página ── */
 .pagina-titulo {
     margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .pagina-titulo h2 {
@@ -140,56 +143,52 @@ body.modo-noche .xp-barra-grande {
     grid-template-columns: 1fr 2fr;
 }
 
-.dashboard-fila .item-card {
-    background-color: transparent;
-    border: none;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--borde-suave);
-    border-radius: 0;
-    margin-bottom: 0;
-    display: flex;
-    border-left: 3px solid transparent;
-    transition: border-color 0.15s;
-    align-items: center;
-}
-
-.dashboard-fila .item-card:last-of-type {
-    border-bottom: none;
-}
-
 .dashboard-fila .item-acciones {
     margin-top: 8px;
     padding-top: 8px;
     border-top: 1px solid var(--borde-suave);
 }
 
-.dashboard-fila .item-card:hover {
-    border-left-color: var(--acento);
-    padding-left: 8px;
+.dashboard-fila .insignia-nombre {
+    font-size: 0.55rem;
 }
 
-/* ── Tablet (≤1024px) ── */
 @media (max-width: 1024px) {
     .stats-fila {
         grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* ── Mobile (≤640px) ── */
-@media (max-width: 640px) {
-    .stats-fila {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .stat-card {
-        padding: 12px;
     }
 
     .dashboard-fila {
         grid-template-columns: 1fr;
     }
+}
+
+@media (max-width: 640px) {
+    .stats-fila {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .stat-card {
+        padding: 14px 16px;
+    }
+
+    .stat-valor {
+        font-size: 1.2rem;
+    }
+
+    .dashboard-fila {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
 
     .pagina-titulo h2 {
-        font-size: 0.60rem;
+        font-size: 0.6rem;
     }
+
+    .frase-separador {
+        font-size: 0.7rem;
+        padding: 0 8px;
+    }
+
 }

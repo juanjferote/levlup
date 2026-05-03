@@ -83,9 +83,9 @@ textarea.form-input-levlup {
 
 /* ── Formulario centrado ── */
 .bloque-formulario {
-    max-width: 540px;
+    max-width: 700px;
     margin: 0 auto;
-    text-align: center;
+    text-align: left;
 }
 
 /* ── Inputs alineados a la izquierda dentro del formulario centrado ── */
@@ -102,9 +102,17 @@ textarea.form-input-levlup {
 /* ── Opciones de fecha centradas ── */
 .fecha-opciones {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 8px;
     margin-top: 6px;
+}
+
+.btn-fecha-rapida {
+    min-width: 130px;
+    justify-content: center;
+    display: inline-flex;
+    align-items: center;
+    height: 36px;
 }
 
 /* ── Mobile (≤640px) ── */
@@ -150,5 +158,18 @@ textarea.form-input-levlup {
 
     .bloque-formulario {
         max-width: 100%;
+    }
+
+    .bloque-formulario {
+        max-width: 100%;
+    }
+
+    .btn-fecha-rapida {
+        min-height: 44px;
+        flex: 1;
+    }
+
+    .fecha-opciones {
+        width: 100%;
     }
 }

@@ -56,7 +56,7 @@
 
 /* ── Icono ── */
 .insignia-icono {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     line-height: 1;
 }
 
@@ -125,26 +125,164 @@
     margin-top: 12px;
 }
 
-/* ── Tablet (≤1024px) ── */
+.insignias-fila .insignia-card {
+    width: 100px;
+    height: 100px;
+}
+
+.insignias-fila .insignia-icono {
+    font-size: 2rem;
+}
+
+.insignia-card.desbloqueada.rareza-comun:hover {
+    box-shadow: 0 0 12px rgba(156, 163, 175, 0.6);
+}
+
+.insignia-card.desbloqueada.rareza-rara:hover {
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.6);
+}
+
+.insignia-card.desbloqueada.rareza-epica:hover {
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
+}
+
+.insignia-card.desbloqueada.rareza-legendaria:hover {
+    box-shadow: 0 0 16px rgba(245, 196, 0, 0.8);
+}
+
+.bloque-contador {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--texto-muy-suave);
+    font-weight: 400;
+    letter-spacing: 1px;
+    vertical-align: middle;
+}
+
+.insignia-progreso {
+    height: 4px;
+    background: var(--fondo-terciario);
+    border: 1px solid var(--borde);
+    margin-bottom: 14px;
+}
+
+.insignia-progreso__barra {
+    height: 100%;
+    background: linear-gradient(90deg, var(--acento), var(--naranja));
+    transition: width 0.3s ease;
+}
+
+/* ── Animaciones por rareza ── */
+@keyframes pulso-rara {
+
+    0%,
+    100% {
+        box-shadow: 0 0 6px rgba(59, 130, 246, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.9);
+    }
+}
+
+@keyframes pulso-epica {
+
+    0%,
+    100% {
+        box-shadow: 0 0 8px rgba(168, 85, 247, 0.4),
+            0 0 0 2px rgba(168, 85, 247, 0.2);
+    }
+
+    50% {
+        box-shadow: 0 0 22px rgba(168, 85, 247, 1),
+            0 0 0 3px rgba(168, 85, 247, 0.6);
+    }
+}
+
+@keyframes pulso-legendaria {
+    0% {
+        box-shadow: 0 0 10px rgba(245, 196, 0, 0.6),
+            0 0 30px rgba(245, 196, 0, 0.3),
+            0 0 0 2px rgba(245, 196, 0, 0.4);
+    }
+
+    25% {
+        box-shadow: 0 0 20px rgba(245, 196, 0, 1),
+            0 0 50px rgba(245, 196, 0, 0.5),
+            0 0 0 3px rgba(245, 196, 0, 0.8);
+    }
+
+    50% {
+        box-shadow: 0 0 10px rgba(245, 196, 0, 0.6),
+            0 0 30px rgba(245, 196, 0, 0.3),
+            0 0 0 2px rgba(245, 196, 0, 0.4);
+    }
+
+    75% {
+        box-shadow: 0 0 25px rgba(245, 196, 0, 1),
+            0 0 60px rgba(245, 196, 0, 0.6),
+            0 0 0 4px rgba(245, 196, 0, 0.9);
+    }
+
+    100% {
+        box-shadow: 0 0 10px rgba(245, 196, 0, 0.6),
+            0 0 30px rgba(245, 196, 0, 0.3),
+            0 0 0 2px rgba(245, 196, 0, 0.4);
+    }
+}
+
+@keyframes rotar-epica {
+    from {
+        transform: scale(1.05) rotate(0deg);
+    }
+
+    to {
+        transform: scale(1.05) rotate(360deg);
+    }
+}
+
+.insignia-card.desbloqueada.rareza-rara:hover {
+    animation: pulso-rara 1.2s ease-in-out infinite;
+    transform: scale(1.05);
+}
+
+.insignia-card.desbloqueada.rareza-epica:hover {
+    animation: pulso-epica 1s ease-in-out infinite;
+    transform: scale(1.08);
+}
+
+.insignia-card.desbloqueada.rareza-legendaria:hover {
+    animation: pulso-legendaria 0.6s ease-in-out infinite;
+    transform: scale(1.1);
+}
+
 @media (max-width: 1024px) {
     .insignias-fila {
         grid-template-columns: 1fr;
     }
 }
 
-/* ── Mobile (≤640px) ── */
 @media (max-width: 640px) {
     .insignias-fila {
         grid-template-columns: 1fr;
+        gap: 12px;
     }
 
     .insignia-card {
-        width: auto;
-        flex: 1;
-        min-width: 70px;
+        width: 72px;
+        height: 72px;
     }
 
-    .insignias-grid {
-        gap: 6px;
+    .insignias-fila .insignia-card {
+        width: 80px;
+        height: 80px;
+    }
+
+    .insignia-icono {
+        font-size: 1.2rem;
+    }
+
+    .insignia-nombre {
+        font-size: 0.55rem;
     }
 }

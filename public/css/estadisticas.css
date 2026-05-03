@@ -6,32 +6,43 @@
 .stats-seccion-fila {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 20px;
 }
 
 /* ── Grupo de stats ── */
 .stat-grupo {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 32px;
+    margin-bottom: 20px;
 }
 
 /* ── Stat grande ── */
 .stat-grande {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    min-width: 80px;
+    gap: 8px;
+    min-width: 100px;
 }
 
 .stat-numero {
-    font-size: 2rem;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1.6rem;
     font-weight: 900;
-    line-height: 1;
+    line-height: 1.2;
 }
 
-.stat-numero.amarillo { color: var(--acento); }
-.stat-numero.naranja  { color: var(--naranja); }
+.stat-numero.amarillo {
+    color: var(--acento);
+}
+
+.stat-numero.naranja {
+    color: var(--naranja);
+}
+
+.stat-numero.rojo {
+    color: var(--rojo);
+}
 
 .stat-etiqueta {
     font-size: 0.72rem;
@@ -73,23 +84,68 @@
 
 .stat-barra-relleno {
     height: 100%;
-    background-color: var(--acento);
+    background: linear-gradient(90deg, var(--acento), var(--naranja));
     border-radius: var(--radio);
     transition: width 0.3s ease;
 }
 
-.stat-barra-relleno.barra-verde  { background-color: var(--verde); }
-.stat-barra-relleno.barra-naranja { background-color: var(--naranja); }
-.stat-barra-relleno.barra-roja   { background-color: var(--rojo); }
+.stat-barra-relleno.barra-verde {
+    background-color: var(--verde);
+}
+
+.stat-barra-relleno.barra-naranja {
+    background-color: var(--naranja);
+}
+
+.stat-barra-relleno.barra-roja {
+    background-color: var(--rojo);
+}
 
 .stats-seccion-fila .insignias-grid {
     justify-content: center;
     padding: 8px 0;
 }
 
-/* ── Responsive ── */
-@media (max-width: 768px) {
+.stat-numero--texto {
+    font-size: 1.3rem;
+    font-weight: 900;
+}
+
+.bloque .stat-grupo--misiones {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.stats-seccion-fila .bloque--centrado {
+    justify-content: center;
+    gap: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.stats-seccion-fila .bloque--centrado .bloque-titulo {
+    margin-bottom: auto;
+}
+
+@media (max-width: 1024px) {
     .stats-seccion-fila {
         grid-template-columns: 1fr;
     }
+}
+
+@media (max-width: 640px) {
+    .stats-seccion-fila {
+        gap: 12px;
+    }
+
+    .stat-numero {
+        font-size: 1.2rem;
+    }
+
+    .stat-grupo--misiones {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
 }

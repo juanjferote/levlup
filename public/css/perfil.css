@@ -1,28 +1,139 @@
 /* =========================================
-   PERFIL.CSS — Estilos del módulo de perfil
+   PERFIL.CSS
    ========================================= */
 
-/* ── Contenedor principal del perfil ── */
 .perfil-contenido {
-    max-width: 720px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-/* ── Sección del perfil ── */
+.perfil-fila {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: stretch;
+}
+
 .perfil-seccion form {
     display: flex;
     flex-direction: column;
+    flex: 1;
+    justify-content: space-between;
 }
 
-/* ── Avatar seleccionado (fallback para navegadores sin :has()) ── */
+.perfil-seccion .btn-primario {
+    align-self: flex-start;
+    margin-top: 8px;
+}
+
+/* ── Avatar ── */
+.avatar-selector-grid {
+    grid-template-columns: repeat(6, 1fr);
+}
+
+.avatar-opcion img {
+    width: 40px;
+    height: 40px;
+}
+
 .avatar-opcion.activo {
     border-color: var(--acento);
     background-color: var(--fondo-secundario);
     box-shadow: 0 0 0 2px var(--acento);
 }
 
-/* ── Mobile (≤640px) ── */
+/* ── Card de intereses ── */
+.perfil-intereses-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 24px;
+}
+
+.perfil-intereses-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+}
+
+.perfil-intereses-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.perfil-interes-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--acento);
+    background-color: var(--fondo-terciario);
+    border: var(--borde-grosor) solid var(--acento);
+    padding: 4px 12px;
+    border-radius: var(--radio);
+}
+
+.perfil-intereses-desc {
+    font-size: 0.8rem;
+    color: var(--texto-muy-suave);
+    margin: 0;
+}
+
+/* ── Modal ── */
+.perfil-modal {
+    background: var(--fondo-secundario);
+    border: var(--borde-grosor) solid var(--borde);
+    border-radius: var(--radio);
+}
+
+.perfil-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--borde-suave);
+    background: var(--fondo-secundario);
+}
+
+.perfil-modal__body {
+    padding: 20px;
+    background: var(--fondo-secundario);
+}
+
+.perfil-seccion {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+    .perfil-fila {
+        grid-template-columns: 1fr;
+    }
+
+    .avatar-selector-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .perfil-intereses-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
 @media (max-width: 640px) {
-    .perfil-contenido {
-        max-width: 100%;
+    .perfil-intereses-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .perfil-intereses-card .btn-secundario {
+        width: 100%;
     }
 }

@@ -104,7 +104,7 @@ class BadgesSeeder extends Seeder
             // ============ INTERESES PERSONALIZADOS ============
             ['name' => 'Explorador',       'description' => 'Añadiste tu primer interés personalizado. Eres dueño de tu propio camino.',              'icon' => '🗺️', 'rarity' => 'comun',      'category' => null, 'condition_type' => 'custom_interests', 'condition_value' => 1],
             ['name' => 'Pionero',          'description' => 'Tres intereses personalizados. Estás trazando un mapa que nadie ha dibujado antes.',     'icon' => '🧭', 'rarity' => 'rara',       'category' => null, 'condition_type' => 'custom_interests', 'condition_value' => 3],
-            ['name' => 'Visionario Propio','description' => 'Cinco intereses personalizados activos. Has creado tu propia versión de LevlUp.',        'icon' => '🌌', 'rarity' => 'epica',      'category' => null, 'condition_type' => 'custom_interests', 'condition_value' => 5],
+            ['name' => 'Visionario','description' => 'Cinco intereses personalizados activos. Has creado tu propia versión de LevlUp.',        'icon' => '🌌', 'rarity' => 'epica',      'category' => null, 'condition_type' => 'custom_interests', 'condition_value' => 5],
 
             // ============ TAREAS ============
             ['name' => 'Primer Paso',          'description' => 'Completaste tu primera misión. Todo gran viaje comienza con un primer paso.',        'icon' => '🎯', 'rarity' => 'comun',      'category' => null, 'condition_type' => 'tasks_completed', 'condition_value' => 1],

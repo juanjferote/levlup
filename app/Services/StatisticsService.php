@@ -39,9 +39,24 @@ class StatisticsService
             ->whereBetween('updated_at', [$inicioSemana, $finSemana])
             ->count();
 
+        $totalCreadas = $user->tasks()->count();
+
+        $pendientesHoy = $user->tasks()
+            ->where('completed', false)
+            ->whereDate('scheduled_at', today())
+            ->count();
+
+        $vencidas = $user->tasks()
+            ->where('completed', false)
+            ->whereDate('scheduled_at', '<', today())
+            ->count();
+
         return [
             'misionesTotalCompletadas'  => $totalCompletadas,
             'misionesEstaSemana'        => $completadasEstaSemana,
+            'misionesTotalCreadas'      => $totalCreadas,
+            'misionesPendientesHoy'     => $pendientesHoy,
+            'misionesVencidas'          => $vencidas,
         ];
     }
 

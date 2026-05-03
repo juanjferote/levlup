@@ -11,23 +11,18 @@ General:
 -Hacerme TEST para comprobar que todo funciona bien
 -Inconsistencias en el idioma (o todo en español o todo en inglés)
 -Comentar todo el código
--Volcar los datos en el dashboard
--CSS responsive (FALTA LA LANDING Y REVISAR TODO BIEN)
+-REVISAR RESPONSIVE
 -Quitar todos los errores (lo de id y eso que sale en rojo y se queja el vs)
--Revisar todas las interfaces bien, el diseño es muy importante
--Paginación en vez de scroll
-
 -Todas las rutas en español
 
 Módulo de tareas:
--Botón eliminar más grande que los otros
--Dar el mismo formato y tamaño a todos los formularios
 -Me deja programar una tarea para las 20:00 a las 21:30
 
 Módulo de hábitos:
 -Que en categoría hábitos se pueda introducir una categoría personalizada
 -Si un hábito semanal está cumplido, que no salga al día siguiente
 -Cálculo de rachas
+-No me deja cambiar la frecuencia en edición hábito
 -Cuando registro un hábito desde hábitos me redirige a tareas
 -La insignia primer hábito solo aplica a hábitos hacer, hay que cambiarlo
 -Comprobar que los hábitos personalizados con categoría me computan para la experiencia y el nivel de esa categoría
@@ -38,9 +33,5 @@ Panel de control:
 -Cuando añado una sugerencia personalizada desde el dashboard me lleva a hábitos y me hace una cosa muy rara, revisar.
 -Las sugerencias son de todos los niveles, esto destroza la UX que solo recomiende cosas de su nivel por módulo.
 
-Perfil:
--Pensar si la vista es adecuada (disposición de los elementos)
-
-Interfaz: 
--Redondear bordes en el modo día
--Sugerencias Rafa (mirar conversación)
+Insignias:
+-Algunas insignias tienen el mismo icono que otras, hay que cambiarlo
