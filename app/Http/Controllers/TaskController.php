@@ -94,6 +94,9 @@ class TaskController extends Controller
     /**
      * Marca una tarea como completada y otorga XP.
      */
+    /**
+     * Marca una tarea como completada y otorga XP.
+     */
     public function completar(Task $tarea)
     {
         abort_if($tarea->user_id != auth()->id(), 403);
@@ -103,17 +106,16 @@ class TaskController extends Controller
                 ->with('info', 'Esta misión ya estaba completada.');
         }
 
-        $subioNivel = $this->taskService->completar($tarea, auth()->user());
+        $resultado = $this->taskService->completar($tarea, auth()->user());
 
-        // la tarea es futura y no se puede completar
-        if (!$tarea->fresh()->completed) {
+        if ($resultado === 'futura') {
             return redirect()->route('tareas.index')
                 ->with('info', 'No puedes completar una misión que aún no ha llegado.');
         }
 
         $insigniasNuevas = $this->badgeService->comprobarInsignias(auth()->user());
 
-        $mensaje = $subioNivel
+        $mensaje = $resultado === 'nivel'
             ? '¡LEVEL UP! Has subido de nivel. 🎉 +' . TaskService::XP_TAREA . ' XP'
             : '¡Misión completada! +' . TaskService::XP_TAREA . ' XP ⭐';
 

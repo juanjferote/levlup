@@ -15,7 +15,9 @@
             @endphp
             <span class="habito-badge">🎯 {{ $logsEstaSemana }}/{{ $habito->target_per_week }}</span>
             @else
-            <span class="habito-badge">🚫 Dejando</span>
+            @if(!$completado)
+            <span class="habito-badge">🚫 {{ $habito->racha_dias }} {{ $habito->racha_dias === 1 ? 'día' : 'días' }} sin fallar</span>
+            @endif
             @endif
 
             @if($habito->category)

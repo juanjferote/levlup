@@ -31,10 +31,21 @@
         </div>
     @endif
 
-    {{-- hábitos completados hoy --}}
+    {{-- hábitos registrados hoy pero objetivo semanal no cumplido todavía --}}
+    @if($habitosRegistrados->isNotEmpty())
+        <div class="bloque mt-3">
+            <h3 class="bloque-titulo">// Registrados hoy</h3>
+
+            @foreach($habitosRegistrados as $habito)
+                @include('habitos._habito', ['habito' => $habito, 'completado' => true])
+            @endforeach
+        </div>
+    @endif
+
+    {{-- hábitos que ya han cumplido el objetivo semanal --}}
     @if($habitosCompletados->isNotEmpty())
         <div class="bloque mt-3">
-            <h3 class="bloque-titulo">// Completados hoy</h3>
+            <h3 class="bloque-titulo">// Objetivo semanal cumplido</h3>
 
             @foreach($habitosCompletados as $habito)
                 @include('habitos._habito', ['habito' => $habito, 'completado' => true])

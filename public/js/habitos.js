@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const campoDuracion = document.getElementById('campo-duracion');
 
     // si no estamos en el formulario de hábitos, no hacemos nada
-    if (!opcionesTipo.length) return;
+    if (!opcionesTipo.length && !document.querySelector('.frecuencia-opcion')) return;
 
     // ── Funciones ──
 

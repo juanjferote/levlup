@@ -39,7 +39,7 @@ class ProfileController extends Controller
 
             $mensaje = 'Intereses actualizados correctamente.';
 
-            $redirect = redirect()->route('tareas.index')->with('exito', $mensaje);
+            $redirect = redirect()->route('perfil.index')->with('exito', $mensaje);
 
             if ($insigniasNuevas->isNotEmpty()) {
                 $redirect = $redirect->with('insignia_desbloqueada', [

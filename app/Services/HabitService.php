@@ -11,9 +11,11 @@ class HabitService
     // XP base por registrar un cumplimiento de hábito
     const XP_HABITO = 20;
 
-    // XP bonus por racha semanal
-    const XP_BONUS_RACHA_7  = 10;
-    const XP_BONUS_RACHA_30 = 25;
+    // XP bonus por racha media (cada 4 semanas en hacer, cada 7 días en dejar)
+    const XP_BONUS_RACHA_MEDIO = 10;
+
+    // XP bonus por racha larga (cada 8 semanas en hacer, cada 30 días en dejar)
+    const XP_BONUS_RACHA_LARGO = 25;
 
     /**
      * Devuelve los hábitos activos del usuario separados por tipo,
@@ -21,21 +23,38 @@ class HabitService
      */
     public function habitosActivos(User $user): array
     {
-        $habitos = $user->habits()->where('active', true)->get();
-        $hoy     = now()->toDateString();
+        $habitos      = $user->habits()->where('active', true)->get();
+        $hoy          = now()->toDateString();
+        $inicioSemana = now()->startOfWeek();
+        $finSemana    = now()->endOfWeek();
 
-        $completadosHoy = $habitos->filter(function ($habito) use ($hoy) {
-            return $habito->logs()->whereDate('logged_date', $hoy)->exists();
-        });
-
-        $sinCompletar = $habitos->filter(function ($habito) use ($hoy) {
+        $pendientes = $habitos->filter(function ($habito) use ($hoy, $inicioSemana, $finSemana) {
+            if ($habito->type === 'hacer') {
+                $logsHoy        = $habito->logs()->whereDate('logged_date', $hoy)->exists();
+                $logsEstaSemana = $habito->logs()->whereBetween('logged_date', [$inicioSemana, $finSemana])->count();
+                return !$logsHoy && $logsEstaSemana < $habito->target_per_week;
+            }
             return !$habito->logs()->whereDate('logged_date', $hoy)->exists();
         });
 
+        $registradosHoy = $habitos->filter(function ($habito) use ($hoy, $inicioSemana, $finSemana) {
+            if ($habito->type !== 'hacer') return false;
+            $logsHoy        = $habito->logs()->whereDate('logged_date', $hoy)->exists();
+            $logsEstaSemana = $habito->logs()->whereBetween('logged_date', [$inicioSemana, $finSemana])->count();
+            return $logsHoy && $logsEstaSemana < $habito->target_per_week;
+        });
+
+        $objetivoCumplido = $habitos->filter(function ($habito) use ($inicioSemana, $finSemana) {
+            if ($habito->type !== 'hacer') return false;
+            $logsEstaSemana = $habito->logs()->whereBetween('logged_date', [$inicioSemana, $finSemana])->count();
+            return $logsEstaSemana >= $habito->target_per_week;
+        });
+
         return [
-            'habitosHacer'      => $sinCompletar->where('type', 'hacer'),
-            'habitosDejar'      => $sinCompletar->where('type', 'dejar'),
-            'habitosCompletados' => $completadosHoy,
+            'habitosHacer'        => $pendientes->where('type', 'hacer'),
+            'habitosDejar'        => $pendientes->where('type', 'dejar'),
+            'habitosRegistrados'  => $registradosHoy,
+            'habitosCompletados'  => $objetivoCumplido,
         ];
     }
 
@@ -143,15 +162,17 @@ class HabitService
 
         if (!$ultimoFallo) {
             // nunca ha fallado, la racha es desde que creó el hábito
-            return now()->diffInDays($habit->created_at);
+            return $habit->created_at->copy()->startOfDay()->diffInDays(now());
         }
 
-        return now()->diffInDays($ultimoFallo->logged_date);
+        return $ultimoFallo->logged_date->diffInDays(now());
     }
 
     /**
      * Otorga XP al usuario por registrar un hábito.
      * Aplica bonus si se alcanzan hitos de racha.
+     * - Hacer: bonus cada 4 semanas (medio) y cada 8 semanas (largo, acumulable)
+     * - Dejar: bonus cada 7 días (medio) y cada 30 días (largo, acumulable)
      * Devuelve true si el usuario ha subido de nivel.
      */
     public function otorgarXp(User $user, Habit $habit): bool
@@ -161,15 +182,29 @@ class HabitService
             ? $this->calcularRachaHacer($habit)
             : $this->calcularRachaDejar($habit);
 
-        // bonus por hitos de racha
-        if ($racha === 7) {
-            $xp += self::XP_BONUS_RACHA_7;
-        } elseif ($racha === 30) {
-            $xp += self::XP_BONUS_RACHA_30;
+        if ($habit->type === 'hacer') {
+            // bonus cada 4 semanas consecutivas cumpliendo el objetivo
+            if ($racha > 0 && $racha % 4 === 0) {
+                $xp += self::XP_BONUS_RACHA_MEDIO;
+            }
+            // bonus extra cada 8 semanas (se acumula al anterior)
+            if ($racha > 0 && $racha % 8 === 0) {
+                $xp += self::XP_BONUS_RACHA_LARGO;
+            }
+        } else {
+            // bonus cada 7 días sin fallar
+            if ($racha > 0 && $racha % 7 === 0) {
+                $xp += self::XP_BONUS_RACHA_MEDIO;
+            }
+            // bonus extra cada 30 días (se acumula al anterior)
+            if ($racha > 0 && $racha % 30 === 0) {
+                $xp += self::XP_BONUS_RACHA_LARGO;
+            }
         }
 
         return $user->addPoints($xp);
     }
+
     /**
      * Calcula las semanas consecutivas que el usuario ha cumplido
      * su objetivo semanal en hábitos de una categoría concreta.
@@ -283,6 +318,18 @@ class HabitService
             $habito->logs_esta_semana = $habito->type === 'hacer'
                 ? $habito->logs()->whereBetween('logged_date', [$inicioSemana, $finSemana])->count()
                 : null;
+            return $habito;
+        });
+    }
+
+    /**
+     * Añade la racha calculada a una colección de hábitos de dejar.
+     * Evita hacer consultas en la vista.
+     */
+    public function conRachaDejar($habitos): \Illuminate\Support\Collection
+    {
+        return collect($habitos)->map(function ($habito) {
+            $habito->racha_dias = max(0, $this->calcularRachaDejar($habito));
             return $habito;
         });
     }

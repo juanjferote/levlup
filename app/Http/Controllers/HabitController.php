@@ -24,7 +24,8 @@ class HabitController extends Controller
 
         return view('habitos.index', [
             'habitosHacer'       => $this->habitService->conProgresoSemanal($grupos['habitosHacer']),
-            'habitosDejar'       => $grupos['habitosDejar'],
+            'habitosDejar'       => $this->habitService->conRachaDejar($grupos['habitosDejar']),
+            'habitosRegistrados' => $this->habitService->conProgresoSemanal($grupos['habitosRegistrados']),
             'habitosCompletados' => $this->habitService->conProgresoSemanal($grupos['habitosCompletados']),
         ]);
     }
@@ -55,6 +56,7 @@ class HabitController extends Controller
             'category'        => ['nullable', 'string', 'max:100'],
             'type'            => ['required', 'in:hacer,dejar'],
             'target_per_week' => ['required_if:type,hacer', 'nullable', 'integer', 'min:1', 'max:7'],
+            'duration_minutes' => ['nullable', 'integer', 'min:1', 'max:480'],
         ], [
             'title.required'                => 'El título es obligatorio.',
             'type.required'                 => 'Debes indicar el tipo de hábito.',
@@ -94,6 +96,7 @@ class HabitController extends Controller
             'description'     => ['nullable', 'string', 'max:1000'],
             'category'        => ['nullable', 'string', 'max:100'],
             'target_per_week' => ['required_if:type,hacer', 'nullable', 'integer', 'min:1', 'max:7'],
+            'duration_minutes' => ['nullable', 'integer', 'min:1', 'max:480'],
         ], [
             'title.required'              => 'El título es obligatorio.',
             'target_per_week.required_if' => 'Indica cuántos días a la semana quieres cumplir este hábito.',
@@ -141,7 +144,7 @@ class HabitController extends Controller
             ? '¡LEVEL UP! Has subido de nivel. 🎉 +' . HabitService::XP_HABITO . ' XP'
             : '¡Hábito registrado! +' . HabitService::XP_HABITO . ' XP ⭐';
 
-        $redirect = redirect()->route('tareas.index')->with('exito', $mensaje);
+        $redirect = redirect()->route('habitos.index')->with('exito', $mensaje);
 
         if ($insigniasNuevas->isNotEmpty()) {
             $redirect = $redirect->with('insignia_desbloqueada', [

@@ -31,14 +31,26 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // activa el botón de envío si el hidden tiene valor
+
+    // activa el botón solo si la fecha/hora es válida, y avisa si la hora ya pasó
     function actualizarSubmit() {
         if (!btnSubmit) return;
 
-        if (inputHidden.value !== '') {
-            btnSubmit.removeAttribute('disabled');
-        } else {
-            btnSubmit.setAttribute('disabled', 'disabled');
+        const valido = fechaEsValida();
+        btnSubmit.toggleAttribute('disabled', !valido);
+
+        // aviso visual si el usuario elige hoy con hora pasada
+        const avisoExistente = document.getElementById('aviso-hora-pasada');
+        const horaEsPasada = inputHidden.value && !valido;
+
+        if (horaEsPasada && !avisoExistente) {
+            const aviso = document.createElement('span');
+            aviso.id = 'aviso-hora-pasada';
+            aviso.className = 'form-error';
+            aviso.textContent = 'La hora indicada ya ha pasado. Elige una hora futura.';
+            inputHora.insertAdjacentElement('afterend', aviso);
+        } else if (!horaEsPasada && avisoExistente) {
+            avisoExistente.remove();
         }
     }
 
@@ -52,6 +64,31 @@ document.addEventListener('DOMContentLoaded', function () {
     function marcarActivo(btnActivo, btnInactivo) {
         btnActivo.classList.add('activo');
         btnInactivo.classList.remove('activo');
+    }
+
+    /**
+     * Comprueba si el scheduled_at montado es válido:
+     * - Debe tener valor.
+     * - Si la fecha es hoy, la hora debe ser estrictamente futura (al menos 1 minuto de margen).
+     */
+
+    function fechaEsValida() {
+        if (!inputHidden.value) return false;
+
+        const fechaSeleccionada = inputFecha.value || hoy;
+
+        // solo aplicamos restricción de hora si la fecha es hoy
+        if (fechaSeleccionada === hoy) {
+            const ahora = new Date();
+            const [hh, mm] = inputHora.value.split(':').map(Number);
+            const horaElegida = new Date();
+            horaElegida.setHours(hh, mm, 0, 0);
+
+            // 1 minuto de margen para evitar rechazo de Laravel por milisegundos
+            return horaElegida.getTime() > ahora.getTime() + 60 * 1000;
+        }
+
+        return true;
     }
 
     // ── Eventos ──

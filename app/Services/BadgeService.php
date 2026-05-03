@@ -75,12 +75,24 @@ class BadgeService
      */
     private function comprobarHabitHacer(User $user, int $valor): bool
     {
-        // contamos todos los logs de hábitos de tipo hacer del usuario
-        return $user->habits()
+        $logsHacer = $user->habits()
             ->where('type', 'hacer')
             ->withCount('logs')
             ->get()
-            ->sum('logs_count') >= $valor;
+            ->sum('logs_count');
+
+        // si busca el primer hábito (valor 1), también contamos
+        // si el usuario tiene algún hábito de dejar activo
+        if ($valor === 1) {
+            $tieneHabitoDejar = $user->habits()
+                ->where('type', 'dejar')
+                ->where('active', true)
+                ->exists();
+
+            return $logsHacer >= 1 || $tieneHabitoDejar;
+        }
+
+        return $logsHacer >= $valor;
     }
 
     /**
@@ -288,5 +300,5 @@ class BadgeService
             ->latest('unlocked_at')
             ->take(3)
             ->get();
-    }   
+    }
 }

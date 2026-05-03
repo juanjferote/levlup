@@ -44,17 +44,23 @@ class TaskService
 
     /**
      * Marca una tarea como completada y otorga XP al usuario.
-     * Devuelve true si el usuario ha subido de nivel.
+     * Devuelve una string indicando el resultado:
+     * - 'futura'    → la tarea aún no ha llegado, no se completa
+     * - 'nivel'     → completada y el usuario ha subido de nivel
+     * - 'completada'→ completada correctamente
      */
-    public function completar(Task $task, User $user): bool
+    public function completar(Task $task, User $user): string
     {
         // no se pueden completar tareas futuras
         if ($task->scheduled_at->isFuture() && !$task->scheduled_at->isToday()) {
-            return false;
+            return 'futura';
         }
 
         $task->update(['completed' => true]);
-        return $user->addPoints(self::XP_TAREA);
+
+        $subioNivel = $user->addPoints(self::XP_TAREA);
+
+        return $subioNivel ? 'nivel' : 'completada';
     }
 
     /**
