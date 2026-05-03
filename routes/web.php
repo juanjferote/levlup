@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BadgeController;
 use App\Http\Controllers\StatisticsController;
 
+
 // redirigir la raíz al landing page
 Route::get('/', function () {
     return view('welcome');
