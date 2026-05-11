@@ -12,7 +12,10 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    // campos que se pueden asignar masivamente
+    // nivel máximo que puede alcanzar un usuario
+    const NIVEL_MAXIMO = 20;
+
+    // campos que se pueden asignar masigamente
     protected $fillable = [
         'name',
         'email',
@@ -78,14 +81,14 @@ class User extends Authenticatable
     // nivel 2 = 100 puntos, nivel 3 = 300, nivel 4 = 600, nivel 5 = 1000, etc.
     public function calculateLevel(): int
     {
-        $level = 1;
-        $limit = 100; // puntos que cuesta el TRAMO actual (nivel 1→2)
-        $accumulated = 0; // puntos acumulados hasta el inicio del tramo actual
+        $level       = 1;
+        $limit       = 100; // puntos que cuesta el TRAMO actual (nivel 1→2)
+        $accumulated = 0;   // puntos acumulados hasta el inicio del tramo actual
 
-        while ($this->points >= $accumulated + $limit && $level < 10) {
-            $accumulated += $limit; // sumamos el tramo que acabamos de superar 
-            $level++;       // subimos de nivel
-            $limit = 100 * $level; // el siguiente tramo cuesta más
+        while ($this->points >= $accumulated + $limit && $level < self::NIVEL_MAXIMO) {
+            $accumulated += $limit;    // sumamos el tramo que acabamos de superar
+            $level++;                  // subimos de nivel
+            $limit = 100 * $level;     // el siguiente tramo cuesta más
         }
 
         return $level;
@@ -95,7 +98,7 @@ class User extends Authenticatable
     // útil para la barra de progreso visual
     public function pointsToNextLevel(): int
     {
-        if ($this->level >= 10) {
+        if ($this->level >= self::NIVEL_MAXIMO) {
             return 0; // ya está en el nivel máximo
         }
 
@@ -107,6 +110,7 @@ class User extends Authenticatable
         $neededForNextLevel = $accumulatedForCurrentLevel + (100 * $this->level);
         return $neededForNextLevel - $this->points;
     }
+
     // devuelve la URL del avatar generado por DiceBear según la semilla del usuario
     public function avatarUrl(): string
     {

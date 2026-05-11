@@ -5,7 +5,7 @@
 @section('contenido')
 
 <div class="pagina-titulo">
-    <h2>Estadísticas</h2>
+    <h2>Estadisticas</h2>
 </div>
 
 {{-- fila 1: misiones + progreso --}}
@@ -42,7 +42,7 @@
     <div class="bloque">
         <h3 class="bloque-titulo">// Progreso</h3>
 
-        <div class="stat-grupo">
+        <div class="stat-grupo stat-grupo--espaciado">
             <div class="stat-grande">
                 <span class="stat-numero amarillo">{{ $progresoNivel }}</span>
                 <span class="stat-etiqueta">Nivel actual</span>
@@ -51,24 +51,28 @@
                 <span class="stat-numero amarillo">{{ $progresoPuntos }}</span>
                 <span class="stat-etiqueta">Puntos totales</span>
             </div>
+            <div class="stat-grande">
+                <span class="stat-numero naranja">{{ $progresoRachaGlobal }}</span>
+                <span class="stat-etiqueta">🔥 Días de racha</span>
+            </div>
         </div>
 
         {{-- barra de progreso hacia el siguiente nivel --}}
-        @if($progresoNivel < 10)
+        @if($progresoNivel < $nivelMaximo)
             <div class="stat-barra-grupo mt-3">
-            <div class="stat-barra-cabecera">
-                <span class="stat-barra-label">Nivel {{ $progresoNivel }} → {{ $progresoNivel + 1 }}</span>
-                <span class="stat-barra-label">{{ $progresoPorcentaje }}%</span>
+                <div class="stat-barra-cabecera">
+                    <span class="stat-barra-label">Nivel {{ $progresoNivel }} → {{ $progresoNivel + 1 }}</span>
+                    <span class="stat-barra-label">{{ $progresoPorcentaje }}%</span>
+                </div>
+                <div class="stat-barra-fondo">
+                    <div class="stat-barra-relleno" style="width: {{ $progresoPorcentaje }}%"></div>
+                </div>
+                <span class="texto-suave">Faltan {{ $progresoFaltan }} XP para el siguiente nivel</span>
             </div>
-            <div class="stat-barra-fondo">
-                <div class="stat-barra-relleno" style="width: {{ $progresoPorcentaje }}%"></div>
-            </div>
-            <span class="texto-suave">Faltan {{ $progresoFaltan }} XP para el siguiente nivel</span>
+        @else
+            <p class="texto-suave mt-3">⭐ Nivel máximo alcanzado</p>
+        @endif
     </div>
-    @else
-    <p class="texto-suave mt-3">⭐ Nivel máximo alcanzado</p>
-    @endif
-</div>
 
 </div>
 
@@ -78,7 +82,7 @@
     <div class="bloque bloque--centrado">
         <h3 class="bloque-titulo">// Hábitos</h3>
 
-        <div class="stat-grupo">
+        <div class="stat-grupo stat-grupo--espaciado">
             <div class="stat-grande">
                 <span class="stat-numero amarillo">{{ $habitosTotalHacer }}</span>
                 <span class="stat-etiqueta">Hábitos de hacer</span>
@@ -86,10 +90,6 @@
             <div class="stat-grande">
                 <span class="stat-numero amarillo">{{ $habitosTotalDejar }}</span>
                 <span class="stat-etiqueta">Hábitos de dejar</span>
-            </div>
-            <div class="stat-grande">
-                <span class="stat-numero naranja">{{ $habitosMejorRacha }}</span>
-                <span class="stat-etiqueta">Mejor racha histórica</span>
             </div>
             <div class="stat-grande">
                 <span class="stat-numero stat-numero--texto amarillo">{{ $habitosCategoriaStar ?? '—' }}</span>
@@ -114,7 +114,7 @@
     <div class="bloque">
         <h3 class="bloque-titulo">// Insignias</h3>
 
-        <div class="stat-grupo">
+        <div class="stat-grupo stat-grupo--espaciado">
             <div class="stat-grande">
                 <span class="stat-numero amarillo">{{ $insigniasTotalDesbloqueadas }}</span>
                 <span class="stat-etiqueta">Desbloqueadas</span>

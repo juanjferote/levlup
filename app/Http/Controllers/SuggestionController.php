@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Services\HabitService;
 use Illuminate\View\View;
 use App\Models\SuggestedHabit;
+use App\Services\BadgeService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class SuggestionController extends Controller
 {
-    public function __construct(private HabitService $habitService) {}
+    public function __construct(
+        private HabitService $habitService,
+        private BadgeService $badgeService,
+    ) {}
 
     /**
      * Muestra las sugerencias de hábitos personalizadas para el usuario.
@@ -56,7 +60,19 @@ class SuggestionController extends Controller
             'duration_minutes' => $sugerencia->suggested_duration_minutes,
         ], $sugerencia->id);
 
-        return redirect()->route('habitos.index')
+        // comprobamos insignias de diversidad e intereses al añadir un hábito sugerido
+        $insigniasNuevas = $this->badgeService->comprobarInsignias($user);
+
+        $redirect = redirect()->route('habitos.index')
             ->with('exito', '¡Hábito añadido! Empieza a cumplirlo para ganar XP. ⭐');
+
+        if ($insigniasNuevas->isNotEmpty()) {
+            $redirect = $redirect->with('insignia_desbloqueada', [
+                'nombre' => $insigniasNuevas->first()->name,
+                'icono'  => $insigniasNuevas->first()->icon,
+            ]);
+        }
+
+        return $redirect;
     }
 }

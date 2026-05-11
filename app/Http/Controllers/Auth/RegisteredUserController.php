@@ -16,6 +16,7 @@ use App\Services\BadgeService;
 class RegisteredUserController extends Controller
 {
     public function __construct(private BadgeService $badgeService) {}
+
     /**
      * Muestra el formulario de registro (paso 1).
      */
@@ -30,10 +31,12 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name'        => ['required', 'string', 'max:255'],
+            'name'        => ['required', 'string', 'max:12'],
             'email'       => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password'    => ['required', 'confirmed', Rules\Password::defaults()],
             'avatar_seed' => ['required', 'string', 'max:50'],
+        ], [
+            'name.max' => 'El nombre no puede superar los 12 caracteres.',
         ]);
 
         $user = User::create([
@@ -59,7 +62,7 @@ class RegisteredUserController extends Controller
     public function intereses(): View
     {
         return view('auth.intereses', [
-            'accion' => route('registro.intereses.store'),
+            'accion'      => route('registro.intereses.store'),
             'redireccion' => route('dashboard'),
         ]);
     }

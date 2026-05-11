@@ -321,6 +321,79 @@
     padding-left: 8px;
 }
 
+/* ── Pestañas ── */
+.pestanas {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+    border-bottom: var(--borde-grosor) solid var(--borde);
+}
+
+.pestana {
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 8px 20px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--texto-suave);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.15s;
+}
+
+.pestana:hover {
+    color: var(--texto);
+}
+
+.pestana.activa {
+    color: var(--acento);
+    border-bottom: 3px solid var(--acento);
+}
+
+.pestana-contador {
+    background-color: var(--fondo-secundario);
+    border: var(--borde-grosor) solid var(--borde);
+    padding: 1px 7px;
+    font-size: 0.75rem;
+}
+
+.pestana-contador.rojo {
+    color: var(--rojo);
+    border-color: var(--rojo);
+}
+
+.pestana-contador.verde {
+    color: var(--verde);
+    border-color: var(--verde);
+}
+
+.pestana-contenido {
+    display: none;
+}
+
+.pestana-contenido.activo {
+    display: block;
+}
+
+.dashboard-fila .pestana-contenido.activo {
+    max-height: 260px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.pestana-contenido-grande.activo {
+    display: block;
+    max-height: 670px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
 /* ── Mobile (≤640px) ── */
 @media (max-width: 640px) {
     .avatar-selector-grid {

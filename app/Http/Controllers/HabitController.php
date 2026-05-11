@@ -27,6 +27,7 @@ class HabitController extends Controller
             'habitosDejar'       => $this->habitService->conRachaDejar($grupos['habitosDejar']),
             'habitosRegistrados' => $this->habitService->conProgresoSemanal($grupos['habitosRegistrados']),
             'habitosCompletados' => $this->habitService->conProgresoSemanal($grupos['habitosCompletados']),
+            'habitosArchivados'  => $this->habitService->habitosArchivados(auth()->user()),
         ]);
     }
 
@@ -50,25 +51,39 @@ class HabitController extends Controller
      */
     public function store(Request $request)
     {
+        $user = auth()->user();
+
         $datos = $request->validate([
-            'title'           => ['required', 'string', 'max:255'],
-            'description'     => ['nullable', 'string', 'max:1000'],
-            'category'        => ['nullable', 'string', 'max:100'],
-            'type'            => ['required', 'in:hacer,dejar'],
-            'target_per_week' => ['required_if:type,hacer', 'nullable', 'integer', 'min:1', 'max:7'],
+            'title'            => ['required', 'string', 'max:255'],
+            'description'      => ['nullable', 'string', 'max:1000'],
+            'category'         => ['nullable', 'string', 'max:100'],
+            'type'             => ['required', 'in:hacer,dejar'],
+            'target_per_week'  => ['required_if:type,hacer', 'nullable', 'integer', 'min:1', 'max:7'],
             'duration_minutes' => ['nullable', 'integer', 'min:1', 'max:480'],
         ], [
-            'title.required'                => 'El título es obligatorio.',
-            'type.required'                 => 'Debes indicar el tipo de hábito.',
-            'type.in'                       => 'El tipo debe ser "hacer" o "dejar".',
-            'target_per_week.required_if'   => 'Indica cuántos días a la semana quieres cumplir este hábito.',
-            'target_per_week.min'           => 'El mínimo es 1 día a la semana.',
-            'target_per_week.max'           => 'El máximo es 7 días a la semana.',
+            'title.required'              => 'El título es obligatorio.',
+            'type.required'               => 'Debes indicar el tipo de hábito.',
+            'type.in'                     => 'El tipo debe ser "hacer" o "dejar".',
+            'target_per_week.required_if' => 'Indica cuántos días a la semana quieres cumplir este hábito.',
+            'target_per_week.min'         => 'El mínimo es 1 día a la semana.',
+            'target_per_week.max'         => 'El máximo es 7 días a la semana.',
         ]);
+
+        // comprobamos si ya existe un hábito activo con el mismo título (sin distinción de mayúsculas)
+        $existe = $user->habits()
+            ->where('active', true)
+            ->whereRaw('LOWER(title) = ?', [strtolower($datos['title'])])
+            ->exists();
+
+        if ($existe) {
+            return back()
+                ->withInput()
+                ->withErrors(['title' => 'Ya tienes un hábito activo con ese nombre.']);
+        }
 
         $suggestedHabitId = $request->input('suggested_habit_id');
 
-        $this->habitService->crear(auth()->user(), $datos, $suggestedHabitId);
+        $this->habitService->crear($user, $datos, $suggestedHabitId);
 
         return redirect()->route('habitos.index')
             ->with('exito', '¡Hábito creado! Empieza a cumplirlo para ganar XP. ⭐');
@@ -126,15 +141,25 @@ class HabitController extends Controller
     /**
      * Registra el cumplimiento del hábito hoy y otorga XP.
      */
-    public function registrar(Habit $habito)
+    public function registrar(Habit $habito, Request $request)
     {
         abort_if($habito->user_id !== auth()->id(), 403);
 
         $registrado = $this->habitService->registrarHoy($habito);
 
+        $destino = $request->input('origen') === 'dashboard'
+            ? route('dashboard')
+            : route('habitos.index');
+
         if (!$registrado) {
-            return redirect()->route('habitos.index')
+            return redirect($destino)
                 ->with('info', 'Ya has registrado este hábito hoy.');
+        }
+
+        // los hábitos de dejar registran un fallo, no otorgan XP
+        if ($habito->type === 'dejar') {
+            return redirect($destino)
+                ->with('info', 'Fallo registrado. ¡Mañana lo conseguirás! 💪');
         }
 
         $subioNivel      = $this->habitService->otorgarXp(auth()->user(), $habito);
@@ -144,7 +169,7 @@ class HabitController extends Controller
             ? '¡LEVEL UP! Has subido de nivel. 🎉 +' . HabitService::XP_HABITO . ' XP'
             : '¡Hábito registrado! +' . HabitService::XP_HABITO . ' XP ⭐';
 
-        $redirect = redirect()->route('habitos.index')->with('exito', $mensaje);
+        $redirect = redirect($destino)->with('exito', $mensaje);
 
         if ($insigniasNuevas->isNotEmpty()) {
             $redirect = $redirect->with('insignia_desbloqueada', [
@@ -154,5 +179,29 @@ class HabitController extends Controller
         }
 
         return $redirect;
+    }
+
+    /**
+     * Reactiva un hábito archivado.
+     */
+    public function recuperar(Habit $habito)
+    {
+        abort_if($habito->user_id !== auth()->id(), 403);
+
+        // comprobamos si ya tiene un hábito activo con el mismo nombre
+        $existe = auth()->user()->habits()
+            ->where('active', true)
+            ->whereRaw('LOWER(title) = ?', [strtolower($habito->title)])
+            ->exists();
+
+        if ($existe) {
+            return redirect()->route('habitos.index')
+                ->with('info', 'Ya tienes un hábito activo con ese nombre.');
+        }
+
+        $this->habitService->recuperar($habito);
+
+        return redirect()->route('habitos.index')
+            ->with('exito', 'Hábito recuperado. ¡A por ello! 💪');
     }
 }

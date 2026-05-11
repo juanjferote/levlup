@@ -6,18 +6,13 @@
 
     <div class="header-acciones">
 
-        {{-- nivel + puntos --}}
-        <span class="header-xp">
-            NV.{{ auth()->user()->level }} &nbsp;·&nbsp; ★ {{ auth()->user()->points }} XP
-        </span>
-
-        <span class="header-usuario">{{ auth()->user()->name ?? 'Jugador' }}</span>
+        <span class="header-usuario">👤{{ auth()->user()->name ?? 'Jugador' }}</span>
 
         <button id="btn-modo" onclick="toggleModoNoche()" class="btn-icono" title="">🌙</button>
 
         <form action="{{ route('logout') }}" method="POST">
             @csrf
-            <button type="submit" class="btn-icono" title="Salir">↩</button>
+            <button type="submit" class="btn-icono" title="Salir">🚪</button>
         </form>
 
     </div>

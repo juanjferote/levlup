@@ -21,6 +21,9 @@
             <form action="{{ route('tareas.completar', $tarea) }}" method="POST">
                 @csrf
                 @method('PATCH')
+                @if(!empty($modoResumen))
+                <input type="hidden" name="origen" value="dashboard">
+                @endif
                 <button type="submit" class="btn-primario btn-pequeño">✔ Completar</button>
             </form>
             @endif

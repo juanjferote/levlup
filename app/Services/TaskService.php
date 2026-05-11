@@ -19,9 +19,10 @@ class TaskService
         $tareas = $user->tasks()->orderBy('scheduled_at')->get();
 
         return [
-            'tareasHoy' => $tareas->filter(fn($t) => $t->scheduled_at->isToday() && !$t->completed),
-            'tareasFuturas'  => $tareas->filter(fn($t) => $t->scheduled_at->isFuture() && !$t->scheduled_at->isToday()),
-            'tareasVencidas' => $tareas->filter(fn($t) => $t->scheduled_at->isPast() && !$t->scheduled_at->isToday() && !$t->completed),
+            'tareasHoy'         => $tareas->filter(fn($t) => $t->scheduled_at->isFuture() && $t->scheduled_at->isToday() && !$t->completed),
+            'tareasFuturas'     => $tareas->filter(fn($t) => $t->scheduled_at->isFuture() && !$t->scheduled_at->isToday()),
+            'tareasVencidas'    => $tareas->filter(fn($t) => $t->scheduled_at->isPast() && !$t->completed),
+            'tareasCompletadas' => $tareas->filter(fn($t) => $t->completed),
         ];
     }
 

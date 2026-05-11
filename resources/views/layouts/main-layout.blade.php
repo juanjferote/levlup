@@ -40,7 +40,7 @@
                     <div class="xp-barra-relleno" style="width: {{ $xpPorcentaje ?? 0 }}%"></div>
                 </div>
                 <span class="xp-texto">
-                    @if(auth()->user()->level >= 10)
+                    @if(auth()->user()->level >= \App\Models\User::NIVEL_MAXIMO)
                     ⭐ Nivel máximo
                     @else
                     {{ auth()->user()->pointsToNextLevel() }} XP para nivel {{ auth()->user()->level + 1 }}
@@ -50,29 +50,29 @@
 
             {{-- Navegación --}}
             <nav class="sidebar-nav">
-                <a href="{{ route('tareas.index') }}"
-                    class="nav-item {{ request()->routeIs('tareas.*') ? 'activo' : '' }}">
-                    📋 Misiones
+                <a href="{{ route('tareas.index') }}" class="nav-item {{ request()->routeIs('tareas.*') ? 'activo' : '' }}">
+                    <span class="nav-icono">📋</span>
+                    <span class="nav-texto">Misiones</span>
                 </a>
-                <a href="{{ route('habitos.index') }}"
-                    class="nav-item {{ request()->routeIs('habitos.*') ? 'activo' : '' }}">
-                    🔄 Hábitos
+                <a href="{{ route('habitos.index') }}" class="nav-item {{ request()->routeIs('habitos.*') ? 'activo' : '' }}">
+                    <span class="nav-icono">🔄</span>
+                    <span class="nav-texto">Hábitos</span>
                 </a>
-                <a href="{{ route('sugerencias.index') }}"
-                    class="nav-item {{ request()->routeIs('habitos.sugerencias') ? 'activo' : '' }}">
-                    💡 Sugerencias
+                <a href="{{ route('sugerencias.index') }}" class="nav-item {{ request()->routeIs('habitos.sugerencias') ? 'activo' : '' }}">
+                    <span class="nav-icono">💡</span>
+                    <span class="nav-texto">Sugerencias</span>
                 </a>
-                <a href="{{ route('estadisticas.index') }}"
-                    class="nav-item {{ request()->routeIs('estadisticas.*') ? 'activo' : '' }}">
-                    📊 Estadísticas
+                <a href="{{ route('estadisticas.index') }}" class="nav-item {{ request()->routeIs('estadisticas.*') ? 'activo' : '' }}">
+                    <span class="nav-icono">📊</span>
+                    <span class="nav-texto">Estadísticas</span>
                 </a>
-                <a href="{{ route('insignias.index') }}"
-                    class="nav-item {{ request()->routeIs('insignias.*') ? 'activo' : '' }}">
-                    🏆 Insignias
+                <a href="{{ route('insignias.index') }}" class="nav-item {{ request()->routeIs('insignias.*') ? 'activo' : '' }}">
+                    <span class="nav-icono">🏆</span>
+                    <span class="nav-texto">Insignias</span>
                 </a>
-                <a href="{{ route('perfil.index') }}"
-                    class="nav-item {{ request()->routeIs('perfil.*') ? 'activo' : '' }}">
-                    👤 Perfil
+                <a href="{{ route('perfil.index') }}" class="nav-item {{ request()->routeIs('perfil.*') ? 'activo' : '' }}">
+                    <span class="nav-icono">👤</span>
+                    <span class="nav-texto">Perfil</span>
                 </a>
             </nav>
 

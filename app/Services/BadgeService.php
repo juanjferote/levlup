@@ -5,9 +5,11 @@ namespace App\Services;
 use App\Models\Badge;
 use App\Models\User;
 use Illuminate\Support\Collection;
+use App\Services\HabitService;
 
 class BadgeService
 {
+    public function __construct(private HabitService $habitService) {}
     /**
      * Comprueba todas las insignias que el usuario podría haber desbloqueado
      * y devuelve las que acaba de conseguir en esta llamada.
@@ -47,6 +49,7 @@ class BadgeService
             'custom_interests' => $this->comprobarInteresesPersonalizados($user, $badge->condition_value),
             'level'            => $this->comprobarNivel($user, $badge->condition_value),
             'global_streak'    => $this->comprobarRachaGlobal($user, $badge->condition_value),
+            'special_task'     => $this->comprobarTareaEspecial($user, $badge->condition_value),
             default            => false,
         };
     }
@@ -241,7 +244,7 @@ class BadgeService
             $diaOffset++;
         }
 
-        return $racha >= $valor;
+        return $this->habitService->calcularRachaGlobal($user) >= $valor;
     }
 
     /**
@@ -269,6 +272,7 @@ class BadgeService
             'intereses'   => $todas->where('condition_type', 'custom_interests')->values(),
             'rachas'      => $todas->where('condition_type', 'global_streak')->values(),
             'niveles'     => $todas->where('condition_type', 'level')->values(),
+            'especiales'  => $todas->where('condition_type', 'special_task')->values(),
         ];
     }
 
@@ -286,6 +290,7 @@ class BadgeService
             'custom_interests' => "Añade {$badge->condition_value} intereses personalizados",
             'level'            => "Alcanza el nivel {$badge->condition_value}",
             'global_streak'    => "{$badge->condition_value} días consecutivos de actividad",
+            'special_task' => "Completa la tarea: {$badge->condition_value}",
             default            => '',
         };
     }
@@ -300,5 +305,23 @@ class BadgeService
             ->latest('unlocked_at')
             ->take(3)
             ->get();
+    }
+
+    /**
+     * Comprueba si el usuario ha completado una tarea con un título concreto.
+     * Se usa para insignias especiales vinculadas a hitos únicos.
+     */
+    private function comprobarTareaEspecial(User $user, int $valor): bool
+    {
+        $tareas = [
+            999 => 'Defensa proyecto final',
+        ];
+
+        if (!isset($tareas[$valor])) return false;
+
+        return $user->tasks()
+            ->where('completed', true)
+            ->where('title', $tareas[$valor])
+            ->exists();
     }
 }

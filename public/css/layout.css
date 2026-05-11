@@ -281,6 +281,15 @@ body.modo-noche .xp-barra-fondo {
     padding: 1px 6px;
 }
 
+.nav-icono {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.nav-texto {
+    font-size: 0.8rem;
+}
+
 /* ── Mobile (≤640px): sidebar se convierte en barra de nav inferior fija ── */
 @media (max-width: 1024px) {
     .sidebar {
@@ -350,11 +359,12 @@ body.modo-noche .xp-barra-fondo {
         justify-content: center;
         padding: 0;
         height: 60px;
-        font-size: 0;
+        font-size: 0.55rem;
         letter-spacing: 0;
         border-left: none;
         border-bottom: 3px solid transparent;
         border-radius: 0;
+        gap: 2px;
     }
 
     .nav-item::first-letter {
@@ -374,6 +384,14 @@ body.modo-noche .xp-barra-fondo {
     }
 
     .levlup-footer {
+        display: none;
+    }
+
+    .nav-icono {
+        font-size: 1.6rem;
+    }
+
+    .nav-texto {
         display: none;
     }
 }

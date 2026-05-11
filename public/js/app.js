@@ -19,5 +19,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (activado) {
         document.body.classList.add('modo-noche');
     }
+    document.querySelectorAll('.pestana').forEach(function(pestana) {
+        pestana.addEventListener('click', function() {
+            // buscamos el contenedor padre más cercano que agrupe las pestañas
+            const contenedor = pestana.closest('.bloque, .contenido-principal');
+
+            // solo afectamos a las pestañas y contenidos dentro de ese contenedor
+            contenedor.querySelectorAll('.pestana').forEach(p => p.classList.remove('activa'));
+            contenedor.querySelectorAll('.pestana-contenido').forEach(c => c.classList.remove('activo'));
+
+            pestana.classList.add('activa');
+            document.getElementById('pestana-' + pestana.dataset.pestana).classList.add('activo');
+        });
+    });
     actualizarIconoModo(activado);
 });

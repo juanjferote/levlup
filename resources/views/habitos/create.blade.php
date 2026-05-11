@@ -27,7 +27,7 @@
                 name="title"
                 class="form-input-levlup {{ $errors->has('title') ? 'input-error' : '' }}"
                 value="{{ old('title', $sugerencia?->title) }}"
-                placeholder="Ej: Correr 20 minutos"
+                placeholder="Ej: Meditar, leer..."
                 autofocus>
             @error('title')
             <span class="form-error">{{ $message }}</span>

@@ -73,9 +73,6 @@ class StatisticsService
         // tasa de cumplimiento semanal
         $tasaCumplimiento = $this->calcularTasaCumplimientoSemanal($user, $habitos);
 
-        // mejor racha histórica entre todos los hábitos
-        $mejorRacha = $this->calcularMejorRachaHistorica($user);
-
         // categoría más trabajada
         $categoriaMasTrabajada = $this->calcularCategoriaMasTrabajada($user);
 
@@ -83,7 +80,6 @@ class StatisticsService
             'habitosTotalHacer'      => $totalHacer,
             'habitosTotalDejar'      => $totalDejar,
             'habitosTasaSemanal'     => $tasaCumplimiento,
-            'habitosMejorRacha'      => $mejorRacha,
             'habitosCategoriaStar'   => $categoriaMasTrabajada,
         ];
     }
@@ -103,8 +99,8 @@ class StatisticsService
         $inicioSemana = now()->startOfWeek();
         $finSemana    = now()->endOfWeek();
 
-        $totalObjetivo  = 0;
-        $totalCumplido  = 0;
+        $totalObjetivo = 0;
+        $totalCumplido = 0;
 
         foreach ($habitosHacer as $habito) {
             $totalObjetivo += $habito->target_per_week;
@@ -119,32 +115,10 @@ class StatisticsService
     }
 
     /**
-     * Calcula la mejor racha histórica entre todos los hábitos del usuario.
-     */
-    private function calcularMejorRachaHistorica(User $user): int
-    {
-        $habitos = $user->habits()->get();
-        $mejor   = 0;
-
-        foreach ($habitos as $habito) {
-            $racha = $habito->type === 'hacer'
-                ? $this->habitService->calcularRachaHacer($habito)
-                : $this->habitService->calcularRachaDejar($habito);
-
-            if ($racha > $mejor) {
-                $mejor = $racha;
-            }
-        }
-
-        return $mejor;
-    }
-
-    /**
      * Devuelve la categoría con más logs registrados.
      */
     private function calcularCategoriaMasTrabajada(User $user): ?string
     {
-        // contamos los logs agrupados por categoría del hábito
         $resultado = $user->habits()
             ->whereNotNull('category')
             ->withCount('logs')
@@ -160,21 +134,24 @@ class StatisticsService
 
     /**
      * Datos de progreso del personaje.
+     * Incluye la racha global de actividad del usuario.
      */
     private function datosProgreso(User $user): array
     {
         $tramoCosto      = 100 * $user->level;
         $faltan          = $user->pointsToNextLevel();
         $yaHechos        = $tramoCosto - $faltan;
-        $porcentajeNivel = $user->level >= 10
+        $porcentajeNivel = $user->level >= User::NIVEL_MAXIMO
             ? 100
             : round(($yaHechos / $tramoCosto) * 100);
 
         return [
-            'progresoNivel'      => $user->level,
-            'progresoPuntos'     => $user->points,
-            'progresoFaltan'     => $faltan,
-            'progresoPorcentaje' => $porcentajeNivel,
+            'progresoNivel'       => $user->level,
+            'progresoPuntos'      => $user->points,
+            'progresoFaltan'      => $faltan,
+            'progresoPorcentaje'  => $porcentajeNivel,
+            'progresoRachaGlobal' => $this->habitService->calcularRachaGlobal($user),
+            'nivelMaximo'         => User::NIVEL_MAXIMO,
         ];
     }
 

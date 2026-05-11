@@ -97,7 +97,7 @@ class TaskController extends Controller
     /**
      * Marca una tarea como completada y otorga XP.
      */
-    public function completar(Task $tarea)
+    public function completar(Task $tarea, Request $request)
     {
         abort_if($tarea->user_id != auth()->id(), 403);
 
@@ -119,7 +119,11 @@ class TaskController extends Controller
             ? '¡LEVEL UP! Has subido de nivel. 🎉 +' . TaskService::XP_TAREA . ' XP'
             : '¡Misión completada! +' . TaskService::XP_TAREA . ' XP ⭐';
 
-        $redirect = redirect()->route('tareas.index')->with('exito', $mensaje);
+        $destino = $request->input('origen') === 'dashboard'
+            ? route('dashboard')
+            : route('tareas.index');
+
+        $redirect = redirect($destino)->with('exito', $mensaje);
 
         if ($insigniasNuevas->isNotEmpty()) {
             $redirect = $redirect->with('insignia_desbloqueada', [

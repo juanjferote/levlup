@@ -17,7 +17,7 @@
 .landing-header {
     background-color: var(--fondo-secundario);
     border-bottom: var(--borde-grosor) solid var(--borde);
-    padding: 10px 40px;
+    padding: 14px 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -25,8 +25,7 @@
 
 .landing-logo {
     font-family: 'Press Start 2P', monospace;
-    font-size: 1rem;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: 900;
     letter-spacing: 3px;
     text-transform: uppercase;

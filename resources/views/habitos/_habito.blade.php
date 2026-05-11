@@ -16,7 +16,7 @@
             <span class="habito-badge">🎯 {{ $logsEstaSemana }}/{{ $habito->target_per_week }}</span>
             @else
             @if(!$completado)
-            <span class="habito-badge">🚫 {{ $habito->racha_dias }} {{ $habito->racha_dias === 1 ? 'día' : 'días' }} sin fallar</span>
+            <span class="habito-badge">🚫 {{ $habito->racha_dias ?? 0 }} {{ ($habito->racha_dias ?? 0) === 1 ? 'día' : 'días' }} sin fallar</span>
             @endif
             @endif
 
@@ -28,26 +28,41 @@
 
     <div class="item-acciones">
 
-        @if($completado)
-        <span class="badge-completada">✔ Hecho hoy</span>
+        @if(!$habito->active)
+            {{-- hábito archivado: solo mostrar botón de recuperar --}}
+            @if(empty($modoResumen))
+            <form action="{{ route('habitos.recuperar', $habito) }}" method="POST">
+                @csrf
+                @method('PATCH')
+                <button type="submit" class="btn-secundario btn-pequeño">↩ Recuperar</button>
+            </form>
+            @endif
         @else
-        <form action="{{ route('habitos.registrar', $habito) }}" method="POST">
-            @csrf
-            @method('PATCH')
-            <button type="submit" class="btn-primario btn-pequeño">
-                {{ $habito->type === 'hacer' ? '✔ Registrar' : 'Sigo en ello' }}
-            </button>
-        </form>
-        @endif
+            {{-- hábito activo: acciones normales --}}
+            @if($completado)
+            <span class="badge-completada">✔ Hecho hoy</span>
+            @else
+            <form action="{{ route('habitos.registrar', $habito) }}" method="POST">
+                @csrf
+                @method('PATCH')
+                @if(!empty($modoResumen))
+                <input type="hidden" name="origen" value="dashboard">
+                @endif
+                <button type="submit" class="btn-primario btn-pequeño">
+                    {{ $habito->type === 'hacer' ? '✔ Registrar' : '✗ He fallado hoy' }}
+                </button>
+            </form>
+            @endif
 
-        @if(empty($modoResumen))
-        <a href="{{ route('habitos.edit', $habito) }}" class="btn-secundario btn-pequeño">— Editar</a>
-        <form action="{{ route('habitos.destroy', $habito) }}" method="POST"
-            onsubmit="return confirm('¿Archivar este hábito?')">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn-peligro btn-pequeño">Archivar</button>
-        </form>
+            @if(empty($modoResumen))
+            <a href="{{ route('habitos.edit', $habito) }}" class="btn-secundario btn-pequeño">— Editar</a>
+            <form action="{{ route('habitos.destroy', $habito) }}" method="POST"
+                onsubmit="return confirm('¿Archivar este hábito?')">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn-peligro btn-pequeño">Archivar</button>
+            </form>
+            @endif
         @endif
 
     </div>

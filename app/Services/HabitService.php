@@ -8,7 +8,7 @@ use App\Models\SuggestedHabit;
 
 class HabitService
 {
-    // XP base por registrar un cumplimiento de hábito
+    // XP base por registrar un cumplimiento de hábito de hacer
     const XP_HABITO = 20;
 
     // XP bonus por racha media (cada 4 semanas en hacer, cada 7 días en dejar)
@@ -34,7 +34,7 @@ class HabitService
                 $logsEstaSemana = $habito->logs()->whereBetween('logged_date', [$inicioSemana, $finSemana])->count();
                 return !$logsHoy && $logsEstaSemana < $habito->target_per_week;
             }
-            return !$habito->logs()->whereDate('logged_date', $hoy)->exists();
+            return false;
         });
 
         $registradosHoy = $habitos->filter(function ($habito) use ($hoy, $inicioSemana, $finSemana) {
@@ -50,12 +50,23 @@ class HabitService
             return $logsEstaSemana >= $habito->target_per_week;
         });
 
+        // hábitos de dejar: todos los activos, independientemente de si han fallado hoy
+        $habitosDejar = $habitos->filter(fn($h) => $h->type === 'dejar');
+
         return [
-            'habitosHacer'        => $pendientes->where('type', 'hacer'),
-            'habitosDejar'        => $pendientes->where('type', 'dejar'),
-            'habitosRegistrados'  => $registradosHoy,
-            'habitosCompletados'  => $objetivoCumplido,
+            'habitosHacer'       => $pendientes,
+            'habitosDejar'       => $habitosDejar,
+            'habitosRegistrados' => $registradosHoy,
+            'habitosCompletados' => $objetivoCumplido,
         ];
+    }
+
+    /**
+     * Devuelve los hábitos archivados del usuario.
+     */
+    public function habitosArchivados(User $user): \Illuminate\Support\Collection
+    {
+        return $user->habits()->where('active', false)->get();
     }
 
     /**
@@ -100,13 +111,14 @@ class HabitService
 
     /**
      * Registra el cumplimiento de un hábito hoy.
+     * En hábitos de hacer representa un éxito.
+     * En hábitos de dejar representa un fallo que reinicia la racha.
      * Devuelve false si ya estaba registrado hoy.
      */
     public function registrarHoy(Habit $habit): bool
     {
         $hoy = now()->toDateString();
 
-        // comprobamos si ya está registrado hoy
         $yaRegistrado = $habit->logs()->whereDate('logged_date', $hoy)->exists();
 
         if ($yaRegistrado) {
@@ -129,16 +141,13 @@ class HabitService
         $semanaOffset = 0;
 
         while (true) {
-            // calculamos el inicio y fin de la semana a comprobar
             $inicioSemana = now()->subWeeks($semanaOffset)->startOfWeek();
             $finSemana    = now()->subWeeks($semanaOffset)->endOfWeek();
 
-            // contamos los logs de esa semana
             $logsEnSemana = $habit->logs()
                 ->whereBetween('logged_date', [$inicioSemana, $finSemana])
                 ->count();
 
-            // si no se cumplió el objetivo, rompemos la racha
             if ($logsEnSemana < $habit->target_per_week) {
                 break;
             }
@@ -152,12 +161,12 @@ class HabitService
 
     /**
      * Calcula la racha actual de un hábito de tipo "dejar".
-     * La racha son los días consecutivos sin ningún log de fallo.
+     * La racha son los días transcurridos desde el último fallo registrado.
      * El log en hábitos de "dejar" representa un fallo, no un éxito.
+     * Si nunca ha fallado, la racha se calcula desde la fecha de creación.
      */
     public function calcularRachaDejar(Habit $habit): int
     {
-        // buscamos el último fallo registrado
         $ultimoFallo = $habit->logs()->latest('logged_date')->first();
 
         if (!$ultimoFallo) {
@@ -169,29 +178,53 @@ class HabitService
     }
 
     /**
-     * Otorga XP al usuario por registrar un hábito.
-     * Aplica bonus si se alcanzan hitos de racha.
-     * - Hacer: bonus cada 4 semanas (medio) y cada 8 semanas (largo, acumulable)
-     * - Dejar: bonus cada 7 días (medio) y cada 30 días (largo, acumulable)
+     * Otorga XP al usuario por registrar un hábito de hacer.
+     * Aplica bonus si se alcanzan hitos de racha semanal.
+     * - Bonus medio: cada 4 semanas consecutivas cumpliendo el objetivo
+     * - Bonus largo: cada 8 semanas (se acumula al anterior)
+     * Los hábitos de dejar no otorgan XP al registrar un fallo.
      * Devuelve true si el usuario ha subido de nivel.
      */
     public function otorgarXp(User $user, Habit $habit): bool
     {
-        $xp    = self::XP_HABITO;
-        $racha = $habit->type === 'hacer'
-            ? $this->calcularRachaHacer($habit)
-            : $this->calcularRachaDejar($habit);
+        // los hábitos de dejar no otorgan XP al registrar un fallo
+        if ($habit->type === 'dejar') {
+            return false;
+        }
 
-        if ($habit->type === 'hacer') {
-            // bonus cada 4 semanas consecutivas cumpliendo el objetivo
-            if ($racha > 0 && $racha % 4 === 0) {
-                $xp += self::XP_BONUS_RACHA_MEDIO;
-            }
-            // bonus extra cada 8 semanas (se acumula al anterior)
-            if ($racha > 0 && $racha % 8 === 0) {
-                $xp += self::XP_BONUS_RACHA_LARGO;
-            }
-        } else {
+        $xp    = self::XP_HABITO;
+        $racha = $this->calcularRachaHacer($habit);
+
+        // bonus cada 4 semanas consecutivas cumpliendo el objetivo
+        if ($racha > 0 && $racha % 4 === 0) {
+            $xp += self::XP_BONUS_RACHA_MEDIO;
+        }
+        // bonus extra cada 8 semanas (se acumula al anterior)
+        if ($racha > 0 && $racha % 8 === 0) {
+            $xp += self::XP_BONUS_RACHA_LARGO;
+        }
+
+        return $user->addPoints($xp);
+    }
+
+    /**
+     * Comprueba los hábitos de dejar del usuario y otorga XP
+     * si se han alcanzado hitos de racha nuevos (7 o 30 días).
+     * Se llama desde el DashboardController al cargar el dashboard.
+     * Devuelve true si el usuario ha subido de nivel.
+     */
+    public function otorgarXpRachasDejar(User $user): bool
+    {
+        $subioNivel   = false;
+        $habitosDejar = $user->habits()
+            ->where('type', 'dejar')
+            ->where('active', true)
+            ->get();
+
+        foreach ($habitosDejar as $habito) {
+            $racha = $this->calcularRachaDejar($habito);
+            $xp    = 0;
+
             // bonus cada 7 días sin fallar
             if ($racha > 0 && $racha % 7 === 0) {
                 $xp += self::XP_BONUS_RACHA_MEDIO;
@@ -200,19 +233,56 @@ class HabitService
             if ($racha > 0 && $racha % 30 === 0) {
                 $xp += self::XP_BONUS_RACHA_LARGO;
             }
+
+            if ($xp > 0) {
+                $subio = $user->addPoints($xp);
+                if ($subio) {
+                    $subioNivel = true;
+                }
+            }
         }
 
-        return $user->addPoints($xp);
+        return $subioNivel;
+    }
+
+    /**
+     * Calcula la racha global del usuario: días consecutivos
+     * con alguna actividad (tarea completada o hábito de hacer registrado).
+     * Los hábitos de dejar no cuentan al ser pasivos.
+     */
+    public function calcularRachaGlobal(User $user): int
+    {
+        $racha     = 0;
+        $diaOffset = 0;
+
+        while (true) {
+            $dia = now()->subDays($diaOffset)->toDateString();
+
+            $tareasEseDia = $user->tasks()
+                ->where('completed', true)
+                ->whereDate('updated_at', $dia)
+                ->exists();
+
+            $habitosEseDia = $user->habits()
+                ->where('type', 'hacer')
+                ->whereHas('logs', fn($q) => $q->whereDate('logged_date', $dia))
+                ->exists();
+
+            if (!$tareasEseDia && !$habitosEseDia) break;
+
+            $racha++;
+            $diaOffset++;
+        }
+
+        return $racha;
     }
 
     /**
      * Calcula las semanas consecutivas que el usuario ha cumplido
      * su objetivo semanal en hábitos de una categoría concreta.
-     * Se usa para determinar la dificultad de las sugerencias.
      */
     public function semanasConsecutivasEnCategoria(User $user, string $category): int
     {
-        // obtenemos los hábitos activos del usuario en esa categoría
         $habitos = $user->habits()
             ->where('category', $category)
             ->where('type', 'hacer')
@@ -230,7 +300,6 @@ class HabitService
             $inicioSemana = now()->subWeeks($semanaOffset)->startOfWeek();
             $finSemana    = now()->subWeeks($semanaOffset)->endOfWeek();
 
-            // comprobamos si TODOS los hábitos de la categoría cumplieron su objetivo esa semana
             $todoCumplido = $habitos->every(function ($habito) use ($inicioSemana, $finSemana) {
                 $logs = $habito->logs()
                     ->whereBetween('logged_date', [$inicioSemana, $finSemana])
@@ -252,7 +321,6 @@ class HabitService
 
     /**
      * Determina la dificultad de sugerencias para el usuario en una categoría.
-     * Basado en semanas consecutivas cumpliendo el objetivo en esa categoría.
      */
     public function dificultadSugerida(User $user, string $category): int
     {
@@ -278,8 +346,6 @@ class HabitService
         foreach ($intereses as $categoria) {
             $dificultad = $this->dificultadSugerida($user, $categoria);
 
-            // obtenemos hábitos sugeridos de esa categoría y dificultad
-            // excluimos los que el usuario ya tiene activos
             $habitosUsuario = $user->habits()
                 ->where('category', $categoria)
                 ->where('suggested_by_system', true)
@@ -332,5 +398,13 @@ class HabitService
             $habito->racha_dias = max(0, $this->calcularRachaDejar($habito));
             return $habito;
         });
+    }
+
+    /**
+     * Reactiva un hábito archivado.
+     */
+    public function recuperar(Habit $habit): void
+    {
+        $habit->update(['active' => true]);
     }
 }

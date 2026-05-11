@@ -20,17 +20,22 @@ class DashboardController extends Controller
 
     public function index(): View
     {
-        $user    = auth()->user();
+        $user = auth()->user();
+
+        $this->habitService->otorgarXpRachasDejar($user);
+        $this->badgeService->comprobarInsignias($user);
+
         $grupos  = $this->taskService->tareasAgrupadas($user);
         $habitos = $this->habitService->habitosActivos($user);
 
         return view('dashboard.index', [
             ...$this->nivelService->datosProgreso($user),
-            'racha'              => 0,
+            'racha'              => $this->habitService->calcularRachaGlobal($user),
             'tareasHoy'          => $grupos['tareasHoy']->count(),
             'habitosHoy'         => $habitos['habitosHacer']->count() + $habitos['habitosDejar']->count(),
             'tareasHoyLista'     => $grupos['tareasHoy'],
-            'tareasProximas'     => $this->taskService->tareasProximas($user),
+            'tareasVencidas'     => $grupos['tareasVencidas'],
+            'tareasProximas'     => $grupos['tareasFuturas'],
             'habitosHacer'       => $this->habitService->conProgresoSemanal($habitos['habitosHacer']),
             'habitosDejar'       => $habitos['habitosDejar'],
             'insigniasRecientes' => $this->badgeService->insigniasRecientes($user),
@@ -38,6 +43,7 @@ class DashboardController extends Controller
             'sugerenciaDelDia'   => SuggestedHabit::inRandomOrder()->first(),
         ]);
     }
+
     private function fraseDelDia(): array
     {
         $frases = [

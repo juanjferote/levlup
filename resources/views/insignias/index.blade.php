@@ -142,4 +142,18 @@
     </div>
 </div>
 
+{{-- insignias especiales --}}
+@if($especiales->isNotEmpty())
+<div class="bloque mt-3">
+    @php $pct = $especiales->count() > 0 ? round($especiales->where('desbloqueada', true)->count() / $especiales->count() * 100) : 0; @endphp
+    <h3 class="bloque-titulo">// Especiales <span class="bloque-contador">({{ $especiales->where('desbloqueada', true)->count() }}/{{ $especiales->count() }})</span></h3>
+    <div class="insignia-progreso"><div class="insignia-progreso__barra" style="width: {{ $pct }}%"></div></div>
+    <div class="insignias-grid">
+        @foreach($especiales as $insignia)
+            @include('insignias._insignia', ['insignia' => $insignia])
+        @endforeach
+    </div>
+</div>
+@endif
+
 @endsection

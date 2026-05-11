@@ -15,7 +15,7 @@ class NivelService
         $tramoCosto      = 100 * $user->level;
         $faltan          = $user->pointsToNextLevel();
         $yaHechos        = $tramoCosto - $faltan;
-        $porcentajeNivel = $user->level >= 10
+        $porcentajeNivel = $user->level >= User::NIVEL_MAXIMO
             ? 100
             : round(($yaHechos / $tramoCosto) * 100);
 

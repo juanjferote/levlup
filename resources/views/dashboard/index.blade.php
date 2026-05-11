@@ -36,43 +36,94 @@
 {{-- Fila principal --}}
 <div class="dashboard-fila">
 
-    {{-- misiones de hoy --}}
-    <div class="bloque">
-        <h3 class="bloque-titulo">// Misiones de hoy</h3>
+    {{-- misiones --}}
+    <div class="bloque bloque--scroll">
 
-        @forelse($tareasHoyLista as $tarea)
-        @include('tareas._tarea', ['tarea' => $tarea, 'modoResumen' => true])
-        @empty
-        <p class="texto-suave">No tienes misiones para hoy.</p>
-        @endforelse
+        {{-- pestañas misiones --}}
+        <div class="pestanas pestanas--bloque">
+            <button class="pestana activa" data-pestana="dashboard-hoy">
+                Hoy
+                @if($tareasHoyLista->isNotEmpty())
+                <span class="pestana-contador">{{ $tareasHoyLista->count() }}</span>
+                @endif
+            </button>
+            <button class="pestana" data-pestana="dashboard-vencidas">
+                Vencidas
+                @if($tareasVencidas->isNotEmpty())
+                <span class="pestana-contador rojo">{{ $tareasVencidas->count() }}</span>
+                @endif
+            </button>
+            <button class="pestana" data-pestana="dashboard-proximas">
+                Próximas
+                @if($tareasProximas->isNotEmpty())
+                <span class="pestana-contador">{{ $tareasProximas->count() }}</span>
+                @endif
+            </button>
+        </div>
 
-        @if($tareasProximas->isNotEmpty())
-        <h3 class="bloque-titulo mt-3">// Próximas misiones</h3>
-        @foreach($tareasProximas as $tarea)
-        @include('tareas._tarea', ['tarea' => $tarea, 'modoResumen' => true])
-        @endforeach
-        @endif
+        <div class="pestana-contenido activo" id="pestana-dashboard-hoy">
+            @forelse($tareasHoyLista as $tarea)
+            @include('tareas._tarea', ['tarea' => $tarea, 'modoResumen' => true])
+            @empty
+            <p class="texto-suave">No tienes misiones para hoy.</p>
+            @endforelse
+        </div>
+
+        <div class="pestana-contenido" id="pestana-dashboard-vencidas">
+            @forelse($tareasVencidas as $tarea)
+            @include('tareas._tarea', ['tarea' => $tarea, 'modoResumen' => true])
+            @empty
+            <p class="texto-suave">No tienes misiones vencidas. ¡Estás al día! ✅</p>
+            @endforelse
+        </div>
+
+        <div class="pestana-contenido" id="pestana-dashboard-proximas">
+            @forelse($tareasProximas as $tarea)
+            @include('tareas._tarea', ['tarea' => $tarea, 'modoResumen' => true])
+            @empty
+            <p class="texto-suave">No tienes misiones programadas.</p>
+            @endforelse
+        </div>
 
         <a href="{{ route('tareas.index') }}" class="btn-secundario btn-pequeño mt-3">
             Ver todas las misiones →
         </a>
     </div>
 
-    {{-- hábitos de hoy --}}
-    <div class="bloque">
-        <h3 class="bloque-titulo">// Hábitos de hoy</h3>
+    {{-- hábitos --}}
+    <div class="bloque bloque--scroll">
 
-        @if($habitosHacer->isEmpty() && $habitosDejar->isEmpty())
-        <p class="texto-suave">No hay hábitos activos. ¡Empieza creando uno!</p>
-        @else
-        @foreach($habitosHacer as $habito)
-        @include('habitos._habito', ['habito' => $habito, 'completado' => false, 'modoResumen' => true])
-        @endforeach
+        {{-- pestañas hábitos --}}
+        <div class="pestanas pestanas--bloque">
+            <button class="pestana activa" data-pestana="dashboard-hacer">
+                Hacer
+                @if($habitosHacer->isNotEmpty())
+                <span class="pestana-contador">{{ $habitosHacer->count() }}</span>
+                @endif
+            </button>
+            <button class="pestana" data-pestana="dashboard-dejar">
+                Dejar
+                @if($habitosDejar->isNotEmpty())
+                <span class="pestana-contador">{{ $habitosDejar->count() }}</span>
+                @endif
+            </button>
+        </div>
 
-        @foreach($habitosDejar as $habito)
-        @include('habitos._habito', ['habito' => $habito, 'completado' => false, 'modoResumen' => true])
-        @endforeach
-        @endif
+        <div class="pestana-contenido activo" id="pestana-dashboard-hacer">
+            @forelse($habitosHacer as $habito)
+            @include('habitos._habito', ['habito' => $habito, 'completado' => false, 'modoResumen' => true])
+            @empty
+            <p class="texto-suave">No tienes hábitos pendientes. ¡Buen trabajo!</p>
+            @endforelse
+        </div>
+
+        <div class="pestana-contenido" id="pestana-dashboard-dejar">
+            @forelse($habitosDejar as $habito)
+            @include('habitos._habito', ['habito' => $habito, 'completado' => false, 'modoResumen' => true])
+            @empty
+            <p class="texto-suave">No tienes hábitos de dejar activos.</p>
+            @endforelse
+        </div>
 
         <a href="{{ route('habitos.index') }}" class="btn-secundario btn-pequeño mt-3">
             Ver todos los hábitos →

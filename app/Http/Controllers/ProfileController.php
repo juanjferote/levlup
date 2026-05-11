@@ -52,7 +52,7 @@ class ProfileController extends Controller
         }
 
         $request->validateWithBag('datosBasicos', [
-            'name'        => ['required', 'string', 'max:255'],
+            'name'        => ['required', 'string', 'max:12'],
             'email'       => ['required', 'email', 'max:255', 'unique:users,email,' . $usuario->id],
             'avatar_seed' => ['required', 'string', 'in:warrior,mage,archer,ninja,knight,rogue,healer,bard,ranger,paladin,druid,monk'],
         ]);
