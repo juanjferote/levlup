@@ -1,10 +1,9 @@
-// Añade o quita la clase 'modo-noche' del body y guarda la preferencia en localStorage
+// Añade o quita la clase 'modo-noche' del body y guarda la preferencia en una cookie
 
 function toggleModoNoche() {
     document.body.classList.toggle('modo-noche');
     let activado = document.body.classList.contains('modo-noche');
-    localStorage.setItem('modoNoche', activado);
-    // Actualizar icono según el modo actual
+    document.cookie = 'modoNoche=' + activado + ';path=/;max-age=31536000';
     actualizarIconoModo(activado);
 }
 
@@ -15,7 +14,7 @@ function actualizarIconoModo(modoNocheActivo) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    let activado = localStorage.getItem('modoNoche') === 'true';
+    let activado = document.cookie.includes('modoNoche=true');
     if (activado) {
         document.body.classList.add('modo-noche');
     }

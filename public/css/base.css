@@ -3,7 +3,7 @@
    ========================================= */
 
 /* ── Modo día (Bold Retro) ── */
-:root{
+:root {
     --fondo-base: #F5EDD6;
     --fondo-secundario: #EDE0BE;
     --fondo-terciario: #DDD0A8;
@@ -15,10 +15,10 @@
     --acento: #F5C400;
     --acento-oscuro: #D4A800;
     --acento-sidebar: #F5C400;
-    --acento-titulo: #D46B2A;
+    --color-destacado: #D46B2A;
 
     --rojo: #E8312A;
-    --naranja: #D46B2A;
+    --color-alerta: #D46B2A;
     --verde: #2E7D32;
 
     --borde: #A89070;
@@ -47,15 +47,15 @@ body.modo-noche {
     --acento: #fbbf24;
     --acento-oscuro: #f59e0b;
     --acento-sidebar: #a78bfa;
-    --acento-titulo: #f97316;
+    --color-destacado: #c084fc;
 
     --rojo: #f87171;
-    --naranja: #f97316;
+    --color-alerta: #a78bfa;
     --verde: #4ade80;
 
-    --borde: #2a2a3a;
+    --borde: #3d3d52;
     --borde-grosor: 1px;
-    --borde-suave: 1px solid #2a2a3a;
+    --borde-suave: 1px solid #3d3d52;
 
     --radio: 8px;
     --radio-pill: 99px;

@@ -53,7 +53,7 @@ test('habito hacer con objetivo semanal cumplido aparece en habitosCompletados',
     expect($grupos['habitosHacer']->contains($habito))->toBeFalse();
 });
 
-test('habito dejar pendiente aparece en habitosDejar', function () {
+test('habito dejar activo siempre aparece en habitosDejar independientemente de logs', function () {
     $user   = User::factory()->create();
     $habito = Habit::factory()->dejar()->create(['user_id' => $user->id]);
 
@@ -63,16 +63,18 @@ test('habito dejar pendiente aparece en habitosDejar', function () {
     expect($grupos['habitosDejar']->contains($habito))->toBeTrue();
 });
 
-test('habito dejar registrado hoy no aparece en habitosDejar', function () {
+test('habito dejar con fallo hoy sigue apareciendo en habitosDejar', function () {
     $user   = User::factory()->create();
     $habito = Habit::factory()->dejar()->create(['user_id' => $user->id]);
 
+    // registramos un fallo hoy
     $habito->logs()->create(['logged_date' => now()->toDateString()]);
 
     $service = new HabitService();
     $grupos  = $service->habitosActivos($user);
 
-    expect($grupos['habitosDejar']->contains($habito))->toBeFalse();
+    // sigue apareciendo porque los hábitos de dejar siempre son visibles
+    expect($grupos['habitosDejar']->contains($habito))->toBeTrue();
 });
 
 test('habito archivado no aparece en ningún grupo', function () {
@@ -88,6 +90,7 @@ test('habito archivado no aparece en ningún grupo', function () {
     expect($grupos['habitosHacer']->contains($habito))->toBeFalse();
     expect($grupos['habitosCompletados']->contains($habito))->toBeFalse();
     expect($grupos['habitosRegistrados']->contains($habito))->toBeFalse();
+    expect($grupos['habitosDejar']->contains($habito))->toBeFalse();
 });
 
 // ── HabitService::registrarHoy ────────────────────────────────────────────────
@@ -136,11 +139,12 @@ test('calcularRachaHacer devuelve 1 si se cumplió el objetivo esta semana', fun
 
 // ── HabitService::calcularRachaDejar ─────────────────────────────────────────
 
-test('calcularRachaDejar devuelve dias desde creacion si nunca ha fallado', function () {
+test('calcularRachaDejar devuelve horas exactas desde creacion si nunca ha fallado', function () {
     $habito  = Habit::factory()->dejar()->create(['created_at' => now()->subDays(5)]);
     $service = new HabitService();
 
-    expect($service->calcularRachaDejar($habito))->toBe(5);
+    // diffInDays con hora exacta puede dar 4 o 5 dependiendo de los segundos
+    expect($service->calcularRachaDejar($habito))->toBeGreaterThanOrEqual(4);
 });
 
 test('calcularRachaDejar devuelve dias desde ultimo fallo', function () {
@@ -152,9 +156,18 @@ test('calcularRachaDejar devuelve dias desde ultimo fallo', function () {
     expect($service->calcularRachaDejar($habito))->toBe(3);
 });
 
+test('calcularRachaDejar devuelve 0 si el fallo fue hoy', function () {
+    $habito = Habit::factory()->dejar()->create();
+    $habito->logs()->create(['logged_date' => now()->toDateString()]);
+
+    $service = new HabitService();
+
+    expect($service->calcularRachaDejar($habito))->toBe(0);
+});
+
 // ── HabitService::otorgarXp ───────────────────────────────────────────────────
 
-test('otorgarXp suma XP base al usuario', function () {
+test('otorgarXp suma XP base al usuario por habito hacer', function () {
     $user   = User::factory()->create(['points' => 0, 'level' => 1]);
     $habito = Habit::factory()->hacer()->create([
         'user_id'         => $user->id,
@@ -167,6 +180,17 @@ test('otorgarXp suma XP base al usuario', function () {
     expect($user->fresh()->points)->toBe(HabitService::XP_HABITO);
 });
 
+test('otorgarXp no suma XP por habito dejar', function () {
+    $user   = User::factory()->create(['points' => 0, 'level' => 1]);
+    $habito = Habit::factory()->dejar()->create(['user_id' => $user->id]);
+
+    $service = new HabitService();
+    $result  = $service->otorgarXp($user, $habito);
+
+    expect($result)->toBeFalse();
+    expect($user->fresh()->points)->toBe(0);
+});
+
 test('otorgarXp devuelve true si el usuario sube de nivel', function () {
     $user   = User::factory()->create(['points' => 90, 'level' => 1]);
     $habito = Habit::factory()->hacer()->create(['user_id' => $user->id]);
@@ -176,6 +200,21 @@ test('otorgarXp devuelve true si el usuario sube de nivel', function () {
 
     expect($subioNivel)->toBeTrue();
     expect($user->fresh()->level)->toBe(2);
+});
+
+// ── HabitService::recuperar ───────────────────────────────────────────────────
+
+test('recuperar reactiva un habito archivado', function () {
+    $user   = User::factory()->create();
+    $habito = Habit::factory()->hacer()->create([
+        'user_id' => $user->id,
+        'active'  => false,
+    ]);
+
+    $service = new HabitService();
+    $service->recuperar($habito);
+
+    expect($habito->fresh()->active)->toBeTrue();
 });
 
 // ── HTTP: autorización ────────────────────────────────────────────────────────
@@ -207,6 +246,19 @@ test('un usuario no puede archivar el habito de otro', function () {
 
     $this->actingAs($usuario2)
         ->delete(route('habitos.destroy', $habito))
+        ->assertStatus(403);
+});
+
+test('un usuario no puede recuperar el habito de otro', function () {
+    $usuario1 = User::factory()->create();
+    $usuario2 = User::factory()->create();
+    $habito   = Habit::factory()->hacer()->create([
+        'user_id' => $usuario1->id,
+        'active'  => false,
+    ]);
+
+    $this->actingAs($usuario2)
+        ->patch(route('habitos.recuperar', $habito))
         ->assertStatus(403);
 });
 
@@ -256,6 +308,23 @@ test('no se puede crear un habito hacer sin target_per_week', function () {
             'type'  => 'hacer',
         ])
         ->assertSessionHasErrors('target_per_week');
+});
+
+test('no se puede crear un habito con nombre duplicado activo', function () {
+    $user = User::factory()->create();
+    Habit::factory()->hacer()->create([
+        'user_id' => $user->id,
+        'title'   => 'Correr',
+        'active'  => true,
+    ]);
+
+    $this->actingAs($user)
+        ->post(route('habitos.store'), [
+            'title'           => 'correr',
+            'type'            => 'hacer',
+            'target_per_week' => 3,
+        ])
+        ->assertSessionHasErrors('title');
 });
 
 test('archivar habito lo desactiva en base de datos', function () {

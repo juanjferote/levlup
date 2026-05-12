@@ -71,9 +71,9 @@
     font-weight: 700;
     letter-spacing: 0.5px;
     text-transform: uppercase;
-    color: var(--acento);
+    color: var(--color-alerta);
     background-color: var(--fondo-terciario);
-    border: var(--borde-grosor) solid var(--acento);
+    border: var(--borde-grosor) solid var(--color-alerta);
     padding: 4px 12px;
     border-radius: var(--radio);
 }
@@ -96,7 +96,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 16px 20px;
-    border-bottom: 1px solid var(--borde-suave);
+    border-bottom: var(--borde-suave);
     background: var(--fondo-secundario);
 }
 

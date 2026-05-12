@@ -42,7 +42,7 @@
 }
 
 .stat-numero.naranja {
-    color: var(--naranja);
+    color: var(--color-alerta);
 }
 
 .stat-numero.rojo {
@@ -89,7 +89,7 @@
 
 .stat-barra-relleno {
     height: 100%;
-    background: linear-gradient(90deg, var(--acento), var(--naranja));
+    background: linear-gradient(90deg, var(--acento), var(--color-alerta));
     border-radius: var(--radio);
     transition: width 0.3s ease;
 }
@@ -99,7 +99,7 @@
 }
 
 .stat-barra-relleno.barra-naranja {
-    background-color: var(--naranja);
+    background-color: var(--color-alerta);
 }
 
 .stat-barra-relleno.barra-roja {

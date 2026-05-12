@@ -37,7 +37,7 @@ class DashboardController extends Controller
             'tareasVencidas'     => $grupos['tareasVencidas'],
             'tareasProximas'     => $grupos['tareasFuturas'],
             'habitosHacer'       => $this->habitService->conProgresoSemanal($habitos['habitosHacer']),
-            'habitosDejar'       => $habitos['habitosDejar'],
+            'habitosDejar'       => $this->habitService->conRachaDejar($habitos['habitosDejar']),
             'insigniasRecientes' => $this->badgeService->insigniasRecientes($user),
             'fraseDelDia'        => $this->fraseDelDia(),
             'sugerenciaDelDia'   => SuggestedHabit::inRandomOrder()->first(),

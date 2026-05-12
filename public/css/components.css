@@ -22,8 +22,18 @@
     justify-content: center;
 }
 
+body.modo-noche .btn-primario {
+    background-color: var(--acento-sidebar);
+    color: var(--texto-principal);
+}
+
 .btn-primario:hover {
     background-color: var(--acento-oscuro);
+    color: var(--texto-principal);
+}
+
+body.modo-noche .btn-primario:hover {
+    background-color: #7c3aed;
     color: var(--texto-principal);
 }
 
@@ -139,7 +149,7 @@
 
 .form-status {
     font-size: 0.85rem;
-    color: var(--naranja);
+    color: var(--color-alerta);
     margin-bottom: 12px;
 }
 
@@ -234,6 +244,36 @@
     image-rendering: pixelated;
 }
 
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--fondo-terciario);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--borde);
+    border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--texto-muy-suave);
+}
+
+body.modo-noche ::-webkit-scrollbar-track {
+    background: var(--fondo-terciario);
+}
+
+body.modo-noche ::-webkit-scrollbar-thumb {
+    background: var(--acento-sidebar);
+}
+
+body.modo-noche ::-webkit-scrollbar-thumb:hover {
+    background: #7c3aed;
+}
+
 /* ── Bloques genéricos ── */
 .bloque {
     background-color: var(--fondo-secundario);
@@ -252,8 +292,16 @@
     font-size: 0.65rem;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--acento-titulo);
+    color: var(--color-destacado);
     margin-bottom: 14px;
+}
+
+.pagina-titulo h2 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--texto-principal);
 }
 
 /* ── Reusable base card ── */
@@ -303,7 +351,7 @@
     background-color: transparent;
     border: none;
     padding: 8px 0;
-    border-bottom: 1px solid var(--borde-suave);
+    border-bottom: var(--borde-suave);
     border-radius: 0;
     margin-bottom: 0;
     display: flex;
@@ -319,6 +367,22 @@
 .bloque .item-card:hover {
     border-left-color: var(--acento);
     padding-left: 8px;
+}
+
+body.modo-noche .stat-card:hover {
+    box-shadow: 3px 3px 0 var(--acento-sidebar);
+}
+
+body.modo-noche .bloque .item-card:hover {
+    border-left-color: var(--acento-sidebar);
+}
+
+body.modo-noche .pagina-titulo h2 {
+    color: var(--acento);
+}
+
+body.modo-noche .jugador-nombre {
+    color: var(--acento);
 }
 
 /* ── Pestañas ── */
@@ -348,7 +412,7 @@
 }
 
 .pestana:hover {
-    color: var(--texto);
+    color: var(--texto-principal);
 }
 
 .pestana.activa {

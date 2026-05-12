@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->string('icon'); // nombre del icono o ruta de la imagen
-            $table->enum('condition_type', ['streak', 'tasks_completed', 'habits_completed', 'points']); // tipo de condición para desbloquear la insignia
-            $table->integer('condition_value'); // valor que hay que alcanzar para desbloquearla
+            $table->string('icon'); 
+            $table->enum('condition_type', ['streak', 'tasks_completed', 'habits_completed', 'points']); 
+            $table->integer('condition_value');
         });
     }
 

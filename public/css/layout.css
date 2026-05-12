@@ -123,7 +123,7 @@ body.modo-noche .xp-barra-fondo {
 
 .xp-barra-relleno {
     height: 100%;
-    background: linear-gradient(90deg, var(--acento), var(--naranja));
+    background: linear-gradient(90deg, var(--acento), var(--color-alerta));
     transition: width 0.5s ease;
     border-radius: var(--radio);
 }
@@ -163,8 +163,8 @@ body.modo-noche .xp-barra-fondo {
 }
 
 .nav-item.activo {
-    color: var(--acento-sidebar);
-    border-left-color: var(--acento-sidebar);
+    color: var(--color-alerta);
+    border-left-color: var(--color-alerta);
     background-color: var(--fondo-terciario);
     font-weight: 900;
 }
@@ -194,8 +194,8 @@ body.modo-noche .xp-barra-fondo {
 
 .alerta-info {
     background-color: var(--fondo-secundario);
-    border-color: var(--naranja);
-    color: var(--naranja);
+    border-color: var(--color-alerta);
+    color: var(--color-alerta);
 }
 
 

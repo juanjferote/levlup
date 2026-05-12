@@ -110,13 +110,7 @@ class BadgeService
             ->get();
 
         foreach ($habitosDejar as $habito) {
-            $ultimoFallo = $habito->logs()->latest('logged_date')->first();
-
-            $diasSinFallar = $ultimoFallo
-                ? now()->diffInDays($ultimoFallo->logged_date)
-                : now()->diffInDays($habito->created_at);
-
-            if ($diasSinFallar >= $valor) {
+            if ($this->habitService->calcularRachaDejar($habito) >= $valor) {
                 return true;
             }
         }
@@ -222,28 +216,6 @@ class BadgeService
      */
     private function comprobarRachaGlobal(User $user, int $valor): bool
     {
-        $racha        = 0;
-        $diaOffset    = 0;
-
-        while (true) {
-            $dia = now()->subDays($diaOffset)->toDateString();
-
-            // comprobamos si hubo alguna tarea completada o hábito registrado ese día
-            $tareasEseDia = $user->tasks()
-                ->where('completed', true)
-                ->whereDate('updated_at', $dia)
-                ->exists();
-
-            $habitosEseDia = $user->habits()
-                ->whereHas('logs', fn($q) => $q->whereDate('logged_date', $dia))
-                ->exists();
-
-            if (!$tareasEseDia && !$habitosEseDia) break;
-
-            $racha++;
-            $diaOffset++;
-        }
-
         return $this->habitService->calcularRachaGlobal($user) >= $valor;
     }
 

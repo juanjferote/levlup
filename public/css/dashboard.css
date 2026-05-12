@@ -11,7 +11,6 @@
 }
 
 .pagina-titulo h2 {
-    font-family: 'Press Start 2P', monospace;
     font-size: 0.85rem;
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -51,7 +50,7 @@
 }
 
 .stat-valor.naranja {
-    color: var(--naranja);
+    color: var(--color-alerta);
 }
 
 .stat-valor.rojo {
@@ -146,7 +145,7 @@ body.modo-noche .xp-barra-grande {
 .dashboard-fila .item-acciones {
     margin-top: 8px;
     padding-top: 8px;
-    border-top: 1px solid var(--borde-suave);
+    border-top: var(--borde-suave);
 }
 
 .dashboard-fila .insignia-nombre {

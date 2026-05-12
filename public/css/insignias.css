@@ -168,7 +168,7 @@
 
 .insignia-progreso__barra {
     height: 100%;
-    background: linear-gradient(90deg, var(--acento), var(--naranja));
+    background: linear-gradient(90deg, var(--acento), var(--color-alerta));
     transition: width 0.3s ease;
 }
 

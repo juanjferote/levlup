@@ -36,8 +36,8 @@
 }
 
 .interes-opcion.activo {
-    background-color: var(--acento);
-    border-color: var(--acento);
+    background-color: var(--color-alerta);
+    border-color: var(--color-alerta);
     color: var(--fondo-base);
 }
 

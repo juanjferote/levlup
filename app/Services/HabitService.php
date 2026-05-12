@@ -171,7 +171,7 @@ class HabitService
 
         if (!$ultimoFallo) {
             // nunca ha fallado, la racha es desde que creó el hábito
-            return $habit->created_at->copy()->startOfDay()->diffInDays(now());
+            return $habit->created_at->copy()->diffInDays(now());
         }
 
         return $ultimoFallo->logged_date->diffInDays(now());

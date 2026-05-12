@@ -13,7 +13,7 @@
 
 @stack('scripts')
 
-<body>
+<body class="{{ isset($_COOKIE['modoNoche']) && $_COOKIE['modoNoche'] === 'true' ? 'modo-noche' : '' }}">
 
     @include('layouts.header')
 
@@ -58,7 +58,7 @@
                     <span class="nav-icono">🔄</span>
                     <span class="nav-texto">Hábitos</span>
                 </a>
-                <a href="{{ route('sugerencias.index') }}" class="nav-item {{ request()->routeIs('habitos.sugerencias') ? 'activo' : '' }}">
+                <a href="{{ route('sugerencias.index') }}" class="nav-item {{ request()->routeIs('sugerencias.*') ? 'activo' : '' }}">
                     <span class="nav-icono">💡</span>
                     <span class="nav-texto">Sugerencias</span>
                 </a>
