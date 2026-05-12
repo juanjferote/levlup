@@ -204,4 +204,14 @@ class HabitController extends Controller
         return redirect()->route('habitos.index')
             ->with('exito', 'Hábito recuperado. ¡A por ello! 💪');
     }
+
+    public function destroyPermanente(Habit $habito)
+    {
+        abort_if($habito->user_id !== auth()->id(), 403);
+
+        $this->habitService->eliminar($habito);
+
+        return redirect()->route('habitos.index')
+            ->with('exito', 'Hábito eliminado definitivamente.');
+    }
 }

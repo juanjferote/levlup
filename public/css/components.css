@@ -69,7 +69,7 @@ body.modo-noche .btn-primario:hover {
     font-size: 1rem;
     color: var(--texto-principal);
     transition: background-color 0.2s;
-    border-radius: var(--radio);
+    border: none;
     width: 36px;
     height: 36px;
     display: inline-flex;
@@ -351,7 +351,6 @@ body.modo-noche ::-webkit-scrollbar-thumb:hover {
     background-color: transparent;
     border: none;
     padding: 8px 0;
-    border-bottom: var(--borde-suave);
     border-radius: 0;
     margin-bottom: 0;
     display: flex;
@@ -383,6 +382,10 @@ body.modo-noche .pagina-titulo h2 {
 
 body.modo-noche .jugador-nombre {
     color: var(--acento);
+}
+
+.bloque .item-card {
+    border-bottom: none;
 }
 
 /* ── Pestañas ── */

@@ -143,7 +143,6 @@ body.modo-noche .xp-barra-grande {
 }
 
 .dashboard-fila .item-acciones {
-    margin-top: 8px;
     padding-top: 8px;
     border-top: var(--borde-suave);
 }

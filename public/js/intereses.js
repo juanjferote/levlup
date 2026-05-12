@@ -3,9 +3,9 @@ console.log('intereses.js cargado');
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    const inputNuevo      = document.getElementById('interes-nuevo');
-    const btnAñadir       = document.getElementById('btn-añadir-interes');
-    const contenedor      = document.getElementById('intereses-personalizados');
+    const inputNuevo = document.getElementById('interes-nuevo');
+    const btnAñadir = document.getElementById('btn-añadir-interes');
+    const contenedor = document.getElementById('intereses-personalizados');
 
     if (!btnAñadir) return;
 
@@ -13,9 +13,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // añade un interés personalizado a la lista
     function añadirInteres() {
+        inputNuevo.setCustomValidity('');
         const valor = inputNuevo.value.trim().toLowerCase();
 
         if (!valor) return;
+
+        // validación de longitud
+        if (valor.length > 50) {
+            inputNuevo.setCustomValidity('El interés no puede superar los 50 caracteres.');
+            inputNuevo.reportValidity();
+            return;
+        }
+
+        inputNuevo.setCustomValidity('');
 
         // evitamos duplicados
         const yaExiste = document.querySelector(`input[name="interests[]"][value="${valor}"]`);
@@ -29,9 +39,9 @@ document.addEventListener('DOMContentLoaded', function () {
         label.classList.add('interes-opcion', 'activo');
 
         const input = document.createElement('input');
-        input.type    = 'checkbox';
-        input.name    = 'interests[]';
-        input.value   = valor;
+        input.type = 'checkbox';
+        input.name = 'interests[]';
+        input.value = valor;
         input.checked = true;
 
         const texto = document.createTextNode(valor.charAt(0).toUpperCase() + valor.slice(1));
@@ -40,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
         label.appendChild(texto);
         contenedor.appendChild(label);
 
-        // marcamos visualmente los predefinidos al hacer click
+        // marcamos visualmente al hacer click
         label.addEventListener('click', function () {
             label.classList.toggle('activo', input.checked);
         });

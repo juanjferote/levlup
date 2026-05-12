@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('habitos', HabitController::class)->except(['show']);
     Route::patch('habitos/{habito}/registrar', [HabitController::class, 'registrar'])->name('habitos.registrar');
     Route::patch('habitos/{habito}/recuperar', [HabitController::class, 'recuperar'])->name('habitos.recuperar');
+    Route::delete('/habitos/{habito}/eliminar', [HabitController::class, 'destroyPermanente'])->name('habitos.destroy-permanente');
 
     // perfil
     Route::get('perfil', [ProfileController::class, 'index'])->name('perfil.index');

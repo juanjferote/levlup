@@ -5,7 +5,7 @@
     @csrf
 
     @if ($errors->any())
-        <p class="form-error">{{ $errors->first() }}</p>
+    <p class="form-error">{{ $errors->first() }}</p>
     @endif
 
     {{-- intereses predefinidos --}}
@@ -13,14 +13,14 @@
         <label class="form-label-levlup">Elige tus intereses</label>
         <div class="intereses-grid">
             @foreach (['deporte', 'lectura', 'meditacion', 'nutricion', 'productividad', 'aprendizaje', 'creatividad', 'descanso', 'social', 'finanzas', 'hogar', 'naturaleza'] as $interes)
-                <label class="interes-opcion {{ in_array($interes, $interesesActivos) ? 'activo' : '' }}">
-                    <input
-                        type="checkbox"
-                        name="interests[]"
-                        value="{{ $interes }}"
-                        {{ in_array($interes, $interesesActivos) ? 'checked' : '' }}>
-                    {{ ucfirst($interes) }}
-                </label>
+            <label class="interes-opcion {{ in_array($interes, $interesesActivos) ? 'activo' : '' }}">
+                <input
+                    type="checkbox"
+                    name="interests[]"
+                    value="{{ $interes }}"
+                    {{ in_array($interes, $interesesActivos) ? 'checked' : '' }}>
+                {{ ucfirst($interes) }}
+            </label>
             @endforeach
         </div>
     </div>
@@ -36,7 +36,18 @@
                 placeholder="Ej: fotografía, cocina...">
             <button type="button" id="btn-añadir-interes" class="btn-secundario">+ Añadir</button>
         </div>
-        <div id="intereses-personalizados" class="intereses-grid mt-2"></div>
+        <div id="intereses-personalizados" class="intereses-grid mt-2">
+            @php
+            $predefinidos = ['deporte', 'lectura', 'meditacion', 'nutricion', 'productividad', 'aprendizaje', 'creatividad', 'descanso', 'social', 'finanzas', 'hogar', 'naturaleza'];
+            $personalizados = array_filter($interesesActivos ?? [], fn($i) => !in_array($i, $predefinidos));
+            @endphp
+            @foreach($personalizados as $interes)
+            <label class="interes-opcion activo">
+                <input type="checkbox" name="interests[]" value="{{ $interes }}" checked>
+                {{ ucfirst($interes) }}
+            </label>
+            @endforeach
+        </div>
     </div>
 
     <button type="submit" class="btn-primario">{{ $textBoton ?? 'Guardar intereses' }}</button>

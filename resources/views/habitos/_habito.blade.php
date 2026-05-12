@@ -32,12 +32,18 @@
     <div class="item-acciones">
 
         @if(!$habito->active)
-        {{-- hábito archivado: solo mostrar botón de recuperar --}}
+        {{-- hábito archivado: recuperar o eliminar --}}
         @if(empty($modoResumen))
         <form action="{{ route('habitos.recuperar', $habito) }}" method="POST">
             @csrf
             @method('PATCH')
             <button type="submit" class="btn-secundario btn-pequeño">↩ Recuperar</button>
+        </form>
+        <form action="{{ route('habitos.destroy-permanente', $habito) }}" method="POST"
+            onsubmit="return confirm('¿Seguro que quieres eliminar este hábito definitivamente? Esta acción no se puede deshacer.')">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn-peligro btn-pequeño">✕ Eliminar</button>
         </form>
         @endif
         @else
