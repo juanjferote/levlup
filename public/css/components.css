@@ -357,6 +357,7 @@ body.modo-noche ::-webkit-scrollbar-thumb:hover {
     align-items: center;
     border-left: 3px solid transparent;
     transition: border-color 0.15s;
+    border-bottom: none;
 }
 
 .bloque .item-card:last-child {
@@ -382,10 +383,6 @@ body.modo-noche .pagina-titulo h2 {
 
 body.modo-noche .jugador-nombre {
     color: var(--acento);
-}
-
-.bloque .item-card {
-    border-bottom: none;
 }
 
 /* ── Pestañas ── */
@@ -448,21 +445,57 @@ body.modo-noche .jugador-nombre {
     display: block;
 }
 
-.dashboard-fila .pestana-contenido.activo {
-    max-height: 260px;
-    overflow-y: auto;
-    padding-right: 8px;
-}
-
 .pestana-contenido-grande.activo {
     display: block;
-    max-height: 670px;
+    max-height: 620px;
     overflow-y: auto;
-    padding-right: 8px;
+    padding-right: 12px;
+}
+
+.bloque {
+    overflow: hidden;
+}
+
+.pestanas {
+    overflow: visible;
 }
 
 /* ── Mobile (≤640px) ── */
 @media (max-width: 640px) {
+
+    .pestanas {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        max-width: 100%;
+        scrollbar-width: none;
+    }
+
+    .pestanas::-webkit-scrollbar {
+        display: none;
+    }
+
+    .pestana {
+        white-space: nowrap;
+        flex-shrink: 0;
+        min-width: fit-content;
+    }
+
+    .pestanas-wrapper {
+        position: relative;
+    }
+
+    .pestanas-wrapper::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 40px;
+        height: 100%;
+        background: linear-gradient(to right, transparent, var(--fondo-base));
+        pointer-events: none;
+    }
+
     .avatar-selector-grid {
         grid-template-columns: repeat(3, 1fr);
     }

@@ -142,9 +142,14 @@ body.modo-noche .xp-barra-grande {
     grid-template-columns: 1fr 2fr;
 }
 
+.dashboard-fila .pestana-contenido.activo {
+    max-height: 160px;
+    overflow-y: auto;
+    padding-right: 12px;
+}
+
 .dashboard-fila .item-acciones {
     padding-top: 8px;
-    border-top: var(--borde-suave);
 }
 
 .dashboard-fila .insignia-nombre {

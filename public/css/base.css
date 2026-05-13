@@ -68,12 +68,18 @@ body.modo-noche {
     padding: 0;
 }
 
+html, body {
+    max-width: 100%;
+}
+
 body {
     background-color: var(--fondo-base);
     color: var(--texto-principal);
     font-family: 'IBM Plex Mono', monospace;
     transition: background-color 0.3s, color 0.3s;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* ── Utilidades de espaciado ── */

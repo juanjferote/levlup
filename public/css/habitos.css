@@ -186,6 +186,6 @@
 
     .pestanas--habitos .pestana::after {
         content: attr(data-movil);
-        font-size: 0.55rem;
+        font-size: 0.7rem;
     }
 }

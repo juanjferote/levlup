@@ -152,11 +152,7 @@ textarea.form-input-levlup {
         flex-wrap: wrap;
         justify-content: flex-start;
     }
-
-    .btn-fecha-rapida {
-        min-height: 44px;
-    }
-
+    
     .bloque-formulario {
         max-width: 100%;
     }

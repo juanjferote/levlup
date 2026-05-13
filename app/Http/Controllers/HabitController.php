@@ -28,6 +28,7 @@ class HabitController extends Controller
             'habitosRegistrados' => $this->habitService->conProgresoSemanal($grupos['habitosRegistrados']),
             'habitosCompletados' => $this->habitService->conProgresoSemanal($grupos['habitosCompletados']),
             'habitosArchivados'  => $this->habitService->habitosArchivados(auth()->user()),
+            'habitosFallados'    => $this->habitService->habitosFalladosHoy(auth()->user()),
         ]);
     }
 
@@ -43,7 +44,14 @@ class HabitController extends Controller
             $sugerencia = SuggestedHabit::find($request->sugerencia);
         }
 
-        return view('habitos.create', compact('sugerencia'));
+        $categoriasPredefinidas = ['deporte', 'lectura', 'meditacion', 'nutricion', 'productividad', 'aprendizaje', 'creatividad', 'descanso', 'social', 'finanzas', 'hogar', 'naturaleza'];
+
+        $interesesPersonalizados = array_filter(
+            auth()->user()->interests ?? [],
+            fn($i) => !in_array($i, $categoriasPredefinidas)
+        );
+
+        return view('habitos.create', compact('sugerencia', 'interesesPersonalizados'));
     }
 
     /**
@@ -96,7 +104,14 @@ class HabitController extends Controller
     {
         abort_if($habito->user_id !== auth()->id(), 403);
 
-        return view('habitos.edit', compact('habito'));
+        $categoriasPredefinidas = ['deporte', 'lectura', 'meditacion', 'nutricion', 'productividad', 'aprendizaje', 'creatividad', 'descanso', 'social', 'finanzas', 'hogar', 'naturaleza'];
+
+        $interesesPersonalizados = array_filter(
+            auth()->user()->interests ?? [],
+            fn($i) => !in_array($i, $categoriasPredefinidas)
+        );
+
+        return view('habitos.edit', compact('habito', 'interesesPersonalizados'));
     }
 
     /**
@@ -145,6 +160,11 @@ class HabitController extends Controller
     {
         abort_if($habito->user_id !== auth()->id(), 403);
 
+        // calculamos la racha ANTES de registrar el fallo
+        $rachaAnterior = $habito->type === 'dejar'
+            ? $this->habitService->calcularRachaDejar($habito)
+            : 0;
+
         $registrado = $this->habitService->registrarHoy($habito);
 
         $destino = $request->input('origen') === 'dashboard'
@@ -156,10 +176,12 @@ class HabitController extends Controller
                 ->with('info', 'Ya has registrado este hábito hoy.');
         }
 
-        // los hábitos de dejar registran un fallo, no otorgan XP
         if ($habito->type === 'dejar') {
-            return redirect($destino)
-                ->with('info', 'Fallo registrado. ¡Mañana lo conseguirás! 💪');
+            $mensajeFallo = $rachaAnterior > 0
+                ? 'Fallo registrado. Llevabas ' . $rachaAnterior . ' ' . ($rachaAnterior === 1 ? 'día' : 'días') . ' sin fallar. ¡Mañana puedes volver a empezar! 💪'
+                : 'Fallo registrado. ¡Mañana es una nueva oportunidad! 💪';
+
+            return redirect($destino)->with('info', $mensajeFallo);
         }
 
         $subioNivel      = $this->habitService->otorgarXp(auth()->user(), $habito);

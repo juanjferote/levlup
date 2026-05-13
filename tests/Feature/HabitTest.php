@@ -53,7 +53,7 @@ test('habito hacer con objetivo semanal cumplido aparece en habitosCompletados',
     expect($grupos['habitosHacer']->contains($habito))->toBeFalse();
 });
 
-test('habito dejar activo siempre aparece en habitosDejar independientemente de logs', function () {
+test('habito dejar sin fallo hoy aparece en habitosDejar', function () {
     $user   = User::factory()->create();
     $habito = Habit::factory()->dejar()->create(['user_id' => $user->id]);
 
@@ -63,17 +63,28 @@ test('habito dejar activo siempre aparece en habitosDejar independientemente de 
     expect($grupos['habitosDejar']->contains($habito))->toBeTrue();
 });
 
-test('habito dejar con fallo hoy sigue apareciendo en habitosDejar', function () {
+test('habito dejar con fallo hoy NO aparece en habitosDejar', function () {
     $user   = User::factory()->create();
     $habito = Habit::factory()->dejar()->create(['user_id' => $user->id]);
 
-    // registramos un fallo hoy
     $habito->logs()->create(['logged_date' => now()->toDateString()]);
 
     $service = new HabitService();
     $grupos  = $service->habitosActivos($user);
 
-    // sigue apareciendo porque los hábitos de dejar siempre son visibles
+    expect($grupos['habitosDejar']->contains($habito))->toBeFalse();
+});
+
+test('habito dejar con fallo de dias anteriores sigue apareciendo en habitosDejar', function () {
+    $user   = User::factory()->create();
+    $habito = Habit::factory()->dejar()->create(['user_id' => $user->id]);
+
+    // fallo de ayer, no de hoy
+    $habito->logs()->create(['logged_date' => now()->subDay()->toDateString()]);
+
+    $service = new HabitService();
+    $grupos  = $service->habitosActivos($user);
+
     expect($grupos['habitosDejar']->contains($habito))->toBeTrue();
 });
 
@@ -117,6 +128,17 @@ test('registrarHoy devuelve false si ya está registrado hoy', function () {
     expect($registrado)->toBeFalse();
 });
 
+test('registrarHoy en habito dejar crea un log de fallo', function () {
+    $user   = User::factory()->create();
+    $habito = Habit::factory()->dejar()->create(['user_id' => $user->id]);
+
+    $service    = new HabitService();
+    $registrado = $service->registrarHoy($habito);
+
+    expect($registrado)->toBeTrue();
+    expect($habito->logs()->whereDate('logged_date', now()->toDateString())->exists())->toBeTrue();
+});
+
 // ── HabitService::calcularRachaHacer ─────────────────────────────────────────
 
 test('calcularRachaHacer devuelve 0 si no hay logs esta semana', function () {
@@ -139,11 +161,10 @@ test('calcularRachaHacer devuelve 1 si se cumplió el objetivo esta semana', fun
 
 // ── HabitService::calcularRachaDejar ─────────────────────────────────────────
 
-test('calcularRachaDejar devuelve horas exactas desde creacion si nunca ha fallado', function () {
+test('calcularRachaDejar devuelve dias desde creacion si nunca ha fallado', function () {
     $habito  = Habit::factory()->dejar()->create(['created_at' => now()->subDays(5)]);
     $service = new HabitService();
 
-    // diffInDays con hora exacta puede dar 4 o 5 dependiendo de los segundos
     expect($service->calcularRachaDejar($habito))->toBeGreaterThanOrEqual(4);
 });
 
@@ -163,6 +184,97 @@ test('calcularRachaDejar devuelve 0 si el fallo fue hoy', function () {
     $service = new HabitService();
 
     expect($service->calcularRachaDejar($habito))->toBe(0);
+});
+
+test('calcularRachaDejar se reinicia tras un nuevo fallo', function () {
+    $habito = Habit::factory()->dejar()->create(['created_at' => now()->subDays(10)]);
+
+    // fallo hace 5 días
+    $habito->logs()->create(['logged_date' => now()->subDays(5)->toDateString()]);
+
+    $service = new HabitService();
+
+    // la racha debe ser desde el último fallo, no desde la creación
+    expect($service->calcularRachaDejar($habito))->toBe(5);
+});
+
+test('calcularRachaDejar toma el fallo más reciente si hay varios', function () {
+    $habito = Habit::factory()->dejar()->create(['created_at' => now()->subDays(20)]);
+
+    $habito->logs()->create(['logged_date' => now()->subDays(10)->toDateString()]);
+    $habito->logs()->create(['logged_date' => now()->subDays(3)->toDateString()]);
+
+    $service = new HabitService();
+
+    expect($service->calcularRachaDejar($habito))->toBe(3);
+});
+
+// ── HabitService::habitosFalladosHoy ─────────────────────────────────────────
+
+test('habitosFalladosHoy devuelve habitos de dejar con fallo hoy', function () {
+    $user   = User::factory()->create();
+    $habito = Habit::factory()->dejar()->create(['user_id' => $user->id]);
+
+    $habito->logs()->create(['logged_date' => now()->toDateString()]);
+
+    $service = new HabitService();
+    $fallados = $service->habitosFalladosHoy($user);
+
+    expect($fallados->contains('id', $habito->id))->toBeTrue();
+});
+
+test('habitosFalladosHoy no devuelve habitos de dejar sin fallo hoy', function () {
+    $user   = User::factory()->create();
+    $habito = Habit::factory()->dejar()->create(['user_id' => $user->id]);
+
+    $service = new HabitService();
+    $fallados = $service->habitosFalladosHoy($user);
+
+    expect($fallados->contains('id', $habito->id))->toBeFalse();
+});
+
+test('habitosFalladosHoy no devuelve habitos de hacer', function () {
+    $user   = User::factory()->create();
+    $habito = Habit::factory()->hacer()->create(['user_id' => $user->id]);
+
+    $habito->logs()->create(['logged_date' => now()->toDateString()]);
+
+    $service = new HabitService();
+    $fallados = $service->habitosFalladosHoy($user);
+
+    expect($fallados->contains('id', $habito->id))->toBeFalse();
+});
+
+test('habitosFalladosHoy calcula racha anterior correctamente', function () {
+    $user   = User::factory()->create();
+    $habito = Habit::factory()->dejar()->create([
+        'user_id'    => $user->id,
+        'created_at' => now()->subDays(10),
+    ]);
+
+    // fallo hoy
+    $habito->logs()->create(['logged_date' => now()->toDateString()]);
+
+    $service  = new HabitService();
+    $fallados = $service->habitosFalladosHoy($user);
+    $fallado  = $fallados->first();
+
+    expect($fallado->racha_anterior)->toBeGreaterThanOrEqual(9);
+});
+
+test('habitosFalladosHoy calcula racha anterior desde ultimo fallo previo', function () {
+    $user   = User::factory()->create();
+    $habito = Habit::factory()->dejar()->create(['user_id' => $user->id]);
+
+    // fallo hace 5 días y fallo hoy
+    $habito->logs()->create(['logged_date' => now()->subDays(5)->toDateString()]);
+    $habito->logs()->create(['logged_date' => now()->toDateString()]);
+
+    $service  = new HabitService();
+    $fallados = $service->habitosFalladosHoy($user);
+    $fallado  = $fallados->first();
+
+    expect($fallado->racha_anterior)->toBe(5);
 });
 
 // ── HabitService::otorgarXp ───────────────────────────────────────────────────
@@ -336,4 +448,29 @@ test('archivar habito lo desactiva en base de datos', function () {
         ->assertRedirect(route('habitos.index'));
 
     expect($habito->fresh()->active)->toBeFalse();
+});
+
+test('fallar un habito dejar crea un log hoy', function () {
+    $user   = User::factory()->create();
+    $habito = Habit::factory()->dejar()->create(['user_id' => $user->id]);
+
+    $this->actingAs($user)
+        ->patch(route('habitos.registrar', $habito))
+        ->assertRedirect();
+
+    expect($habito->logs()->whereDate('logged_date', now()->toDateString())->exists())->toBeTrue();
+});
+
+test('fallar un habito dejar lo mueve a fallados y lo saca de dejar', function () {
+    $user   = User::factory()->create();
+    $habito = Habit::factory()->dejar()->create(['user_id' => $user->id]);
+
+    $habito->logs()->create(['logged_date' => now()->toDateString()]);
+
+    $service = new HabitService();
+    $grupos  = $service->habitosActivos($user);
+    $fallados = $service->habitosFalladosHoy($user);
+
+    expect($grupos['habitosDejar']->contains($habito))->toBeFalse();
+    expect($fallados->contains('id', $habito->id))->toBeTrue();
 });

@@ -51,7 +51,10 @@ class HabitService
         });
 
         // hábitos de dejar: todos los activos, independientemente de si han fallado hoy
-        $habitosDejar = $habitos->filter(fn($h) => $h->type === 'dejar');
+        $habitosDejar = $habitos->filter(function ($habito) use ($hoy) {
+            if ($habito->type !== 'dejar') return false;
+            return !$habito->logs()->whereDate('logged_date', $hoy)->exists();
+        });
 
         return [
             'habitosHacer'       => $pendientes,
@@ -406,5 +409,32 @@ class HabitService
     public function recuperar(Habit $habit): void
     {
         $habit->update(['active' => true]);
+    }
+
+    /**
+     * Devuelve los hábitos de dejar que han fallado hoy
+     * con la racha que llevaban antes del fallo.
+     */
+    public function habitosFalladosHoy(User $user): \Illuminate\Support\Collection
+    {
+        $hoy = now()->toDateString();
+
+        return $user->habits()
+            ->where('type', 'dejar')
+            ->where('active', true)
+            ->get()
+            ->filter(fn($h) => $h->logs()->whereDate('logged_date', $hoy)->exists())
+            ->map(function ($habito) use ($hoy) {
+                $falloAnterior = $habito->logs()
+                    ->whereDate('logged_date', '<', $hoy)
+                    ->latest('logged_date')
+                    ->first();
+
+                $habito->racha_anterior = $falloAnterior
+                    ? (int) $falloAnterior->logged_date->diffInDays(now())
+                    : (int) $habito->created_at->copy()->diffInDays(now());
+
+                return $habito;
+            });
     }
 }

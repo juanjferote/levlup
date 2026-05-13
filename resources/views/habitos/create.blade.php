@@ -111,11 +111,22 @@
                 <label for="category" class="form-label-levlup">Categoría <span class="texto-suave">(opcional)</span></label>
                 <select id="category" name="category" class="form-input-levlup">
                     <option value="">Sin categoría</option>
-                    @foreach(['deporte', 'lectura', 'meditacion', 'nutricion', 'productividad', 'aprendizaje', 'creatividad', 'descanso', 'social', 'finanzas', 'hogar', 'naturaleza'] as $cat)
-                    <option value="{{ $cat }}" {{ old('category', $sugerencia?->category) === $cat ? 'selected' : '' }}>
-                        {{ ucfirst($cat) }}
-                    </option>
-                    @endforeach
+                    <optgroup label="Categorías predefinidas">
+                        @foreach(['deporte', 'lectura', 'meditacion', 'nutricion', 'productividad', 'aprendizaje', 'creatividad', 'descanso', 'social', 'finanzas', 'hogar', 'naturaleza'] as $cat)
+                        <option value="{{ $cat }}" {{ old('category', $sugerencia?->category ?? $habito->category ?? '') === $cat ? 'selected' : '' }}>
+                            {{ ucfirst($cat) }}
+                        </option>
+                        @endforeach
+                    </optgroup>
+                    @if(!empty($interesesPersonalizados))
+                    <optgroup label="Mis categorías">
+                        @foreach($interesesPersonalizados as $cat)
+                        <option value="{{ $cat }}" {{ old('category', $sugerencia?->category ?? $habito->category ?? '') === $cat ? 'selected' : '' }}>
+                            {{ ucfirst($cat) }}
+                        </option>
+                        @endforeach
+                    </optgroup>
+                    @endif
                 </select>
                 @error('category')
                 <span class="form-error">{{ $message }}</span>
