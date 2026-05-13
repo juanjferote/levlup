@@ -219,6 +219,7 @@ class HabitService
     public function otorgarXpRachasDejar(User $user): bool
     {
         $subioNivel   = false;
+        $hoy          = now()->toDateString();
         $habitosDejar = $user->habits()
             ->where('type', 'dejar')
             ->where('active', true)
@@ -227,6 +228,11 @@ class HabitService
         foreach ($habitosDejar as $habito) {
             $racha = $this->calcularRachaDejar($habito);
             $xp    = 0;
+
+            // evitamos otorgar XP más de una vez al día
+            if ($habito->last_bonus_date === $hoy) {
+                continue;
+            }
 
             // bonus cada 7 días sin fallar
             if ($racha > 0 && $racha % 7 === 0) {
@@ -238,6 +244,7 @@ class HabitService
             }
 
             if ($xp > 0) {
+                $habito->update(['last_bonus_date' => $hoy]);
                 $subio = $user->addPoints($xp);
                 if ($subio) {
                     $subioNivel = true;

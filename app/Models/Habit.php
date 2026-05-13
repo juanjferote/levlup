@@ -23,6 +23,7 @@ class Habit extends Model
         'active',
         'suggested_by_system',
         'difficulty_level',
+        'last_bonus_date',
     ];
 
     // conversión automática de tipos

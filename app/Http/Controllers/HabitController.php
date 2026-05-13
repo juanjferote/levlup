@@ -125,7 +125,7 @@ class HabitController extends Controller
             'title'           => ['required', 'string', 'max:255'],
             'description'     => ['nullable', 'string', 'max:1000'],
             'category'        => ['nullable', 'string', 'max:100'],
-            'target_per_week' => ['required_if:type,hacer', 'nullable', 'integer', 'min:1', 'max:7'],
+            'target_per_week'  => $habito->type === 'hacer' ? ['required', 'integer', 'min:1', 'max:7'] : ['nullable'],
             'duration_minutes' => ['nullable', 'integer', 'min:1', 'max:480'],
         ], [
             'title.required'              => 'El título es obligatorio.',

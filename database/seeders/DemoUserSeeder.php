@@ -21,8 +21,8 @@ class DemoUserSeeder extends Seeder
             'password'    => Hash::make('password'),
             'avatar_seed' => 'warrior',
             'interests'   => ['deporte', 'lectura', 'productividad', 'meditacion', 'nutricion', 'creatividad', 'fotografía', 'cocina'],
-            'points'      => 6000,
-            'level'       => 8,
+            'points'      => 2600,
+            'level'       => 7,
         ]);
 
         // ── Tareas completadas ──
@@ -62,7 +62,7 @@ class DemoUserSeeder extends Seeder
         Task::create(['user_id' => $user->id, 'title' => 'Subir cambios al repositorio',  'completed' => false, 'scheduled_at' => now()->subDays(2)->setHour(9)->setMinute(0)]);
         Task::create(['user_id' => $user->id, 'title' => 'Revisar comentarios del tutor', 'completed' => false, 'scheduled_at' => now()->subDays(1)->setHour(15)->setMinute(0)]);
 
-        // ── Hábito: Correr — objetivo semanal YA cumplido ──
+        // ── Hábito: Correr — objetivo semanal YA cumplido + racha global 10 días ──
         $correr = Habit::create([
             'user_id'         => $user->id,
             'title'           => 'Correr',
@@ -72,12 +72,20 @@ class DemoUserSeeder extends Seeder
             'target_per_week' => 3,
             'active'          => true,
         ]);
-        for ($semana = 8; $semana >= 0; $semana--) {
+        // 8 semanas de racha
+        for ($semana = 8; $semana >= 1; $semana--) {
             for ($dia = 0; $dia < 3; $dia++) {
                 $correr->logs()->create([
                     'logged_date' => now()->subWeeks($semana)->startOfWeek()->addDays($dia)->toDateString(),
                 ]);
             }
+        }
+        // logs de los últimos 10 días consecutivos para racha global
+        for ($dia = 9; $dia >= 0; $dia--) {
+            $correr->logs()->updateOrCreate(
+                ['logged_date' => now()->subDays($dia)->toDateString()],
+                ['habit_id'    => $correr->id]
+            );
         }
 
         // ── Hábito: Leer — registrado hoy, objetivo no cumplido ──
@@ -180,7 +188,7 @@ class DemoUserSeeder extends Seeder
 
         // ── Hábitos de dejar con rachas variadas ──
 
-        // 45 días de racha → para fallar en la defensa
+        // 45 días — para fallar en la defensa
         $movil = new Habit();
         $movil->user_id     = $user->id;
         $movil->title       = 'Dejar el móvil por la noche';
@@ -193,7 +201,7 @@ class DemoUserSeeder extends Seeder
         $movil->updated_at  = now()->subDays(45);
         $movil->save();
 
-        // 30 días de racha
+        // 30 días
         $cafe = new Habit();
         $cafe->user_id     = $user->id;
         $cafe->title       = 'Dejar el café';
@@ -206,7 +214,20 @@ class DemoUserSeeder extends Seeder
         $cafe->updated_at  = now()->subDays(30);
         $cafe->save();
 
-        // 7 días de racha
+        // 15 días
+        $alcohol = new Habit();
+        $alcohol->user_id     = $user->id;
+        $alcohol->title       = 'Dejar el alcohol';
+        $alcohol->description = 'No consumir ninguna bebida alcohólica.';
+        $alcohol->type        = 'dejar';
+        $alcohol->category    = '';
+        $alcohol->active      = true;
+        $alcohol->timestamps  = false;
+        $alcohol->created_at  = now()->subDays(15);
+        $alcohol->updated_at  = now()->subDays(15);
+        $alcohol->save();
+
+        // 7 días
         $instagram = new Habit();
         $instagram->user_id     = $user->id;
         $instagram->title       = 'Dejar el instagram';
@@ -219,13 +240,13 @@ class DemoUserSeeder extends Seeder
         $instagram->updated_at  = now()->subDays(7);
         $instagram->save();
 
-        // 3 días de racha
+        // 3 días
         $azucar = new Habit();
         $azucar->user_id     = $user->id;
         $azucar->title       = 'Dejar el azúcar';
         $azucar->description = 'Eliminar el azúcar refinado de la dieta.';
         $azucar->type        = 'dejar';
-        $azucar->category    = 'nutricion';
+        $azucar->category    = '';
         $azucar->active      = true;
         $azucar->timestamps  = false;
         $azucar->created_at  = now()->subDays(3);
