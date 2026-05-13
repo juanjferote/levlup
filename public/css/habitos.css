@@ -175,9 +175,17 @@
         width: 44px;
         height: 44px;
     }
-    .pestana {
-        font-size: 0.6rem;
-        padding: 8px 8px;
-        letter-spacing: 0;
+
+    .pestana-contador {
+        display: none;
+    }
+
+    .pestanas--habitos .pestana {
+        font-size: 0;
+    }
+
+    .pestanas--habitos .pestana::after {
+        content: attr(data-movil);
+        font-size: 0.55rem;
     }
 }

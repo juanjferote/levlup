@@ -148,6 +148,7 @@ textarea.form-input-levlup {
     }
 
     .fecha-opciones {
+        width: 100%;
         flex-wrap: wrap;
         justify-content: flex-start;
     }
@@ -160,16 +161,8 @@ textarea.form-input-levlup {
         max-width: 100%;
     }
 
-    .bloque-formulario {
-        max-width: 100%;
-    }
-
     .btn-fecha-rapida {
         min-height: 44px;
         flex: 1;
-    }
-
-    .fecha-opciones {
-        width: 100%;
     }
 }
