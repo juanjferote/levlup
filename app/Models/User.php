@@ -15,7 +15,7 @@ class User extends Authenticatable
     // nivel máximo que puede alcanzar un usuario
     const NIVEL_MAXIMO = 20;
 
-    // campos que se pueden asignar masigamente
+    // campos que se pueden asignar masivamente
     protected $fillable = [
         'name',
         'email',
@@ -41,44 +41,38 @@ class User extends Authenticatable
         ];
     }
 
-    // un usuario tiene muchas tareas
     public function tasks()
     {
         return $this->hasMany(Task::class);
     }
 
-    // un usuario tiene muchos hábitos
     public function habits()
     {
         return $this->hasMany(Habit::class);
     }
 
-    // un usuario tiene muchas insignias desbloqueadas
     public function userBadges()
     {
         return $this->hasMany(UserBadge::class);
     }
 
-    // suma puntos al usuario y actualiza su nivel si procede
-    // este es el ÚNICO método que debe usarse para modificar puntos,
-    // así garantizamos que nivel y puntos nunca se desincronizan
+    /* Único punto de entrada para modificar puntos: centralizar aquí garantiza que nivel
+     * y puntos nunca se desincronizan. Devuelve true si el usuario ha subido de nivel. */
     public function addPoints(int $amount): bool
     {
         $this->increment('points', $amount);
         $newLevel = $this->calculateLevel();
 
-        // si el nivel calculado es mayor que el actual, subimos de nivel
         if ($newLevel > $this->level) {
             $this->update(['level' => $newLevel]);
-            return true; // devolvemos true para que el controlador pueda mostrar el "level up"
+            return true; // el controlador usa este true para mostrar el aviso de "level up"
         }
 
         return false;
     }
 
-    // calcula el nivel del usuario en función de sus puntos acumulados
-    // fórmula: para pasar al nivel N+1 hacen falta 100*N puntos acumulados
-    // nivel 2 = 100 puntos, nivel 3 = 300, nivel 4 = 600, nivel 5 = 1000, etc.
+    /* Calcula el nivel según los puntos acumulados. El tramo para subir al nivel N+1 cuesta 100*N puntos,
+     * por lo que los tramos crecen: nivel 2 = 100pts, nivel 3 = 300pts totales, nivel 4 = 600pts, etc. */
     public function calculateLevel(): int
     {
         $level       = 1;
@@ -94,12 +88,12 @@ class User extends Authenticatable
         return $level;
     }
 
-    // devuelve los puntos que faltan para alcanzar el siguiente nivel
-    // útil para la barra de progreso visual
+    /* Devuelve los puntos que le faltan al usuario para subir de nivel.
+     * Se usa para calcular el porcentaje de la barra de progreso en la vista. */
     public function pointsToNextLevel(): int
     {
         if ($this->level >= self::NIVEL_MAXIMO) {
-            return 0; // ya está en el nivel máximo
+            return 0;
         }
 
         $accumulatedForCurrentLevel = 0;
@@ -111,7 +105,6 @@ class User extends Authenticatable
         return $neededForNextLevel - $this->points;
     }
 
-    // devuelve la URL del avatar generado por DiceBear según la semilla del usuario
     public function avatarUrl(): string
     {
         return 'https://api.dicebear.com/9.x/pixel-art/svg?seed=' . urlencode($this->avatar_seed) . '&size=80';

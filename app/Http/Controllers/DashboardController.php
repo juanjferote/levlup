@@ -18,6 +18,8 @@ class DashboardController extends Controller
         private BadgeService $badgeService,
     ) {}
 
+    /* Carga el dashboard: otorga XP pasivo de rachas de dejar, comprueba insignias
+     * y reúne todos los datos de la vista en una sola petición. */
     public function index(): View
     {
         $user = auth()->user();
@@ -44,6 +46,8 @@ class DashboardController extends Controller
         ]);
     }
 
+    /* Devuelve una frase motivadora distinta cada día, pero igual durante todo el día.
+     * Se usa la fecha como semilla para que todos los usuarios vean la misma frase. */
     private function fraseDelDia(): array
     {
         $frases = [
@@ -79,10 +83,9 @@ class DashboardController extends Controller
             ['texto' => 'No hay nada imposible para el que lo intenta.', 'autor' => 'Alejandro Magno'],
         ];
 
-        // usamos la fecha como semilla para que la frase sea la misma todo el día
         srand(intval(now()->format('Ymd')));
         $indice = rand(0, count($frases) - 1);
-        srand(); // restauramos la semilla aleatoria para no afectar a otras partes del código
+        srand(); // restauramos la semilla para no interferir con otros rand() del ciclo de vida
 
         return $frases[$indice];
     }

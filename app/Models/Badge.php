@@ -22,7 +22,6 @@ class Badge extends Model
         'condition_value',
     ];
 
-    // una insignia puede haber sido desbloqueada por muchos usuarios
     public function userBadges()
     {
         return $this->hasMany(UserBadge::class);

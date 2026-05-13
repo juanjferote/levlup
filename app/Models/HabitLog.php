@@ -19,11 +19,10 @@ class HabitLog extends Model
     protected function casts(): array
     {
         return [
-            'logged_date' => 'date', // Laravel convierte el campo a objeto Carbon automáticamente
+            'logged_date' => 'date', // se castea a Carbon para poder usar diffInDays() y comparaciones de fecha
         ];
     }
 
-    // un registro pertenece a un hábito
     public function habit()
     {
         return $this->belongsTo(Habit::class);

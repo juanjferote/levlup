@@ -13,7 +13,7 @@ class ProfileController extends Controller
         private BadgeService   $badgeService,
     ) {}
 
-    // muestra la página de perfil del usuario autenticado
+    /* Muestra la página de perfil del usuario autenticado. */
     public function index()
     {
         return view('perfil.index', [
@@ -21,7 +21,8 @@ class ProfileController extends Controller
         ]);
     }
 
-    // actualiza datos básicos o intereses según la ruta de origen
+    /* Un solo método maneja tanto datos básicos como intereses porque comparten vista.
+     * La ruta activa determina qué bloque de validación y actualización se ejecuta. */
     public function update(Request $request)
     {
         $usuario = auth()->user();
@@ -34,7 +35,7 @@ class ProfileController extends Controller
 
             $this->perfilService->actualizarIntereses($usuario, $request->all());
 
-            // comprobamos insignias de intereses personalizados
+            // los intereses personalizados desbloquean insignias específicas
             $insigniasNuevas = $this->badgeService->comprobarInsignias($usuario);
 
             $mensaje = 'Intereses actualizados correctamente.';
@@ -61,7 +62,8 @@ class ProfileController extends Controller
 
         return back()->with('exito', 'Perfil actualizado correctamente.');
     }
-    // actualiza la contraseña del usuario autenticado
+    /* Valida la contraseña actual antes de permitir el cambio, usando el bag 'password'
+     * para separar los errores de los del formulario de datos básicos. */
     public function updatePassword(Request $request)
     {
         $usuario = auth()->user();

@@ -45,10 +45,7 @@ class TaskService
 
     /**
      * Marca una tarea como completada y otorga XP al usuario.
-     * Devuelve una string indicando el resultado:
-     * - 'futura'    → la tarea aún no ha llegado, no se completa
-     * - 'nivel'     → completada y el usuario ha subido de nivel
-     * - 'completada'→ completada correctamente
+     * Devuelve 'futura' si aún no toca, 'nivel' si el usuario sube de nivel, o 'completada' en caso normal.
      */
     public function completar(Task $task, User $user): string
     {

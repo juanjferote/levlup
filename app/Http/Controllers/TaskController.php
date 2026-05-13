@@ -91,12 +91,8 @@ class TaskController extends Controller
             ->with('exito', 'Misión actualizada correctamente. ✏️');
     }
 
-    /**
-     * Marca una tarea como completada y otorga XP.
-     */
-    /**
-     * Marca una tarea como completada y otorga XP.
-     */
+    /* Marca una tarea como completada, otorga XP y comprueba insignias nuevas.
+     * El origen en el request determina si redirige al dashboard o a la lista de tareas. */
     public function completar(Task $tarea, Request $request)
     {
         abort_if($tarea->user_id != auth()->id(), 403);

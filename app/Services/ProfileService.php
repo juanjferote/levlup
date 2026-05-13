@@ -6,7 +6,7 @@ use App\Models\User;
 
 class ProfileService
 {
-    // actualiza nombre, email y avatar del usuario
+    /* Actualiza nombre, email y semilla del avatar del usuario. */
     public function actualizarDatosBasicos(User $user, array $datos): void
     {
         $user->update([
@@ -16,7 +16,7 @@ class ProfileService
         ]);
     }
 
-    // actualiza los intereses del usuario
+    /* Guarda los intereses del usuario; si no se envían, se vacía el array. */
     public function actualizarIntereses(User $user, array $datos): void
     {
         $user->update([
@@ -24,7 +24,7 @@ class ProfileService
         ]);
     }
 
-    // actualiza la contraseña del usuario
+    /* Actualiza la contraseña del usuario (el hash lo aplica el cast del modelo). */
     public function actualizarPassword(User $user, array $datos): void
     {
         $user->update([

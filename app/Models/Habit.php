@@ -36,13 +36,11 @@ class Habit extends Model
         ];
     }
 
-    // un hábito pertenece a un usuario
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // un hábito tiene muchos registros de cumplimiento
     public function logs()
     {
         return $this->hasMany(HabitLog::class);

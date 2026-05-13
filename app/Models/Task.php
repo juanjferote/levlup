@@ -22,12 +22,11 @@ class Task extends Model
     protected function casts(): array
     {
         return [
-            'scheduled_at' => 'datetime', // Laravel convierte el campo a objeto Carbon automáticamente
+            'scheduled_at' => 'datetime', // se castea a Carbon para poder usar isFuture(), isToday() y similares
             'completed'    => 'boolean',
         ];
     }
 
-    // una tarea pertenece a un usuario
     public function user()
     {
         return $this->belongsTo(User::class);

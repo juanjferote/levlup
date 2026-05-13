@@ -227,6 +227,8 @@ class HabitController extends Controller
             ->with('exito', 'Hábito recuperado. ¡A por ello! 💪');
     }
 
+    /* Elimina el hábito definitivamente junto con todos sus registros.
+     * Diferente a destroy(), que solo archiva. */
     public function destroyPermanente(Habit $habito)
     {
         abort_if($habito->user_id !== auth()->id(), 403);

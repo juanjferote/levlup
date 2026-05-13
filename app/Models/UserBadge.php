@@ -23,17 +23,15 @@ class UserBadge extends Model
     protected function casts(): array
     {
         return [
-            'unlocked_at' => 'datetime', // Laravel convierte el campo a objeto Carbon automáticamente
+            'unlocked_at' => 'datetime', // se castea a Carbon para poder ordenar y formatear la fecha de desbloqueo
         ];
     }
 
-    // este registro pertenece a un usuario
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // este registro pertenece a una insignia
     public function badge()
     {
         return $this->belongsTo(Badge::class);

@@ -113,10 +113,8 @@ class HabitService
     }
 
     /**
-     * Registra el cumplimiento de un hábito hoy.
-     * En hábitos de hacer representa un éxito.
-     * En hábitos de dejar representa un fallo que reinicia la racha.
-     * Devuelve false si ya estaba registrado hoy.
+     * Registra el cumplimiento de un hábito hoy (éxito en "hacer", fallo en "dejar").
+     * Devuelve false si ya había un registro hoy para evitar duplicados.
      */
     public function registrarHoy(Habit $habit): bool
     {
@@ -163,10 +161,8 @@ class HabitService
     }
 
     /**
-     * Calcula la racha actual de un hábito de tipo "dejar".
-     * La racha son los días transcurridos desde el último fallo registrado.
-     * El log en hábitos de "dejar" representa un fallo, no un éxito.
-     * Si nunca ha fallado, la racha se calcula desde la fecha de creación.
+     * Calcula los días sin fallar en un hábito de "dejar".
+     * El log aquí representa un fallo, así que la racha se mide desde el último log (o desde la creación si nunca ha fallado).
      */
     public function calcularRachaDejar(Habit $habit): int
     {
@@ -181,12 +177,8 @@ class HabitService
     }
 
     /**
-     * Otorga XP al usuario por registrar un hábito de hacer.
-     * Aplica bonus si se alcanzan hitos de racha semanal.
-     * - Bonus medio: cada 4 semanas consecutivas cumpliendo el objetivo
-     * - Bonus largo: cada 8 semanas (se acumula al anterior)
-     * Los hábitos de dejar no otorgan XP al registrar un fallo.
-     * Devuelve true si el usuario ha subido de nivel.
+     * Otorga XP por registrar un hábito de hacer, con bonus acumulable por rachas de 4 y 8 semanas.
+     * Los hábitos de dejar no generan XP al fallar. Devuelve true si el usuario sube de nivel.
      */
     public function otorgarXp(User $user, Habit $habit): bool
     {
@@ -211,10 +203,8 @@ class HabitService
     }
 
     /**
-     * Comprueba los hábitos de dejar del usuario y otorga XP
-     * si se han alcanzado hitos de racha nuevos (7 o 30 días).
-     * Se llama desde el DashboardController al cargar el dashboard.
-     * Devuelve true si el usuario ha subido de nivel.
+     * Revisa los hábitos de dejar y otorga XP si se han alcanzado hitos de racha (7 o 30 días).
+     * Se ejecuta al cargar el dashboard para no perder bonificaciones pasivas del usuario.
      */
     public function otorgarXpRachasDejar(User $user): bool
     {
@@ -256,9 +246,8 @@ class HabitService
     }
 
     /**
-     * Calcula la racha global del usuario: días consecutivos
-     * con alguna actividad (tarea completada o hábito de hacer registrado).
-     * Los hábitos de dejar no cuentan al ser pasivos.
+     * Calcula los días consecutivos con actividad real del usuario (tareas completadas o hábitos de hacer).
+     * Los hábitos de dejar se excluyen porque son pasivos y no implican una acción del usuario ese día.
      */
     public function calcularRachaGlobal(User $user): int
     {
